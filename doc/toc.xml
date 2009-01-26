@@ -13,9 +13,9 @@
   <chapter name="Primitives" href="primitives.html" blurb="basic built-in types"/>
   <chapter name="Expressions" href="expr.html" blurb="review of expression constructs"/>
   <chapter name="Statements" href="stmt.html" blurb="review of statement constructs"/>
+  <chapter name="Classes" href="classes.html" blurb="class types"/>
   <chapter name="Fields" href="fields.html" blurb="field slots"/>
   <chapter name="Methods" href="methods.html" blurb="method slots"/>
-  <chapter name="Inheritance" href="inheritance.html" blurb="class inheritance"/>
   <chapter name="Components" href="components.html" blurb="the Sedona component model"/>
   <chapter name="Reflection" href="reflection.html" blurb="the Sedona reflection APIs"/>
   <chapter name="Arrays" href="arrays.html" blurb="how Sedona arrays work"/>
