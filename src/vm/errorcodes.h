@@ -20,7 +20,7 @@
 //
 //   Recoverable: 
 //     [C code: 100-139]
-//     [Sedona: 140-255]
+//     [Sedona: 140-249]
 //     - something went wrong at runtime, but if we auto-restart 
 //       the app things will probably start working again (at 
 //       least for a little while)
@@ -29,6 +29,13 @@
 //     [250-255]
 //     - special codes shared b/w C and Sedona code
 //                     
+
+
+// Convenience defns for detecting error type
+#define ERR_MIN_UNRECOVERABLE_SCODE 1
+#define ERR_MAX_UNRECOVERABLE_SCODE 39
+#define ERR_MIN_UNRECOVERABLE_APP 40
+#define ERR_MAX_UNRECOVERABLE_APP 99
 
 
 // non-recoverable: bootstrap
