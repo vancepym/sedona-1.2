@@ -11,6 +11,7 @@ import java.io.*;
 import java.net.*;
 import java.security.*;
 import sedona.util.*;
+import sedona.xml.XParser;
 
 /**
  * Utility to upload files to sedonadev.org.
@@ -78,36 +79,65 @@ public class Upload
       if (options >= args.length) err("ERRROR: Missing file argument");      
       File file = new File(args[options]);
       if (!file.exists()) err("ERROR: File not found: " + file);
-
-      // type off of file extension
-      if (file.getName().endsWith(".zip"))      upload(baseUri, "build", vendor, password, file);
-      else if (file.getName().endsWith(".xml")) upload(baseUri, "kitManifest", vendor, password, file);
-      else err("ERROR: Unknown file type: " + file.getCanonicalPath());
+      
+      new Upload(baseUri, vendor, password, file).upload();
     }
     catch (Exception e)
     {
       e.printStackTrace();
       System.exit(-1);
     }    
-  }    
+  } 
   
-
-  static void upload(String baseUri, String type, String vendor, String password, File file)
-    throws Exception
-  {    
-    System.out.println("Upload " + type + " [" + file.getCanonicalPath() + "]");
+  public Upload(String baseUri, String vendor, String password, File file)
+  {
+    this.baseUri = baseUri;
+    this.vendor = vendor;
+    this.password = password;
+    this.file = file;
+  }
+  
+  public void upload() throws Exception
+  {
+    parseFile();
+    transfer();
+  }
+  
+  private void parseFile() throws Exception
+  {
+    if (file.getName().endsWith(".zip"))
+    {
+      ext = ".zip";
+      fileType = "build";
+    }
+    else if (file.getName().endsWith(".xml"))
+    {
+      ext = ".xml";
+      String root = XParser.make(file).parse().name();
+      if (root.equals("kitManifest") || root.equals("sedonaPlatform"))
+        fileType = root;
+    }
     
-    String digest = makeDigest(vendor, password);
-    URL url = new URL(baseUri + "?type=" + type + ";vendor=" + vendor + ";digest=" + digest);
-
+    if (fileType == null)
+      err("ERROR: Unknown file type: " + file.getCanonicalPath());
+  }
+  
+  protected void transfer() throws Exception
+  {
+    System.out.println("Upload " + fileType + " [" + file.getCanonicalPath() + "]");
+    
+    final String digest = makeDigest(vendor, password);
+    URL url = new URL(baseUri + "?type=" + fileType + ";vendor=" + vendor + ";digest=" + digest);
+    
     HttpURLConnection conn = (HttpURLConnection)url.openConnection();
     conn.setRequestMethod("POST");
-    if (type.equals("build"))            conn.setRequestProperty("Content-Type", "application/zip");
-    else if (type.equals("kitManifest")) conn.setRequestProperty("Content-Type", "text/xml");
+    if (ext.equals(".zip")) conn.setRequestProperty("Content-Type", "application/zip");
+    else if (ext.equals(".xml")) conn.setRequestProperty("Content-Type", "text/xml");
+    else throw new IllegalStateException("Ext = " + ext);
     conn.setDoInput(true);
     conn.setDoOutput(true);
     conn.setUseCaches(false);
-    
+
     InputStream fin = new BufferedInputStream(new FileInputStream(file));
     OutputStream out = new BufferedOutputStream(conn.getOutputStream());
     FileUtil.pipe(fin, out);
@@ -129,6 +159,14 @@ public class Upload
     System.out.println("*** Success! ***");
     System.out.println("");
   }
+  
+  protected final String baseUri;
+  protected final String vendor;
+  protected final String password;
+  protected final File file;
+  
+  private String ext;
+  private String fileType;
 
   public static String makeDigest(String vendor, String password)
     throws Exception
@@ -174,8 +212,5 @@ public class Upload
     System.exit(-1);
   }
   
-//  static final String baseUri = "http://209.96.240.217/download/upload";
-  //static final String baseUri = "http://localhost/download/upload";
-
 }
 
