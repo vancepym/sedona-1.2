@@ -99,7 +99,11 @@ class App
     log.message("starting")
     platform.notify("app", "starting")
 
-    // init every component
+    // loaded() callback for every component
+    foreach (Component c : comps, compsLen)
+      if (c != null) c.loaded()
+
+    // start() callback for every component
     foreach (Component c : comps, compsLen)
       if (c != null) c.start()
     
@@ -262,7 +266,7 @@ class App
     }                         
     
     // start child is app is running
-    if (isRunning) c.start()
+    if (isRunning) { c.loaded(); c.start() }
  
     // fire tree changed on parent
     parent.fireTreeChanged()

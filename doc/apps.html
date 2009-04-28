@@ -73,6 +73,23 @@ You can convert between the two file formats using
 </p>
 
 <!--/////////////////////////////////////////////////////////-->
+<h1 id="bootstrap">Boot Strap</h1>
+<!--/////////////////////////////////////////////////////////-->
+
+<p>
+Applications are boot strapped using the following phases:
+</p>
+
+<ol>
+<li><b>Loaded</b>: all components are loaded from SAB file into
+memory can have their <code>Component.loaded</code> callback invoked.
+<li><b>Start</b>: all components have their <code>Component.start</code> 
+callback invoked.
+<li><b>Running</b>: the application enters in main loop for 
+execution (described next).
+</ol>
+
+<!--/////////////////////////////////////////////////////////-->
 <h1 id="execution">Execution</h1>
 <!--/////////////////////////////////////////////////////////-->
 

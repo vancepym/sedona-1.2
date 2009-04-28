@@ -179,7 +179,16 @@ class Component
 //////////////////////////////////////////////////////////////////////////
 
   **
-  ** Callback when component is first started in an app.
+  ** Callback when component is loaded into an app.  This occurs
+  ** before the start phase.
+  **
+  virtual void loaded()
+  {
+  }
+
+  **
+  ** Callback when component is first started in an app.  This occurs
+  ** only after all components have had their loaded callback invoked. 
   **
   virtual void start()
   {

@@ -113,7 +113,8 @@ class SoxTest
     verify(x.bufA.size == 4)
     verify(x.bufA.bytes[3] == 0xdd)
     verify(x.str.toStr().equals("hell"))   
-    verify(x.wasStarted)
+    verify(x.wasLoaded)         
+    verify(x.wasStarted)         
   }
 
   action void verifyRename(int compId)
@@ -145,6 +146,7 @@ class SoxTest
 // Utils
 //////////////////////////////////////////////////////////////////////////
 
+
   override void start()
   {
     service = (SoxService)Sys.app.lookupService(SoxService.type)
@@ -163,5 +165,5 @@ class SoxTest
 // Fields
 //////////////////////////////////////////////////////////////////////////
 
-  SoxService service
+  SoxService service     
 }

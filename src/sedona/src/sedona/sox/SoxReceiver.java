@@ -57,7 +57,7 @@ class SoxReceiver
       }
       catch(Exception e)
       {
-        if (!client.isClosed()) e.printStackTrace();
+        if (!client.closing && !client.isClosed()) e.printStackTrace();
       }
     }
   }

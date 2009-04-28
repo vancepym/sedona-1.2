@@ -102,7 +102,10 @@ class TestComp extends AbstractTestComp
   long mj2() { return j2 }
   double md2() { return d2 }
   
+  override void loaded() { wasLoaded = true }    
   override void start() { wasStarted = true }    
+  
+  bool wasLoaded
   bool wasStarted
 }
 

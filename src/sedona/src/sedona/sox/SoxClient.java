@@ -122,6 +122,8 @@ public class SoxClient
    */
   public void close()
   {
+    this.closing = true;
+    
     // shut down receiver
     try
     {                           
@@ -1225,5 +1227,6 @@ public class SoxClient
   SoxReceiver receiver;
   Object sendLock = new Object();
   FileTransfer fileTransfer;
+  volatile boolean closing;
 
 }
