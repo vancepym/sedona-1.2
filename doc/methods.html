@@ -61,6 +61,32 @@ is assumed.
 </p>      
 
 <!--/////////////////////////////////////////////////////////-->
+<h1 id="return">Return Values</h1>
+<!--/////////////////////////////////////////////////////////-->
+
+<p>
+If the method returns a value to the calling function, the
+return value type is included in the function definition.  
+If the method does not return anything, the keyword <code>void</code>
+is used instead of a return type.
+</p>
+
+<pre> 
+class Example
+{
+  void echo() { Sys.out.print("echo").nl() }   // returns nothing
+  int add(int x, int y) { return x + y }       // returns an int value
+}
+</pre>   
+
+<p>
+In Sedona, a method may return any primitive type, or a reference to 
+any built-in or user-defined class type; 
+the only exception is an action method, which always returns void.
+</p>
+
+
+<!--/////////////////////////////////////////////////////////-->
 <h1 id="static">Static Methods</h1>
 <!--/////////////////////////////////////////////////////////-->
 
@@ -153,6 +179,25 @@ cat.talk()      // prints meow
 </pre>         
 
 <p>
+By default an overridden method cannot itself be overridden by a subsequent
+subclass.  In order for <code>Cat.talk()</code> to be overridden by the subclass 
+<code>Kitten</code>, it must include again the keyword <code>virtual</code>:
+</p>
+<pre>
+class Cat extends Animal
+{
+  override virtual void talk() { Sys.out.print("meow\n") }   // override AND virtual
+}
+
+class Kitten extends Cat
+{
+  override void talk() { Sys.out.print("mew!\n") }           // this now compiles
+}
+
+kitten.talk()      // prints mew!
+</pre>         
+
+<p>
 Classes which declare virtual methods must derive from <code>sys::Virtual</code>.
 Be aware that virtual classes have the overhead of an extra pointer for
 their vtable (typically 4 extra bytes).
@@ -178,8 +223,19 @@ method body.  The containing class must also be abstract.
 By default any virtual method call with an implicit or explicit target 
 of <code>this</code> invokes the most specific version of that method.
 You can use the <code>super</code> keyword to invoke the super class
-version of a method.
+version of a method:
 </p>
+
+<pre>
+class Kitten extends Cat
+{
+  override void talk() { super.talk() }
+}
+
+kitten.talk()      // now prints meow
+
+</pre>
+
 
 <!--/////////////////////////////////////////////////////////-->
 <h1 id="ctor">Constructors</h1>
@@ -196,7 +252,7 @@ a syntax similiar to Java:
 <pre>
 final class BufInStream extends InStream
 {
-  BufInStream(Buf buf) { this.buf = buf }
+  BufInStream(Buf abuf) { this.buf = abuf }
   Buf buf
 } 
 </pre>
@@ -234,10 +290,11 @@ class Foo
 
 <p>
 Inline static fields are initialized in declaration order on VM startup
-which calls constructors.  These constructor calls, will often result in 
-instance constructor calls, which in turn recursively chain for nested 
-inline fields.  The example above compiles into the following code where 
-<code>Foo._sInit</code> is called during VM boot:
+which calls the appropriate constructors.  These constructor calls often 
+result in instance constructor calls, which in turn recursively chain for 
+nested inline fields.  
+For the example above, the compiler will create the following code; 
+<code>Foo._sInit</code> is then automatically called when the VM boots:
 </p>
 
 <pre>
@@ -260,7 +317,7 @@ void Foo._iInit()
 <!--/////////////////////////////////////////////////////////-->
 
 <p>     
-The <code>native</code> keyword is used on methods which are implemented 
+The <code>native</code> keyword is used on methods that are implemented 
 in C and Java code.  Like abstract methods, native methods must not define 
 a body.  See <a href='nativeMethods.html'>Native Methods</a> for more details.
 </p>

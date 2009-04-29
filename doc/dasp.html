@@ -45,7 +45,7 @@ This protocol is designed to provide an unordered, reliable, secure session for
 full-duplex datagram exchange which can be implemented for low power wireless
 networks and low cost devices. Specifically we target networks which include
 6LoWPAN. These networks are typically comprised of devices without the
-resources to run a protocol such as TCP and must implement their protocol stack
+resources to run a protocol such as TCP and must implement their protocol stacks
 in under 100KB of memory.
 </p>
 
@@ -156,23 +156,23 @@ The data in the message is summarized:
 <li><b>sessionId</b>: identifies the session associated with the message.
 During the handshake before a sessionId is allocated, the value 0xffff is used.</li>
 
-<li><b>seqNum</b>: used to sequence each message for management of the sliding
-window and matching up requests/responses. Each endpoint maintains their own
-sequence number - sequence numbers only apply to DATAGRAM messages.</li>
+<li><b>seqNum</b>: used to sequence each DATAGRAM message for management of the sliding
+window and matching up requests/responses.  Each endpoint maintains its own
+sequence numbers.</li>
 
 <li><b>msgType</b>: 4-bits are used to identity how to handle the message from
-an DASP perspective. The list of message types are detailed in their own
-section.</li>
+an DASP perspective. The list of message types are detailed in a separate section
+below.</li>
 
 <li><b>numFields</b>: 4-bits specify how many header fields follow in the
 message.</li>
 
 <li><b>headerFields</b>: a list of zero or more fields which carry additional
 data about the request much like HTTP header fields. Header fields are detailed
-in their own section.</li>
+in a separate section below.</li>
 
-<li><b>payload</b>: zero or more bytes of message payload. DASP does not
-account for payload size, but assumes that the underlying transport such as UDP
+<li><b>payload</b>: zero or more bytes of message payload. A DASP message does not
+specify the payload size, but assumes that the underlying transport such as UDP
 provides the total size of the entire message from which payload size can be
 computed.</li>
 </ul>
@@ -286,7 +286,7 @@ A session is established by a series of messages called the handshake:
 
 <p>
 Once the client receives the welcome message from either step 2 or step 4, then
-the session is established. An close message during any steps terminates the
+the session is established. An close message during any step terminates the
 handshake.
 </p>
 
@@ -524,18 +524,19 @@ session: absMax=512, idealMax=64
 <p>
 Because we assume DASP runs over an unreliable transport, implementations must
 be prepared to handle lost, delayed, or unordered messages during the handshake
-process. Specific conditions and the recommended action:
+process. The following are specific conditions that may arise, and the recommended 
+action for each:
 </p>
 
 <p>
-The client sends the hello, but does not receive the challenge. In this case,
+<b>The client sends the hello, but does not receive the challenge.</b> In this case,
 either the hello or the challenge may have been lost. In either case, a new
 hello request should be sent. If after three attempts fail, then the client
 should assume communication with the server is not available
 </p>
 
 <p>
-The server sends the challenge, but doesn't receive an authenticate message. In
+<b>The server sends the challenge, but doesn't receive an authenticate message.</b> In
 this case, either the challenge or the authenticate message might have been
 dropped. In either case the server should never attempt resending the
 challenge, but rather should time out the session if no authenticate is
@@ -544,7 +545,7 @@ out period (compared to normal session communication).
 </p>
 
 <p>
-The client sends the authenticate, but does not receive the welcome. In this
+<b>The client sends the authenticate, but does not receive the welcome.</b> In this
 case, either the authenticate or the welcome message was lost. The client
 should resend the authenticate message two more times, before giving up.
 Servers should gracefully handle receiving multiple authenticate messages for
@@ -694,7 +695,7 @@ control generically.
 </p>
 
 <p>
-Flow control in DASM is always managed on the sending side by dynamically
+Flow control in DASP is always managed on the sending side by dynamically
 tuning the size of the sending window and the sendRetry time. These values are
 tuned based on analysis of the session's recent past performance.
 </p>
@@ -727,7 +728,7 @@ acknowledgement is sent on close messages.
 </p>
 
 <p>
-It is recommended that close messages are sent twice - endpoints should
+It is recommended that close messages be sent twice - endpoints should
 automatically ignore duplicate close/errors because the sessionId will be
 invalid. Errors during the handshake should only be sent once. However, since
 there is no acknowledgment, we can never guarantee that both endpoints are

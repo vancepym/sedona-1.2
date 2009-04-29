@@ -130,7 +130,7 @@ const class Log
 
 <p>
 Note that the logging levels are stored separately from the
-<code>Log</code> instances themselves.  This is because the logs
+<code>Log</code> instances themselves.  This is because the log objects
 are readonly and stored in the code section.  The log levels must
 be in dynamic memory to allow runtime modification.
 </p>
@@ -170,7 +170,7 @@ class MyService
 
 <p>
 By convention, your primary Log definition should be named "log" 
-to match rule 1.  Sub-logging for extra tracing should be use names
+to match rule 1.  Sub-logging for extra tracing should use names
 with a "Log" suffix.
 </p>
 
@@ -179,7 +179,7 @@ with a "Log" suffix.
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-To embed logging into your code you call one of following the 
+To embed logging into your code, call one of following the 
 <i>logging methods</i>:    
 </p>
 
@@ -249,9 +249,10 @@ log levels default to MESSAGE on startup.
 </p>                  
 
 <p>
-The compiler automatically inserts code to jump over a logging 
-statement if the log level is disabled.  This means the method 
-call and any embedded expressions are efficiently skipped:
+The compiler automatically inserts code that jumps over a logging 
+statement if the current log level is set lower.
+This means the method call and any embedded expressions are 
+efficiently skipped:
 </p>
 
 <pre>                                   

@@ -85,7 +85,12 @@ this command line:
 <pre>
 java -cp {lib}sedona.jar -Dsedona.home={home} sedona.vm.Main {app}
 </pre>
-
+where
+<ul>
+  <li> <code>{lib}</code> is the path to the sedona.jar file (if not in default classpath)</li>
+  <li> <code>{home}</code> is the path to your sedona installation (e.g. D:\sedona)</li>
+  <li> <code>{app}</code> is the app filename to be executed</li>
+</ul>
 
 <!--/////////////////////////////////////////////////////////-->
 <h1 id="interop">Interop</h1>
@@ -123,7 +128,7 @@ into the Java type system:
 </table>           
 
 <p>
-Couple things to note:
+A few things to note:
 </p>                  
 
 <ul>
@@ -132,9 +137,9 @@ Couple things to note:
 zero indicating <code>false</code>, one indicating <code>true</code>, and 
 two indicating <code>null</code></li>
 <li>In general most Sedona classes are passed around as <code>java.lang.Object</code>
-on the Java side.  This means you can write Java code which works with Sedona
-without complicated classpath issues - you only put "sedona.jar" into your 
-classpath.</li>
+on the Java side.  This means you can write Java code that works with Sedona
+without complicated classpath issues - you only need to include "sedona.jar" 
+in your classpath.</li>
 <li>Some special classes like Kit, Type, Slot, and Component receive special
 support to implement a predefined Java interface.  This makes it easy to
 write Java code which uses Sedona reflection.</li>    
@@ -151,13 +156,13 @@ is a <code>byte[]</code> reference and an offset into that byte array.</li>
 <p> 
 In order to run on the JVM, every <a href='nativeMethods.html'>native method</a>
 in Sedona is required to have a Java implementation.  Native methods are
-implemented using the following naming convention:
+implemented in a Java source file using the following naming convention:
 </p>                            
 
 <ul>
-<li>Package name is <code>sedona.vm.{kit}</code></li>
-<li>Class name is <code>{Type}_n</code></li>
-<li>Method name same as Sedona method name</li>
+<li>For sedona kit <code>myKit</code>, Java package name is <code>sedona.vm.myKit</code></li>
+<li>For sedona class <code>MyClass</code>, Java class name is <code>MyClass_n</code></li>
+<li>Java method name same as Sedona method name</li>
 </ul>
 
 <p>

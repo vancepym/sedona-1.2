@@ -40,7 +40,7 @@
 <!-- /////////////////////////////////////////////////////// -->
 
 <p>
-Native methods are used to create Sedona APIs which bind to native
+Native methods are used to create Sedona APIs that bind to native
 code written in the C programming language.  The following steps
 are used to create a native method:
 </p>
@@ -79,9 +79,9 @@ and the bottom byte is the <i>methodId</i>.  Native ids are formatted as
 </p>
 
 <p>
-Each kit which contains native methods should be assigned a unique kitId.
+Each kit that contains native methods should be assigned a unique kitId.
 Technically kitIds don't need to be globally unique, but should be unique
-across all the kits which might be used together for a given platform.  The
+across all the kits that might be used together for a given platform.  The
 range of kitIds from 0 to 99 is reserved for core Sedona kits.  Third
 parties should use kitIds from 100 to 255, or coordinate with the core Sedona
 development team.  The <code>sys</code> kit itself is assigned the kitId of zero.
@@ -164,7 +164,7 @@ Cell;
 </pre>
 
 <p>
-Every native method must be implemented in C as a function which takes
+Every native method must be implemented in C as a function that takes
 a Cell pointer into the stack and returns a Cell.  The typedef for a
 native method pointer in <code>sedona.h</code> is:
 </p>
@@ -182,8 +182,9 @@ is always parameter 0.
 <p>
 It is important to note that all native methods return a Cell value
 even when the Sedona signature has a <code>void</code> return.  You can use
-the constant  <code>nullCell</code> as a return from a <code>void</code> method.  
-Constants <code>trueCell</code> and <code>falseCell</code> can be used for
+the constant <code>nullCell</code> 
+to return from a Sedona method that returns <code>void</code>.  
+Constants <code>trueCell</code> and <code>falseCell</code> can similarly be used for
 <code>bool</code> returns.
 </p>
 
@@ -224,19 +225,21 @@ Cell foo_Type2_test(Cell* params)
 
 <p>
 Note in the examples above how each parameter is extracted using array indexing
-and the union member name.  Pointers should use the <code>aval</code> member,
+and the union member name.  Pointers (including strings) should use the <code>aval</code> member,
 <code>floats</code> the <code>fval</code> member, and all other primitives are
 accessed using the <code>ival</code> member.  Note that a Sedona <code>bool</code>
 maps into zero and non-zero for <code>false</code> and <code>true</code>
-respectively.  Arrays of primitives are accessed like their C counter parts.
+respectively.  Arrays of primitives are accessed like their C counterparts.
 </p>
 
 <p>
-Native methods which use <code>long</code> or <code>double</code> are a bit
+Native methods that pass or return <code>long</code> or <code>double</code> are a bit
 trickier.  A single <code>long</code> or <code>double</code> value requires
-two Cells to store the full 64-bits.  To access a <code>long</code> or 
-<code>double</code> requiring using pointer casting to access from the
-array of parameters.  A native method which returns a <code>long</code>
+two Cells to store the full 64-bits.  
+To access a <code>long</code> or 
+<code>double</code> function argument requires the use of pointer casting to access 
+two consecutive elements of the parameter array.  
+A native method that returns a <code>long</code>
 or <code>double</code> should declare the return type to be <code>int64_t</code>
 instead of <code>Cell</code>. The following is an example - note how each
 <code>long</code> parameter actually consumes two cells of the parameter list:
@@ -260,42 +263,52 @@ A summary of common mappings from Sedona to their C equivalents:
 <table>
 <tr>
   <th>Sedona</th> <th>C</th>
+  <th></th>
   <th>Sedona</th> <th>C</th>
 </tr>
 <tr>
   <td>bool</td>   <td>int32_t</td>
+  <td></td>
   <td>bool[]</td> <td>uint8_t*</td>
 </tr>
 <tr>
   <td>byte</td>   <td>int32_t</td>
+  <td></td>
   <td>byte[]</td> <td>uint8_t*</td>
 </tr>
 <tr>
   <td>short</td>   <td>int32_t</td>
+  <td></td>
   <td>short[]</td> <td>uint16_t*</td>
 </tr>
 <tr>
   <td>int</td>   <td>int32_t</td>
+  <td></td>
   <td>int[]</td> <td>int32_t*</td>
 </tr>
 <tr>
   <td>long</td>   <td>int64_t</td>
+  <td></td>
   <td>long[]</td> <td>int64_t*</td>
 </tr>
 <tr>
   <td>float</td>   <td>float</td>
+  <td></td>
   <td>float[]</td> <td>float*</td>
 </tr>
 <tr>
   <td>double</td>   <td>double</td>
+  <td></td>
   <td>double[]</td> <td>double*</td>
 </tr>
 <tr>
   <td>Obj</td>   <td>void*</td>
+  <td></td>
   <td>Obj[]</td> <td>void**</td>
 </tr>
 <tr>
   <td>Str</td>   <td>uint8_t*</td>
+  <td></td>
   <td>Str[]</td> <td>uint8_t**</td>
 </tr>
 </table>
@@ -336,10 +349,11 @@ The existing native method facility provides low level hooks to bind
 Sedona APIs into the native platform.  However due to its low level nature
 it maps fairly closely to the stack architecture of the VM.  This design
 has the major limitation that it only works well when accessing primitives
-off the stack.  There is currently no mechanism to access individual fields
-of a Sedona class unless you know exactly how the Sedona compiler will layout
-the memory (even then it would be quite brittle).  In the meantime the best
-practice is to pass all parameters as primitives (or arrays of primitives).
+off the stack.  There is currently no safe mechanism to access individual 
+fields of a Sedona object within a native method, as you would need to 
+know exactly how the compiler will layout the memory (even then it would 
+be quite brittle).  In the meantime the best
+practice is to pass only primitives (or arrays of primitives) as parameters.
 </p>
 
 <!-- /////////////////////////////////////////////////////// -->
@@ -356,12 +370,13 @@ The following are the predefined native kit ids:
   <tr> <td>inet</td>              <td>3</td></tr>
   <tr> <td>serial</td>            <td>4</td></tr>
   <tr> <td>smbus</td>             <td>5</td></tr>
-  <tr> <td>jace, spibus</td>      <td>6</td></tr>      
+  <tr> <td>jace</td>              <td>6</td></tr>      
   <tr> <td>jennic</td>            <td>7</td></tr>        
   <tr> <td>jenNet</td>            <td>8</td></tr>        
   <tr> <td>basicio</td>           <td>9</td></tr>        
   <tr> <td>datetimeOS</td>        <td>10</td></tr>        
   <tr> <td>bacnet</td>            <td>11</td></tr>        
+  <tr> <td>spibus</td>            <td>12</td></tr>        
   <tr> <td>memtool</td>           <td>13</td></tr>        
   <tr> <td>nrio</td>              <td>20</td></tr>         
   <tr> <td>pstoreFS</td>          <td>21</td></tr>         

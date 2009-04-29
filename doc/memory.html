@@ -41,7 +41,7 @@
 
 <p>                                  
 Utilizing memory as efficiently as possible is a core requirement
-for making Sedona run in small, embedded devices.  We divide
+for making Sedona run on small, embedded devices.  We divide
 memory into the following sections:
 </p>
 
@@ -49,19 +49,20 @@ memory into the following sections:
 <li><b>Sedona Stack</b>: the Sedona call stack (RAM)</li>
 <li><b>Sedona Data</b>: all the memory declared as static 
 fields in the current scode (RAM)</li>
-<li><b>Sedona App</b>: the components which define the current application (RAM)</li>
-<li><b>Sedona Code</b>: the scode image for the installed kits (RAM or FLASH)</li>
+<li><b>Sedona App</b>: the components that define the current application (RAM)</li>
+<li><b>Sedona Code</b>: the scode image for the installed kits (RAM, or possibly FLASH)</li>
 <li><b>SAB File</b>: the persistent storage of the application (FLASH) </li>
-<li><b>C Code</b>: native code and SVM (FLASH or RAM)</li>
+<li><b>C Code</b>: native code and SVM (RAM, or possibly FLASH)</li>
 <li><b>C Data</b>: native code data segment (RAM)</li>
 <li><b>C Stack</b>: the C native call stack (RAM)</li>
 </ul>                          
 
 <p>
 We use the terms RAM and FLASH a bit loosely here:  RAM must be high 
-speed read/write memory, and FLASH is persistent memory.  If FLASH is high
-speed you might be able to run your code directly out of FLASH, otherwise you
-will load code segments into RAM.
+speed read/write memory, and FLASH is persistent memory (on a large device
+this could be a disk drive).  If FLASH is high speed you might be able to 
+run code directly out of FLASH, but normally those code segments will
+be loaded into RAM.
 </p>
 
 
@@ -79,11 +80,18 @@ declared above requires?  Let's look at each section:
 <p>
 The C code, data, and stack segments will be determined by your development 
 tools and C compiler.  We use the term "C Code" to denote any non-Sedona code
-used which might include C, C++, or assembly.  This code typically includes boot 
+such as C, C++, or assembly.  This code typically includes boot 
 code, OS code (if you aren't running on bare metal), all your Sedona native method 
 implementations, comm stacks, and the SVM itself.  During provisioning we 
 lump all this stuff into a single file called "svm".  The C Data segment
 includes all the memory buffers used by this code.
+</p>                                                     
+
+<p>
+<b>Note:</b> On some platforms, part of the Sedona VM may already be 
+in ROM or other permanent storage.  In that case the "svm" file created during 
+provisioning will contain only the portion of the SVM that is not in ROM, and
+its RAM footprint will be reduced.
 </p>                                                     
 
 <h2>Sedona Stack</h2>
@@ -115,11 +123,14 @@ D:\sedona>sedonac scode\x86-test.xml
 </pre>                       
 
 <p>
-If you are running your code out of RAM, then the total is what matters.  If
-you can run your code out of FLASH, then Code will be FLASH, but Data must
-be declared in RAM.  These numbers are directly related to how many kits
-you include and the code size of those kits.  Declaring static fields will
-consume memory in your Sedona Data segment.  Note that the <code>test</code>
+These numbers are directly related to how many kits
+you include and the code size of those kits.  
+Declaring static fields will consume memory in your Sedona Data segment; 
+instance fields only affect the application size.  
+If you are running your code out of RAM, then the Total size is what matters.  
+If you can run your code out of FLASH, then the Code will not use any RAM
+but the Data segment must still be stored in RAM.  
+Note that the <code>test</code>
 and <code>debug</code> scode flags will have a huge impact on scode size.
 </p>             
 
@@ -135,15 +146,16 @@ is allocated by the <code>malloc</code> macro - see "sedona.h" for details.
 The Sedona application itself is always run out of RAM.  This is where we
 instantiate the components and links.  This memory is allocated
 by the <code>malloc</code> macro.  If components or links are removed
-during runtime, then this memory is freed by the <code>free</code> macro.
+during runtime, then this memory is freed by the <code>free</code> macro
+(if the platform supports it).
 </p>
 
 <p>
-The Sedona application runs out of RAM, but has configuration data which
+The Sedona application runs out of RAM, but has configuration data that
 must be persistent between power cycles.  So we also store the 
-application to FLASH as an <a href='apps.html#sab'>SAB file</a>.  How
+application to FLASH as a <a href='apps.html#sab'>SAB file</a>.  How
 this file is loaded on startup and stored back to FLASH on save is handled
-by how your port implements the <code>sys::File</code> native methods.
+by the platform's implementation of the <code>sys::File</code> native methods.
 </p>                 
 
 <p>
@@ -170,7 +182,7 @@ much memory each component type consumes.
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-The memory for the Sedona Data section and the memory for 
+The memory for the Sedona Data section and for the
 components and links in the App is allocated using the <code>malloc</code>
 macro as defined in "sedona.h".  If components or links are removed
 during runtime, then this memory is freed by the <code>free</code> macro.
@@ -185,8 +197,8 @@ require importing a huge chunk of library code into your native image.</li>
 too big, you might consider writing your own simple heap manager.</li>
 <li><b>Malloc Only</b>: many devices might require only a static application
 in which case there is no requirement for freeing memory.  In severely
-limited devices, the ability to free memory would be pointless anyways 
-because of heap fragmentation.  In this case your heap management might be
+limited devices, the ability to free memory might be outweighed by the risk
+of heap fragmentation.  In this case your heap management might be
 nothing more than a pointer to the next chunk of memory to allocate.  A
 call to free would be a no-op.  If objects are removed from the 
 application the memory would not be recovered until the system is reset.</li>
@@ -217,15 +229,22 @@ and internal data structures.  However, you really must use the
 will consume.
 </p>
 
+<p> 
+Note that sedonac has no visibility into the behavior of native methods.  
+Any dynamic memory allocation that occurs at the native level must be
+calculated separately and added manually to the totals provided by using 
+the <code>-layout</code> flag.
+</p>
+
 <!--/////////////////////////////////////////////////////////-->
 <h1 id="hibernation">Hibernation</h1>
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
 Sedona supports <i>hibernation</i> which allows a device to enter
-a low power state.  Duration hibernation the Sedona's data section
+a low power state.  Sedona assumes that during hibernation its data section
 in RAM (managed by the heap <code>malloc</code> and  <code>free</code> 
-calls) must be maintained exactly.  The device can either maintain RAM 
+calls) will not be affected.  The device can either maintain RAM 
 during hibernation or save and restore to the same memory addresses.
 </p>
 
@@ -236,8 +255,8 @@ error code <code>ERR_HIBERNATE</code>.  The device's boot code should then
 put the device to sleep.  It is a device dependent issue to decide how you
 wake up from hibernation.  When the device does wake it up it should restart
 the VM with a call to <code>vmUnhibernate(SedonaVM*)</code>.  If your device
-doesn't support hibernation, then copy the code in "main.c" to just simulate
-hibernation:
+doesn't support hibernation, then you will need to simulate it by code such 
+as the following:
 </p>
 
 <pre>
@@ -251,10 +270,11 @@ while (result == ERR_HIBERNATE)
 
 <p>
 If you are developing Sedona components, applications, or drivers you should
-keep hibernation in mind. Any software which might run on a battery powered 
+keep hibernation in mind. Any software that might run on a battery powered 
 device needs to support hibernation cleanly. This means that function blocks 
 should assume the scan rate might have hibernation pauses. If you have 
-services which need to do something special, then override: 
+services that need to do something special when hibernating or waking, then 
+you will need to override the functions 
 <code>Service.onHibernate()</code> and <code>Service.onUnhibernate()</code>.
 </p>
 

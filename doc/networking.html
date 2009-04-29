@@ -63,9 +63,10 @@ and <code>serial</code> kits.
 The <code><a href='inet/index.html'>inet</a></code> kit specifies the set of
 APIs used to work with TCP and UDP sockets. These APIs are all designed to be
 non-blocking to work within Sedona's single threaded main loop. In order to use
-the <code>inet</code> APIs you will need to ensure that your target platform
-has a port of all the native methods. The open source distribution provides an
-implementation which uses the WinSock and Berkley socket APIs.
+the <code>inet</code> API you will need to ensure that your target platform
+has implemented all the <code>inet</code> native methods. 
+The open source distribution provides an
+implementation that uses the WinSock and Berkley socket APIs.
 </p>                   
 
 <p>
@@ -92,15 +93,15 @@ to interface with the network.
 
 <p>
 The <code><a href='driver/index.html'>driver</a></code> kit provides
-a mini-framework used to standard how custom drivers are built for
+a mini-framework used to standardize how custom drivers are built for
 the Sedona platform.  Drivers are structured using the component tree:
 </p>                                                                  
 
 <ul>
 <li><b>DeviceNetwork</b>: models the driver's network connectivity and
 is the container for the devices.</li>
-<li><b>Device</b>: is the Sedona side representation for an external device.</li>
-<li><b>Point</b>: is the Sedona side representation for a data point in the 
+<li><b>Device</b>: is the Sedona representation for an external device.</li>
+<li><b>Point</b>: is the Sedona representation for a data point in the 
 external device.</li>
 </ul>
 
@@ -127,7 +128,7 @@ with Sedona devices.  Sox provides the following services:
 <p>
 The Sox protocol is designed to efficiently enable "live programming" of the 
 Sedona component model over the network.  The Sox protocol itself is run over
-the <i>Dasp</i> protocol which provides session based security and reliability 
+the <i>Dasp</i> protocol, which provides session based security and reliability 
 over UDP.
 </p>   
 

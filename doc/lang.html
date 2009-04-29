@@ -44,17 +44,18 @@ Sedona is a programming language based upon the following principles:
 </p>
 
 <ul>
-<li><b>Familiar Syntax</b>: reuses C, Java, and C# syntax where possible;</li>
-<li><b>Object Oriented</b>: includes the three pillars of OO: encapsulated
-classes, inheritance, and polymorphism;</li>
-<li><b>Component Oriented</b>: Sedona is based on a development paradigm
+<li><b>Familiar Syntax</b>: Reuses C, Java, and C# syntax where possible.</li>
+<li><b>Object Oriented</b>: Includes the three pillars of OO: encapsulated
+classes, inheritance, and polymorphism.</li>
+<li><b>Component Oriented</b>: Based on a development paradigm
 of reusable software components.  Applications are assembled by wiring
-together pre-built components;</li>
-<li><b>Static Typing</b>: Sedona uses a static type system much like
+together pre-built components.</li>
+<li><b>Static Typing</b>: Uses a static type system much like
 Java and C# with explicit typing of fields, methods, and local variables.
-This allows the compiler to perform type checking;</li>
-<li><b>Static Memory</b>: to target low level and real-time embedded platforms,
-Sedona is designed to manage memory statically at compile time.</li>
+This allows the compiler to perform type checking.</li>
+<li><b>Static Memory</b>: Manages memory statically at compile time,
+making it ideal for low level and real-time embedded platforms.
+</li>
 </ul>
 
 <!--/////////////////////////////////////////////////////////-->
@@ -66,23 +67,22 @@ Sedona code is organized into a three unit hierarchy:
 </p>
 
 <ol>
-<li><b>Kits</b>: are the modules of deployment and versioning.
+<li><b>Kits</b>: Modules of deployment and versioning.
 Kits form the top of the namespace and must be globally unique.
 Kit names are required to be prefixed with the vendor's name.
 </li>
-<li><b>Classes</b>: are the object oriented unit of
-organization.  Classes are always scoped within a kit.</li>
-<li><b>Slots</b>: are the fields and methods defined
-within a class.</li>
+<li><b>Classes</b>: Object oriented units of organization.  
+Classes are always scoped within a kit.</li>
+<li><b>Slots</b>: Fields and methods defined within a class.</li>
 </ol>                                    
 
 <p>
 Kits are globally unique and used to scope classes which in turn
 scope slots.  We use this structure to define globally unique
 <i>qualified names</i> or <i>qnames</i> for classes and slots.  
-Class qnames are composed of the kit name and class name using
-the "::" separator.  A slot's qname is composed on of its
-class's qname and its simple name using the "." separator:
+A Class qname consists of the kit name and class name joined by
+the "::" separator.  A slot qname is the class's qname and the
+slot's simple name joined by the "." separator:
 </p>
 
 <pre> 

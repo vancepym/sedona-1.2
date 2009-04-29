@@ -45,7 +45,7 @@ keywords may be applied to a field declaration:
 </p>                                           
 
 <ul>
-<li><code>static</code>: class based field versus instance based</li>
+<li><code>static</code>: class-based field (versus instance-based)</li>
 <li><code>const</code>: indicates a field is immutable</li>      
 <li><code>inline</code>: allocates memory for the variable instance</li>      
 <li><code>define</code>: used to declare a constant variable</li>      
@@ -168,8 +168,8 @@ Instance fields are initialized in the declaring class's
 
 <p>
 Any field without a default value has its memory initialized 
-to zero.  In the case of bool fields this is false, numeric fields 
-this is 0, and pointers this is null.
+to zero.  In the case of bool fields this is false, for numeric fields 
+it is 0, and for pointers it is null.
 </p>
 
 <!--/////////////////////////////////////////////////////////-->
@@ -196,7 +196,7 @@ keyword to declare user defined constants.
 The <code>define</code> keyword is used to declare a named
 constant.  Defines are like const fields - if you try to
 set a define field you will get a compiler error.  Defines
-don't actually allocate memory, rather they inlined when
+don't actually allocate memory, rather they are inlined when
 accessed.  Because of this trait, the value of a define
 field must be expressed as a literal value:
 </p>                                       
@@ -277,7 +277,7 @@ literal (or any define)
 
 <p>
 Fields which store a non-primitive are always a reference to
-an <code>sys::Obj</code>.  By default an object field is a pointer
+a <code>sys::Obj</code> object.  By default an object field is a pointer
 to an object.  For example on a 32-bit machine, an object field 
 would allocate 4 bytes for a pointer.  However, often we wish the 
 field to contain an instance of the object.  This is done with
