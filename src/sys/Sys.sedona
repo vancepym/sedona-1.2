@@ -60,6 +60,16 @@ class Sys
   **
   static long bootTime
 
+  **
+  ** The null output stream sinks its output to nowhere.
+  **
+  static inline NullOutStream nullOut
+
+  **
+  ** The null input stream is always at end of file.
+  **
+  static inline NullInStream nullIn
+
 //////////////////////////////////////////////////////////////////////////
 // Platform
 //////////////////////////////////////////////////////////////////////////
@@ -498,4 +508,32 @@ internal class StdOutStream
   native static bool doWrite(int b)
   native static bool doWriteBytes(byte[] b, int off, int len)
   native static void doFlush()
+} 
+
+**************************************************************************
+** NullOutStream
+**************************************************************************
+
+**
+** Implementation of OutStream which sinks to nowhere
+**
+internal class NullOutStream
+  extends OutStream
+{
+  override bool write(int b) { return false }
+  override bool writeBytes(byte[] b, int off, int len) { return false }
+}
+
+**************************************************************************
+** NullInStream
+**************************************************************************
+
+**
+** Implementation of InStream which can never be read
+**
+internal class NullInStream
+  extends InStream
+{
+  override int read() { return -1 }
+  override int readBytes(byte[] b, int off, int len) { return -1 }
 }

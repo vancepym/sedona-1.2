@@ -12,7 +12,7 @@
 ** embedded devices a file is typically just an area of FLASH.
 **
 final class File
-{
+{                   
 
 //////////////////////////////////////////////////////////////////////////
 // Constructor
@@ -55,10 +55,11 @@ final class File
   ** is a string how IO will be performed:
   **   - "r": open for reading
   **   - "w": open for writing (truncate existing)
+  **   - "m": open for modification and read/writing (don't truncate)
   ** Return true on success or false on error.
   **
-  ** Note although the mode strings are passed as simply "r" or
-  ** "w", it is expected that files are always opened for binary
+  ** Note although the mode strings are passed as simply "r", "w", or
+  ** "m", it is expected that files are always opened for binary
   ** IO - for example "w" maps to the C fopen mode of "wb".
   **
   bool open(Str mode)
@@ -78,9 +79,8 @@ final class File
     bool ok = true
     if (fp != null)
     {
-      if (mode?.startsWith("r")) in.close()
-      if (mode?.startsWith("w")) out.close()
-
+      in.close()
+      out.close()
       ok = doClose(fp, name, mode)
       this.fp = null
       this.mode = null
@@ -94,6 +94,7 @@ final class File
   **
   int tell()
   {
+    out.flush()  // flush any buffered output before querying file pos   
     return doTell(fp)
   }  
 
@@ -105,11 +106,8 @@ final class File
   ** position.
   **
   bool seek(int pos)
-  {
-    // flush any buffered output before changing file pos
-    if (mode?.startsWith("w")) 
-      out.flush()   
-
+  {    
+    out.flush()  // flush any buffered output before changing file pos   
     return doSeek(fp, pos)
   }             
   

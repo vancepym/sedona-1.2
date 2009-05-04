@@ -14,30 +14,71 @@
 ** of bytes for application functionality.
 **
 @niagaraIcon="module://icons/x16/database.png"
-abstract class PstoreService
+class PstoreService
   extends Service
 {
+
+////////////////////////////////////////////////////////////////
+// Properties
+////////////////////////////////////////////////////////////////
+
+  **
+  ** File name used as the backing store.
+  **
+  @config @asStr property Buf(32) filename = "data.pstore"
+  
+  **
+  ** Configured size of file made available for storage.
+  ** If the backing file store has a fixed size, then this
+  ** configuration value is ignored.
+  **
+  @config int fileSize = 32768
     
   **     
-  ** Size in bytes of storage available.  A zero value indicates
-  ** an error condition or that the no storage is available.
+  ** Size in bytes of storage available.  A zero or negative value
+  ** indicates an error condition or that the no storage is available.
   **
   ** This value must be initialized by the service in the 
   ** loaded() callback so that is available for error checking
   ** in the PStoreFile.start callback.
   **
   @readonly property int size = 0
-  
-  **
-  ** Read a byte with a storage device offset.
-  ** Return -1 on error.
-  **
-  abstract int read(int offset)
 
-  **
-  ** Write a byte with a storage device offset.
-  ** Return true on success, false on error.
-  **
-  abstract bool write(int offset, int val)
+////////////////////////////////////////////////////////////////
+// Methods
+////////////////////////////////////////////////////////////////
+
+  override void loaded()
+  {                                 
+    file.name = "data.pstore" // TODO filename.toStr()  
+    if (!file.open("m")) return                             
+    this.size = file.size() 
+    if (this.size < fileSize)
+    {
+      file.seek(fileSize)
+      file.out.write(0)
+      file.out.flush()
+      this.size = file.size() 
+    }
+  }      
   
-}
+  override void stop()
+  { 
+    file.close()
+  }
+      
+////////////////////////////////////////////////////////////////
+// Fields
+////////////////////////////////////////////////////////////////
+  
+  ** File instance used to manage this PstoreService.  Most
+  ** developers should access the backing store through the 
+  ** methods on PstoreFile.
+  inline File file
+  
+  ** Current owner of the backing store file for IO. This 
+  ** field is managed by PstoreFile.claim.
+  internal PstoreFile owner
+  
+} 
+

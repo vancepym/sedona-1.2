@@ -49,7 +49,7 @@
   ** Status code for storage file access, see the
   ** statusXXX defines for the various codes.
   **
-  property byte status = statusInactive           
+  @readonly property byte status = statusInactive           
           
   **     
   ** Offset of this file's storage reservation relative to the
@@ -67,28 +67,86 @@
 //////////////////////////////////////////////////////////////////////////
   
   **
-  ** Read a byte with an offset relative to this file's range.
-  ** Return -1 on error.
+  ** Is this PstoreFile currently the owner of the backing store 
+  ** file. See the <code>claim</code> method to claim ownership.
   **
-  int read(int offset) 
-  {              
-    if (service == null ||offset < 0 || offset >= resvSize)  
-      return -1                           
-      
-    return service.read(offset+resvOffset)
+  bool isOwner()
+  {           
+    return service != null && service.owner == this
+  }                           
+  
+  **
+  ** Claim temporary ownership ofthe backing store file to 
+  ** perform IO.  Return true on success, false on failure.
+  **
+  bool claim()
+  {   
+    // short circuit if not under service or already owner
+    if (service == null) return false
+    if (service.owner == this) return true
+    
+    // save away old owner
+    PstoreFile old = service.owner
+    if (old != null)
+    {
+      old.pos = old.tell()
+    }     
+    
+    // update with myself as new owner    
+    service.owner = this
+    seek(pos)
+    return true
   }
 
   **
-  ** Write a byte with an offset relative to this file's range.
-  ** Return true on success, false on error.
+  ** Get the backing store file's pointer relative to this 
+  ** PstoreFile's reserved offset.  This PstoreFile must
+  ** the current owner.  Return -1 on error.
   **
-  bool write(int offset, int val)
+  int tell()
+  {                                      
+    if (service == null || service.owner != this) return -1
+    return service.file.tell() - resvOffset
+  }  
+
+  **
+  ** Seek to a specific byte offset position in the service's
+  ** backing store file relative to this PstoreFile's reserved
+  ** offset.  This PstoreFile must the current owner.  Return false
+  ** on error.
+  **
+  bool seek(int pos)
   {
-    if (service == null ||offset < 0 || offset >= resvSize)  
+    if (service == null || service.owner != this || pos < 0 || pos >= resvSize) 
       return false
-      
-    return service.write(offset+resvOffset, val)
-  }            
+    return service.file.seek(resvOffset + pos)
+  }
+    
+  **
+  ** Get the input stream used to read this PstoreFile's reserved
+  ** range from the backing store file.  If this PstoreFile is
+  ** not the current owner, then return <code>Sys.nullIn</code>.
+  ** No validation is performed to prevent reading past the
+  ** end of this PstoreFile's reserved range.
+  **
+  InStream in() 
+  {              
+    if (service == null || service.owner != this) return Sys.nullIn  
+    return service.file.in
+  }
+
+  **
+  ** Get an output stream to write this PstoreFile's reserved
+  ** range to the backing store file.  If this PstoreFile is
+  ** not the current owner, then return <code>Sys.nullOut</code>.
+  ** No validation is performed to prevent writing past the
+  ** end of this PstoreFile's reserved range.
+  **
+  OutStream out() 
+  {              
+    if (service == null || service.owner != this) return Sys.nullOut  
+    return service.file.out
+  }
 
 //////////////////////////////////////////////////////////////////////////
 // Component
@@ -170,9 +228,10 @@
 // Fields
 //////////////////////////////////////////////////////////////////////////
   
-  **
   ** Parent service is this file is configured correctly 
   ** or null if this file is in error.
-  **
   private PstoreService service
+
+  ** Current pos relative to resvOffset saved between ownership changes  
+  private int pos
 }

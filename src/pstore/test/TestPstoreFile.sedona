@@ -16,16 +16,40 @@ class TestPstoreFile
 
   property int result
 
-  action void verifyRead(int offset)
+  action void verifyOwner()
   {
-    result = read(offset)
+    result = isOwner() ? 1 : 0;
+    //Sys.out.print("%% verifyOwner => ${isOwner()}").nl()
   }
 
-  action void verifyWrite(int x)
+  action void verifyClaim()
   {
-    int offset = x >> 8
-    int val    = x & 0xff
-    result = write(offset, val) ? 1 : 0
+    result = claim() ? 1 : 0;
+    //Sys.out.print("%% verifyClaim => $result").nl()
+  }
+
+  action void verifyTell()
+  {
+    result = tell();   
+    //Sys.out.print("%% verifyTell => $result").nl()
+  }
+
+  action void verifySeek(int offset)
+  {
+    result = seek(offset) ? 1 : 0;
+    //Sys.out.print("%% verifySeek $offset => $result").nl()
+  }
+
+  action void verifyRead()
+  {          
+    result = in().read()
+    //Sys.out.print("%% verifyRead => $result").nl()
+  }
+
+  action void verifyWrite(int val)
+  {
+    result = out().write(val) ? 1 : 0
+    //Sys.out.print("%% verifyWrite $val => $result").nl()
   }
 
 }

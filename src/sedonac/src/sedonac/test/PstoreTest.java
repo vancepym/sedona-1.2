@@ -88,23 +88,38 @@ public class PstoreTest
     throws Exception
   {                                              
     int n = c.name().charAt(0);
+
+    verifyRemote(c, "verifyOwner", 0);
+    verifyRemote(c, "verifyClaim", 1);
+    verifyRemote(c, "verifyOwner", 1);
+    verifyRemote(c, "verifyTell",  0); 
+    verifyRemote(c, "verifyWrite", 'a', 1); verifyRemote(c, "verifyTell", 1);
+    verifyRemote(c, "verifyWrite", 'b', 1); verifyRemote(c, "verifyTell", 2);
+    verifyRemote(c, "verifyWrite", 'c', 1); verifyRemote(c, "verifyTell", 3);
     
-    invoke(c, "verifyRead", -1);  verifyEq(readInt(c, "result"), -1);
-    invoke(c, "verifyRead", 100); verifyEq(readInt(c, "result"), -1);
-    invoke(c, "verifyRead", 0);   verifyEq(readInt(c, "result"), 0);
-    invoke(c, "verifyRead", 99);  verifyEq(readInt(c, "result"), 0);
+    verifyRemote(c, "verifySeek",  99, 1);  verifyRemote(c, "verifyTell", 99);
+    verifyRemote(c, "verifyWrite", n, 1);   verifyRemote(c, "verifyTell", 100);
     
-    invoke(c, "verifyWrite", (-1  << 8) | 'x');  verifyEq(readInt(c, "result"), 0);
-    invoke(c, "verifyWrite", (100 << 8) | 'x');  verifyEq(readInt(c, "result"), 0);
-    invoke(c, "verifyWrite", (0 << 8) | 'a');    verifyEq(readInt(c, "result"), 1);
-    invoke(c, "verifyWrite", (1 << 8) | 'b');    verifyEq(readInt(c, "result"), 1);
-    invoke(c, "verifyWrite", (2 << 8) | 'c');    verifyEq(readInt(c, "result"), 1);
-    invoke(c, "verifyWrite", (99 << 8) | n);     verifyEq(readInt(c, "result"), 1);
-    
-    invoke(c, "verifyRead", 0);  verifyEq(readInt(c, "result"), 'a');
-    invoke(c, "verifyRead", 1);  verifyEq(readInt(c, "result"), 'b');
-    invoke(c, "verifyRead", 2);  verifyEq(readInt(c, "result"), 'c');
-    invoke(c, "verifyRead", 99); verifyEq(readInt(c, "result"), n);
+    verifyRemote(c, "verifySeek",  0, 1);   verifyRemote(c, "verifyTell", 0);  
+    verifyRemote(c, "verifyRead", 'a');     
+    verifyRemote(c, "verifyRead", 'b');     
+    verifyRemote(c, "verifyRead", 'c');     
+    verifyRemote(c, "verifySeek",  99, 1);  verifyRemote(c, "verifyTell", 99);
+    verifyRemote(c, "verifyRead", n);    
+  }
+
+  void verifyRemote(OfflineComponent c, String name, int arg, int expected)
+    throws Exception
+  {
+    invoke(c, name, arg);  
+    verifyEq(readInt(c, "result"), expected);
+  }
+
+  void verifyRemote(OfflineComponent c, String name, int expected)
+    throws Exception
+  {
+    invoke(c, name, null);  
+    verifyEq(readInt(c, "result"), expected);
   }
   
 ////////////////////////////////////////////////////////////////
@@ -120,7 +135,6 @@ public class PstoreTest
       KitPart.forLocalKit("sox"),
       KitPart.forLocalKit("inet"),
       KitPart.forLocalKit("pstore"),
-      KitPart.forLocalKit("pstoreFS"),
     });
 
     this.app = new OfflineApp(schema);
@@ -129,7 +143,7 @@ public class PstoreTest
     this.sox    = app.add(app, new OfflineComponent(schema.type("sox::SoxService"), "sox"));
     this.users  = app.add(app, new OfflineComponent(schema.type("sys::UserService"), "users"));    
     this.admin  = addAdmin(users, "admin", "pw");
-    this.pstore = app.add(app, new OfflineComponent(schema.type("pstoreFS::FsPstoreService"), "pstore"));    
+    this.pstore = app.add(app, new OfflineComponent(schema.type("pstore::PstoreService"), "pstore"));    
     
     this.a = addFile(pstore, "a",   0, 100);    
     this.b = addFile(pstore, "b", 100, 100);    
@@ -146,7 +160,6 @@ public class PstoreTest
     badParent = addFile(app, "badPar",  300, 1);    
         
     app.assignIds();
-    // app.dump();
     return app;                 
   }           
   

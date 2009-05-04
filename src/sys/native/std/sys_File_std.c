@@ -41,13 +41,31 @@ Cell sys_File_doOpen(SedonaVM* vm, Cell* params)
 {
   const char* name = params[0].aval;
   const char* mode = params[1].aval;
-  char modeBin[8];
+  const char* fopenMode;
   Cell result;
+  FILE* fp;
 
-  // always make binary
-  sprintf(modeBin, "%sb", mode);
+  // sanity check mode                 
+  if (mode[1] != '\0') return nullCell;
+  switch (mode[0])
+  {
+    case 'm': 
+      // create file in case it doesn't exist yet
+      fp = fopen(name, "a+b");
+      if (fp == NULL) return nullCell;
+      fclose(fp);
+      fopenMode = "r+b"; 
+      break;
+    case 'r': 
+      fopenMode = "rb"; 
+      break;
+    case 'w': 
+      fopenMode = "wb"; 
+      break;
+    default:  return nullCell;
+  }
 
-  result.aval = fopen(name, modeBin);
+  result.aval = fopen(name, fopenMode);
   return result;
 }
 

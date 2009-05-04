@@ -5,6 +5,7 @@
   <kit name='inet'/>
   <kit name='control'/>
   <kit name='web'/>
+  <kit name='pstore'/>
 </schema>
 <app>               
   <prop name="appName" val="demo"/>
@@ -30,6 +31,9 @@
     <!-- /service/web -->
     <comp name="web" id="6" type="web::WebService">
       <prop name="meta" val="16842753"/>
+    </comp>
+    <!-- /service/pstore -->
+    <comp name="pstore" type="pstore::PstoreService">
     </comp>
   </comp>
   <!-- /play -->

@@ -17,7 +17,6 @@
   <target name="datetime" />
   <target name="osdatetime" />
   <target name="pstore" />
-  <target name="pstoreFS" />
 
 </sedonaDir>
 

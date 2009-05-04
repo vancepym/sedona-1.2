@@ -9,7 +9,6 @@
     <!-- Native Kits -->
     <nativeKit depend="sys 1.0" />
     <nativeKit depend="inet 1.0" />
-    <nativeKit depend="pstoreFS 1.0" />
 
     <!-- Native Sources -->
     <nativeSource path="/src/vm" />
@@ -19,7 +18,6 @@
     <nativeSource path="/src/inet/native" />
     <nativeSource path="/src/inet/native/std" />
     <nativeSource path="/src/inet/native/sha1" />
-    <nativeSource path="/src/pstoreFS/native/std" />
       
   </compile>
        

@@ -18,6 +18,7 @@
   <depend on="inet 1.0" />
   <depend on="web 1.0" />
   <depend on="control 1.0" />
+  <depend on="pstore 1.0" />
 
 </sedonaCode>
 
