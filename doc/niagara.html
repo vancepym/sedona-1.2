@@ -96,12 +96,12 @@ public class Add2 extends Component { ... }
 <h3 id="flags">BComponent slot flags</h3>
 <!--/////////////////////////////////////////////////////////-->
 
-<p>
-If you define a facet on your Sedona component slot that has the same name
-as a Niagara flag, the corresponding slot in the BSedonaComponent will also
-have that flag set. The most common slot flags to set are listed in the table
-below. 
-</p>
+<p>If you define a facet on your Sedona component slot that has the
+same name as a Niagara flag, <em>and</em> its value is <code>true</code>
+or <code>false</code>, then the corresponding slot in the
+BSedonaComponent will be likewise set; <a href="#facets">otherwise,
+the facet will simply be treated like all other facets</a>. The most common
+slot flags to set are listed in the table below.</p>
 
 <table>
 <tr>  <th>Facet</th> <th>Description</th> </tr>
@@ -109,15 +109,6 @@ below.
  <tr><th align="left">readonly</th><td>
  The <code>readonly</code> flag is used to indicate 
  slots that cannot be changed by the user.
- </td></tr>
-
- <tr><th align="left">transient</th><td>
- Transient properties do not get persisted when saving
- an object graph to the file system.  Transient properties
- should usually also be set readonly, except where they 
- are designed to be linkable input slots. 
- <em>All Sedona runtime
- slots are automatically marked as transient.</em>
  </td></tr>
 
  <tr><th align="left">hidden</th><td>
@@ -130,9 +121,9 @@ below.
  Summary properties are the focal points of any given BComponent.
  This flag is used by user interface tools to indicate primary
  properties for display.  This might be as a column in a table,
- or as a glyph in a graphical programming tool. 
- <em>All Sedona runtime slots are automatically 
- marked as summary.</em>
+ or as a glyph in a graphical programming tool. <br/>
+ <em>All Sedona runtime slots are treated as summary unless the summary
+ facet was explicitly set to false: <code>@summary=false</code>.</em>
  </td></tr>
 
  <tr><th align="left">confirmRequired</th><td>
@@ -150,13 +141,6 @@ below.
  invocations from being audited.
  </td></tr>
 
- <tr><th align="left">userDefined1</th><td>User defined.</td></tr>
-
- <tr><th align="left">userDefined2</th><td>User defined.</td></tr>
-
- <tr><th align="left">userDefined3</th><td>User defined.</td></tr>
-
- <tr><th align="left">userDefined4</th><td>User defined.</td></tr>
 </table>
 
 <p> Examples </p>
