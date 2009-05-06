@@ -4,9 +4,9 @@
   -  Licensed under the Academic Free License version 3.0
   -->
 <sedonaKit
-  name="osdatetime"
+  name="datetimeStd"
   vendor="Tridium"  
-  description="OS date time service implementation"
+  description="date time OS service using stdlib"
   includeSource="true"
   doc = "true"
 >
@@ -19,8 +19,8 @@
   <depend on="datetime 1.0" />
   
   <!-- Natives -->
-  <native qname="osdatetime::OsDateTimeService.doNow"          id="10::0"  />
-  <native qname="osdatetime::OsDateTimeService.doSetClock"     id="10::1"  />
+  <native qname="datetimeStd::DateTimeServiceStd.doNow"          id="10::0"  />
+  <native qname="datetimeStd::DateTimeServiceStd.doSetClock"     id="10::1"  />
 
 	
 </sedonaKit>

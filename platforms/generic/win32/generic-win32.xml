@@ -9,6 +9,8 @@
     <!-- Native Kits -->
     <nativeKit depend="sys 1.0" />
     <nativeKit depend="inet 1.0" />
+    <nativeKit depend="datetime 1.0" />
+    <nativeKit depend="datetimeStd 1.0" />
 
     <!-- Native Sources -->
     <nativeSource path="/src/vm" />
@@ -18,6 +20,7 @@
     <nativeSource path="/src/inet/native" />
     <nativeSource path="/src/inet/native/std" />
     <nativeSource path="/src/inet/native/sha1" />
+    <nativeSource path="/src/datetimeStd/native/std" />
       
   </compile>
        

@@ -15,7 +15,7 @@
   <target name="control" />
   <target name="driver" />
   <target name="datetime" />
-  <target name="osdatetime" />
+  <target name="datetimeStd" />
   <target name="pstore" />
 
 </sedonaDir>

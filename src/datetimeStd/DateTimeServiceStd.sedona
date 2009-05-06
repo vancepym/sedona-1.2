@@ -6,7 +6,7 @@
 //   18 Feb 09  Dan Giorgis   creation
 //
 
-class OsDateTimeService 
+class DateTimeServiceStd 
   extends DateTimeService
 {
 	
