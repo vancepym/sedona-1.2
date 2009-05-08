@@ -16,6 +16,7 @@
   <target name="driver" />
   <target name="datetime" />
   <target name="datetimeStd" />
+  <target name="basicSchedule" />
   <target name="pstore" />
 
 </sedonaDir>
