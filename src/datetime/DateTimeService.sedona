@@ -38,8 +38,21 @@ class DateTimeService
   ** Day of week (see also datetime::DayOfWeek)
   property int dayOfWeek
 
-  ** Current UTC offset
-  property int utcOffset
+  ** Current UTC offset in seconds used to calculate the time
+  ** fields from nanos.  If osUtcOffset is true this is a read-only 
+  ** property read from the operating system.  If osUtcOffset is 
+  ** false then this is a configuration property.
+  @config property int utcOffset       
+
+  ** If true, then the utcOffset is controlled by the 
+  ** operating system.  If false then the utcOffset is 
+  ** configured strictly by Sedona.
+  @config property bool osUtcOffset       
+  
+  ** Olsen timezone identifier such as "America/New_York".
+  ** This property is purely extra informational meta-data to 
+  ** help tools interpret the utcOffset property.
+  @config @asStr property Buf(32) tz
 
 ////////////////////////////////////////////////////////////////
 // Actions
@@ -52,9 +65,8 @@ class DateTimeService
   {
     long n = now()    
  
-    //  If impl can report utcOffset, use it.  If not, use
-    //  configured value   
-    if (isUtcOffsetKnown())
+    // if configured to use OS utc-offset, then read it
+    if (osUtcOffset)
       utcOffset = getUtcOffset()
     
     dt.reset()
@@ -84,11 +96,6 @@ class DateTimeService
   **  capability
   **    
   virtual long now() { return DateTime.invalid }
-
-  ** 
-  ** Return true if the underlying implementation can report the utcOffset
-  ** 
-  virtual bool isUtcOffsetKnown() { return false }
 
   **
   ** Return the current UTC offset in seconds, including adjustment for

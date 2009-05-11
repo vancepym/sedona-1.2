@@ -40,6 +40,7 @@
     </comp>
     <!-- /service/time -->
     <comp name="time" type="datetimeStd::DateTimeServiceStd">
+      <prop name="osUtcOffset" val="true"/>
     </comp>
 
   </comp>

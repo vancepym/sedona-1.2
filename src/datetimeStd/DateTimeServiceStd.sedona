@@ -9,11 +9,11 @@
 class DateTimeServiceStd 
   extends DateTimeService
 {
-	
+ 
 ////////////////////////////////////////////////////////////////
 // DateTimeService
 ////////////////////////////////////////////////////////////////
-	
+ 
   **
   **  Return the current UTC date/time on the system in nanoseconds, or 
   **  DateTime.invalid if not supported, i.e. platform does not have clock
@@ -23,12 +23,7 @@ class DateTimeServiceStd
   {
     return doNow()
   }
-  
-  ** 
-  ** Return true if the underlying implementation can report the utcOffset
-  ** 
-  virtual override bool isUtcOffsetKnown() { return true }
-  
+    
   ** 
   ** Return current UTC offset as reported by platform
   **
@@ -43,7 +38,7 @@ class DateTimeServiceStd
   **  
   virtual override void setClock(long nanos) 
   { 
-  	doSetClock(nanos)
+    doSetClock(nanos)
   }   
 
   static native long doNow()
