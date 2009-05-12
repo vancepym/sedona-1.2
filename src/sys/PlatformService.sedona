@@ -35,20 +35,17 @@ class PlatformService
   void updatePlatformId(Str id)
   {
     platformId.copyFromStr(id)
-
-    // If native checksum exists, tack it onto the end of the platformId
-    Str chk = nativeChecksum()
-    if (chk!=null) 
-    {
-      // This might be easier if we create a BufOutStream on platformId
-      Sys.copy("-".toBytes(), 0, platformId.bytes, id.length(), 1)
-      Sys.copy(chk.toBytes(), 0, platformId.bytes, id.length()+1, chk.length())
-    }
-
     changed(PlatformService.platformId)
   }
-  
-  native static Str nativeChecksum()
+
+  **
+  ** Convenience to set the nativeTag property, and call changed()
+  **
+  void updateNativeTag(Str tag)
+  {
+    nativeTag.copyFromStr(tag)
+    changed(PlatformService.nativeTag)
+  }
   
 ////////////////////////////////////////////////////////////////
 // Service
@@ -58,6 +55,11 @@ class PlatformService
   {
     super.start()
     updatePlatformId("unknown")
+
+    // If native checksum exists, use it as nativeTag prop
+    Str chk = nativeChecksum()
+    if (chk!=null) 
+      updateNativeTag(chk)
   }
   
   override virtual void execute()
@@ -106,9 +108,26 @@ class PlatformService
   @readonly @asStr property Buf(128) platformId
   
   **
+  ** A tag which identifies the native kit APIs supported
+  ** by this Sedona device.
+  **
+  @readonly @asStr property Buf(8) nativeTag
+  
+  **
   ** The amount of available runtime memory, in bytes. This property
   ** must be updated during execute()  
   **
   @readonly property long memAvailable = 0L
      
+
+////////////////////////////////////////////////////////////////
+// Natives
+////////////////////////////////////////////////////////////////
+
+  **
+  ** Returns native checksum string, calculated and built into 
+  ** svm at compile time
+  **
+  native static Str nativeChecksum()
+  
 }
