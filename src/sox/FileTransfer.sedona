@@ -101,6 +101,7 @@ class FileTransfer
   byte mode              // FileTransfer mode
   inline File file       // for file transfers  
   int fileSize           // Size of the file we are currently reading/writing
+  int offset             // Byte offset into file for reading/writing
   short numChunks        // Number of chunks in this file transaction
   short chunkSize        // Size of the chunks we are currently reading/writing
   short nextChunk        // Index of the next chunk to send (if a file get).

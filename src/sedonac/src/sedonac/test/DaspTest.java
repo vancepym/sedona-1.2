@@ -273,8 +273,10 @@ public class DaspTest
   {              
     TestHooks() 
     { 
-      for (int i=0; i<drop.length; ++i) drop[i] = -1; 
+      clearDrop();
     }
+    
+    public void clearDrop() { for (int i=0; i<drop.length; ++i) drop[i] = -1; }
     
     public void addDrop(int seqNum)
     {                              

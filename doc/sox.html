@@ -390,6 +390,14 @@ underlying transport's packet size (for example if running over 6LoWPAN
 we want to fit each chunk into a single 802.15.4 packet).
 </p>
 
+<p>
+On a put, the fileSize is the number of bytes that will be written. On a
+get, the fileSize is the maximum number of bytes to read. The actual 
+number of bytes read might be less if there are not fileSize bytes
+available (taking into account the size of the actual file, and the
+potential offset).
+</p>
+
 <pre>
 req
 {
@@ -397,7 +405,7 @@ req
   u1   replyNum
   str  method ("g" for get, "p" for put)
   str  uri
-  u4   fileSize   (only used if putting)
+  u4   fileSize
   u2   suggestedChunkSize  (suggested by client)
   headers[]
   {
@@ -421,6 +429,30 @@ res
   u1 end of headers '\0'
 }
 </pre>
+
+<p>
+<table border="1">
+  <caption>Supported Headers</caption>
+  <tr>
+   <th align="left">Name</th><th>Value</th>
+   <th>Method</th><th>Default</th>
+   <th>Description</th>
+  </tr>
+  
+  <tr>
+    <th align="left">offset</th><td><code>int</code></td>
+    <td>get, put</td><td>0</td>
+    <td>Byte offset to use when reading/writing the uri</td>
+  </tr>
+  
+  <tr>
+    <th align="left">mode</th><td>w, m</td>
+    <td>put</td><td>w</td>
+    <td>File mode to use on a put. 'w' opens the file and truncates it if
+        the file already exists.  'm' opens the file for random access.</td>
+  </tr>
+</table>
+</p>
 
 <h2 id="invoke">invoke</h2>
 <p>Invoke an action on a component.  This command can be used as

@@ -9,6 +9,7 @@
 package sedona.sox;
 
 import java.io.*;
+
 import sedona.*;
 import sedona.util.*;
 
@@ -32,6 +33,15 @@ public abstract class SoxFile
   public static SoxFile make(File f)
   {
     return new LocalFile(f);
+  }
+  
+  /**
+   * Make a SoxFile to read/write to the given Buf. This Buf remains
+   * in memory at all times.
+   */
+  public static SoxFile make(Buf b)
+  {
+    return new MemoryFile(b);
   }
 
 ////////////////////////////////////////////////////////////////
@@ -112,5 +122,35 @@ public abstract class SoxFile
     RandomAccessFile fp;
   }
 
+////////////////////////////////////////////////////////////////
+// MemoryFile
+////////////////////////////////////////////////////////////////
+  
+  static class MemoryFile extends SoxFile
+  {
+    public MemoryFile(Buf b) { this.b = b; }
+    
+    public void close() { }
+    public int size() { return b.size; }
+
+    public void open(String mode) throws IOException
+    {
+      if (mode.indexOf('w') >= 0) b.clear();
+      b.seek(0);
+    }
+
+    public void read(int pos, Buf buf, int n) throws IOException
+    {
+      b.writeTo(buf.getOutputStream(), pos, n);
+    }
+
+    public void write(int pos, Buf buf, int n) throws IOException
+    {
+      b.seek(pos);
+      b.readFrom(buf.getInputStream(), n);
+    }
+    
+    Buf b;
+  }
 
 }

@@ -1027,14 +1027,28 @@ class SoxCommands
   **   u1   replyNum
   **   str  method ("g" for get, "p" for put)
   **   str  uri
-  **   u4   fileSize   (only used if putting)
+  **   u4   fileSize
   **   u2   suggestedChunkSize  (suggested by client)
   **   headers[]
   **   {
   **     str  name
   **     str  value
   **   }
-  **   u1 end of headers ‘\0’
+  **   u1 end of headers '\0'
+  ** }
+  ** 
+  ** On a put, the fileSize is the number of bytes that will be written. On a
+  ** get, the fileSize is the maximum number of bytes to read. You can read the
+  ** whole file on a get by specifying fileSize as 0. The actual 
+  ** number of bytes read might be less if there are not fileSize bytes
+  ** available (taking into account the size of the actual file, and the
+  ** potential offset).
+  **
+  **  Supported Headers:
+  **   Name      Value         Method      Default   Description
+  **   ----      -----         ------      -------   -----------
+  **   offset    int           get, put    0         Byte offset to use when reading/writing the uri
+  **   mode      "w", "m"      put         "w"       File mode to use (see sys::File)
   **
   static void fileOpenReq(SoxService service, SoxSession session, SendPacket res) 
   { 
@@ -1071,10 +1085,27 @@ class SoxCommands
     // check for file too big (max chunkNum won't fit into 2 bytes)
     if (fileSize >= chunkSize * 0xffff) { res.error("too big"); return }
 
+    // read supported headers - ignore anything we don't recognize
+    Str openMode = "w" // Default for a put. Always 'r' for a get 
+    int offset = 0
+    Str key
+    Str val
+    while(true)
+    {
+      key = in.readStrInPlace(tempKey)
+      if (key == null) { res.error("invalid headers"); return }
+      if (key.length() == 0) break
+      if ((val = in.readStrInPlace(tempVal)) == null) { res.error("bad value"); return }
+      
+      if (key.equals("mode")) openMode = val
+      else if (key.equals("offset") && ((offset = val.parseInt()) < 0)) { res.error("bad offset"); return }
+    }
+    
+    if (offset < 0) { res.error("neg offset"); return }
+    
     // handle get or put:
-    //   - define file open mode
-    //   - define fileSize
-    Str openMode     
+    //   - define fileSize (for get)
+ 
     int txMode
     switch (method.get(0))
     {
@@ -1082,11 +1113,16 @@ class SoxCommands
         if (!file.exists()) { res.error("not found"); return }
         openMode = "r"
         txMode   = FileTransfer.get
-        fileSize = file.size()
+        // Make sure we don't read more than there is
+        int maxBytes = Sys.max(0, file.size() - offset)
+        if (fileSize == 0) 
+          fileSize = maxBytes
+        else 
+          fileSize = Sys.min(fileSize, maxBytes)
         break
       case 'p':
-        openMode = "w"
-        txMode   = FileTransfer.put
+        if (!(openMode.get(0) == 'w' || openMode.get(0) == 'm')) { res.error("bad mode"); return }
+        txMode = FileTransfer.put
         // notify platform - Jennic uses this to auto-tune the network 
         // since we expect a burst of incoming messages on put        
         Sys.app.platform.notify("sox.put", "o")
@@ -1102,6 +1138,7 @@ class SoxCommands
     // setup the transaction   
     tx.mode      = txMode
     tx.fileSize  = fileSize
+    tx.offset    = offset
     tx.chunkSize = chunkSize
     tx.numChunks = tx.fileSize/chunkSize
     if (fileSize % chunkSize != 0) tx.numChunks++
@@ -1123,7 +1160,7 @@ class SoxCommands
   **     str  name
   **     str  value
   **   }
-  **   u1 end of headers ‘\0’
+  **   u1 end of headers '\0'
   ** }
   **
   static void fileOpenRes(SoxService service, SoxSession session, SendPacket res) 
@@ -1199,7 +1236,7 @@ class SoxCommands
     int chunkSize  = in.readU2()
 
     // write file
-    tx.file.seek(chunkNum * tx.chunkSize)
+    tx.file.seek(tx.offset + (chunkNum * tx.chunkSize))
     if (!tx.file.out.writeBytes(service.packet.bytes, in.pos, chunkSize))
       SoxService.log.error("write failed")
     
@@ -1232,7 +1269,7 @@ class SoxCommands
     OutStream out = prepareRes(service, session, res)
     out.writeI2(thisChunkNum)
     out.writeI2(thisChunkSize)
-    tx.file.seek(thisChunkNum * tx.chunkSize)
+    tx.file.seek(tx.offset + (thisChunkNum * tx.chunkSize))
     tx.file.in.readBytes(packet.bytes, packet.size, thisChunkSize)
     packet.size += thisChunkSize
   }
@@ -1343,4 +1380,6 @@ class SoxCommands
   
   static Str tempStr1
   static Str tempStr2
+  static Str tempKey
+  static Str tempVal
 } 

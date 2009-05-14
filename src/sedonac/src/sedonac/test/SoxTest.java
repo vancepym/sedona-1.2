@@ -50,6 +50,7 @@ public class SoxTest
     verifyLinks();          
     verifyQuery();              
     verifyFileTransfer(); 
+    verifyBinaryTransfer();
     verifyFileRename();
     verifyClose();
   }
@@ -955,6 +956,90 @@ public class SoxTest
     reqProps.put("test.drop", "0,4,17,19");
     verifyFileTransfer(sb.toString(), reqProps);
   }
+  
+  private void verifyBinaryTransfer() throws Exception
+  {
+    final String INIT = "0123456789";
+    final String URI = "blob.txt";
+    Properties putProps = new Properties();
+    
+    // create initial state
+    putProps.put("mode", "w");
+    client.putFile(URI, memFile(INIT), putProps, null);
+    Thread.sleep(100);
+    
+    putProps.put("mode", "m");
+    putProps.put("chunkSize", "1");
+    // try a bad offset (bigger than file) for get
+    verifyBinGet("", 0, 10);
+    verifyBinGet("", 1, 10);
+    
+    // quickly test 1 byte read boundaries
+    verifyBinGet("9", 1, 9);
+    verifyBinGet("9", 0, 9);  // equivalent to previous
+    verifyBinGet("0", 1, 0); 
+
+    StringBuffer expected = new StringBuffer(INIT);
+    for (int i=0; i<=INIT.length()/2 + 1; ++i)
+    {
+      final char c = (char)('a'+i);
+      final String s = ""+c+c;
+      putProps.put("offset", Integer.toString(i*2));
+      System.out.println();
+      System.out.println("]]]]]]]]]]]]]]]]]>>> TEST BINARY PUT " + putProps);
+      setupBinaryDrops();
+      client.putFile(URI, memFile(s), putProps, null);
+      Thread.sleep(100);
+      
+      expected = new StringBuffer()
+      .append(expected.substring(0, i*2))
+      .append(c).append(c)
+      .append(((i+1)*2 < INIT.length()) ? expected.substring((i+1)*2) : "");
+      
+      verifyBinGet(expected.toString(), 0, 0);
+      verifyBinGet(s, 2, i*2);
+      // next two make sure sox adjusts for file size that is too big for offset
+      verifyBinGet(expected.substring(i), 0, i);
+      verifyBinGet(expected.substring(i), expected.length(), i);
+    }    
+    
+  }
+  
+  static int binDropCount = 0;
+  private Properties verifyBinGet(String expected, final int fileSize, final int offset)
+    throws Exception
+  {
+    Buf b = new Buf();
+    Properties getProps = new Properties();
+    getProps.put("fileSize", Integer.toString(fileSize));
+    getProps.put("offset", Integer.toString(offset));
+    getProps.put("chunkSize", "1");
+    
+    System.out.println();
+    System.out.println("]]]]]]]]]]]]]]]]]>>> TEST BINARY GET " + getProps);
+    if ((binDropCount++ % 3) == 0)
+      setupBinaryDrops();
+    
+    Properties respProps = client.getFile("blob.txt", SoxFile.make(b), getProps, null);
+    verifyEq(expected.length(), b.size);
+    String s = new String(b.trim());
+    System.out.println("Verify: " + expected + " == " + s);
+    verifyEq(expected, s);
+    
+    ((DaspTest.TestHooks)client.session().test).clearDrop();
+    return respProps;
+  }
+  
+  private void setupBinaryDrops()
+  {
+    int[] drop = new int[] {0,1,2,3,5,7,11,13,17,19,21,23};
+    DaspTest.TestHooks testHooks = (DaspTest.TestHooks)client.session().test;
+    testHooks.clearDrop();
+    for (int i=0; i < drop.length; ++i) 
+      testHooks.addDrop(testHooks.sendSeqNum() + 1 + drop[i]);
+  }
+  
+  private SoxFile memFile(String s) { return SoxFile.make(new Buf(s.getBytes())); }
 
   private void verifyFileNotFound()
     throws Exception

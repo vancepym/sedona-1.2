@@ -46,6 +46,7 @@ class FileTransfer
     this.uri         = uri;
     this.file        = file;
     this.reqHeaders  = reqHeaders;
+    this.offset      = geti(reqHeaders, "offset", 0);
     this.chunkSize   = geti(reqHeaders, "chunkSize", defaultChunkSize);    
     this.lock        = new Object();
     this.startTicks  = Env.ticks();    
@@ -75,7 +76,7 @@ class FileTransfer
   {
     // start a "get" transaction
     this.method = "g";
-    this.fileSize = 0;
+    this.fileSize = geti(reqHeaders, "fileSize", 0);
     start();
     
     // wait until we've received the entire file 
@@ -177,7 +178,7 @@ class FileTransfer
   {
     // start a "put" transaction
     this.method   = "p";
-    this.fileSize = file.size();
+    this.fileSize = geti(reqHeaders, "fileSize", file.size());
     start();
 
     // start sending chunks - the send window will block
@@ -258,10 +259,13 @@ class FileTransfer
       req.str(uri);
       req.i4(fileSize);
       req.u2(chunkSize);
+      
       Iterator it = reqHeaders.keySet().iterator();
       while (it.hasNext())
       {
         String key = (String)it.next();
+        if (key.equals("fileSize")) continue;
+        
         String val = (String)reqHeaders.get(key);
         req.str(key);
         req.str(val);
@@ -367,6 +371,7 @@ class FileTransfer
   SoxFile file;           // local representation of file to read/write
   String method;          // "g" for get and "p" for put
   int fileSize;           // number of bytes in file
+  int offset;             // byte offset into file for reading/writing
   int chunkSize;          // number of bytes in chunk (last may be smaller)
   int numChunks;          // number of chunks expected to be transfered
   int transferedChunks;   // number of chunks transfers so far
