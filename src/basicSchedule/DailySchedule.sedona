@@ -20,22 +20,26 @@ abstract class DailySchedule extends Component
   **
   **  Start time for first active period, expressed in minutes after midnight
   ** 
+  @unit=Units.minute 
   @config property short start1
 
   **
   **  Duration for first active period, expressed in minutes after midnight
   ** 
-  @config @min=0 @max=minsInDay property short dur1  
+  @min=0 @max=minsInDay @unit=Units.minute
+  @config property short dur1  
 
   **
   **  Start time for second active period, expressed in minutes after midnight
   ** 
+  @unit=Units.minute
   @config property short start2
 
   **
   **  Duration for the second active period, expressed in minutes after midnight
   ** 
-  @config @min=0 @max=minsInDay property short dur2
+  @min=0 @max=minsInDay @unit=Units.minute
+  @config property short dur2
   
 ////////////////////////////////////////////////////////////////
 // Component
