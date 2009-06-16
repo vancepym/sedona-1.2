@@ -35,7 +35,7 @@ public class ResolveTypes
 
   public void run()
   {
-    log.verbose("  ResolveTypes");
+    log.debug("  ResolveTypes");
     walkAst(WALK_TO_EXPRS);
     quitIfErrors();
   }

@@ -44,7 +44,7 @@ public class InitTranslate
   {
     try
     {
-      log.verbose("  InitTranslate");
+      log.debug("  InitTranslate");
       parseTranslation();
       parseKits();
     }
@@ -135,7 +135,7 @@ public class InitTranslate
     throws IOException
   {
     Location loc = new Location(file + "|" + entry.getName());
-    log.verbose("    Parse [" + loc + "]");
+    log.debug("    Parse [" + loc + "]");
     InputStream in = zip.getInputStream(entry);
     TypeDef[] t = new Parser(compiler, loc, in).parse();
     for (int i=0; i<t.length; ++i) types.add(t[i]);

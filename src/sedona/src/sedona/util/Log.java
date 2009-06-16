@@ -5,6 +5,7 @@
 // History:
 //   30 May 06  Brian Frank        Creation
 //    5 Mar 09  Elizabeth McKenney Added options for timestamp & prefix
+//   16 Jun 09  Brian Frank        Refactor to use cleaner design
 //
 
 package sedona.util;
@@ -15,80 +16,66 @@ import java.util.Calendar;
 /**
  * Log is responsible for outputting messages
  */
-public class Log extends PrintWriter
+public class Log
 {
 
-  public Log()
-  {
-    super(System.out, true);
+  public Log(String name)
+  {                
+    this(name, System.out);
   }                    
                    
-  public Log(OutputStream out)
+  public Log(String name, PrintStream out)
   {
-    super(out, true);
+    this.name = name;
+    this.out  = out;
   }                    
 
-  public Log(String pre)
+  public final String name;         
+  
+  public PrintStream out;
+
+  public int severity = INFO;               
+  
+  public static String severityToString(int severity)
   {
-    super(System.out, true);
-    prefix = pre;
-  }                    
-                   
-  public Log(OutputStream out, String pre)
-  {
-    super(out, true);
-    prefix = pre;
-  }                    
-                   
-  public void println(String msg)
-  {
-    if (prefix!=null)
+    switch (severity)
     {
-      // Timestamp
-      print("[");
-      print( Abstime.now().toString() );
-      print("]");    
-
-      // Prefix
-      if (prefix.length()>0)
-      {
-        print("[");
-        print(prefix);
-        print("]");    
-      }
+      case ERROR: return "error";
+      case WARN:  return "warn";
+      case INFO:  return "info";
+      case DEBUG: return "debug";
+      default:    return "Unknown(" + severity + ")";
     }
+  }
+  
+  public static final int ERROR   = 4;
+  public static final int WARN    = 3;
+  public static final int INFO    = 2;
+  public static final int DEBUG   = 1;                   
+  public static final int SILENT  = 0;    
+  
+  public boolean isError() { return severity >= ERROR; }
+  public boolean isWarn()  { return severity >= WARN; }
+  public boolean isInfo()  { return severity >= INFO; }
+  public boolean isDebug() { return severity >= DEBUG; }
+  
+  public void error(String msg) { log(ERROR, msg, null); }
+  public void error(String msg, Throwable ex) { log(ERROR, msg, ex); }
 
-    // print msg
-    super.println(msg);
+  public void warn(String msg) { log(WARN, msg, null); }
+  public void warn(String msg, Throwable ex) { log(WARN, msg, ex); }
+
+  public void info(String msg) { log(INFO, msg, null); }
+  public void info(String msg, Throwable ex) { log(INFO, msg, ex); }
+  
+  public void debug(String msg) { log(DEBUG, msg, null); }
+  public void debug(String msg, Throwable ex) { log(DEBUG, msg, ex); }
+  
+  public void log(int severity, String msg, Throwable ex)
+  {                                      
+    if (severity < this.severity) return;
+    out.println("[" + Abstime.now() + "] [" + severityToString(severity) + "] [" + name + "] " + msg);
+    if (ex != null) ex.printStackTrace(out);
   }
 
-   public void message(String msg)
-  {
-    println(msg);
-  }
-
-  public void warning(String msg)
-  {
-    message("WARNING: " + msg);
-  }
-
-  public void verbose(String msg)
-  {
-    if (verbose) message(msg);
-  }
-
-  public void error(String msg, Throwable e)
-  {
-    message("ERROR: " + msg);
-    if (e != null) e.printStackTrace(this);
-  }
-
-  public void fatal(String msg, Throwable e)
-  {
-    message("FATAL: " + msg);
-    if (e != null) e.printStackTrace(this);
-  }
-
-  public boolean verbose;
-  String prefix = null;
 }

@@ -6,7 +6,9 @@
 //   30 May 06  Brian Frank  Creation
 //
 
-package sedonac;
+package sedonac;     
+
+import java.io.*;
 
 /**
  * ComplerLog is responsible for outputing compiler messages
@@ -17,23 +19,24 @@ public class CompilerLog
 
   public CompilerLog()
   {
+    this(System.out);
   }
   
-  public CompilerLog(java.io.OutputStream out)
+  public CompilerLog(PrintStream out)
   {
-    super(out);
+    super("sedonac", out);
   }
 
   public void error(CompilerException e)
   {
-    message(e.toLogString());
-    if (e.cause != null)
-    {
-      if (verbose)
-        e.cause.printStackTrace(this);
-      else
-        message("  " + e.cause);
-    }
-  }
+    log(ERROR, e.toLogString(), e.cause);
+  }                        
+  
+  public void log(int severity, String msg, Throwable ex)
+  {
+    if (severity < this.severity) return;
+    out.println(msg);  // skip severity/timestamp/name
+    if (ex != null) ex.printStackTrace(out);
+  } 
 
 }

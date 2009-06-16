@@ -36,7 +36,7 @@ public class OptimizeIr
   public void run()
   {                               
     if (!compiler.optimize) return;
-    log.verbose("  OptimizeIr");
+    log.debug("  OptimizeIr");
     IrType[] types = compiler.ir.types;
     for (int i=0; i<types.length; ++i)
     {

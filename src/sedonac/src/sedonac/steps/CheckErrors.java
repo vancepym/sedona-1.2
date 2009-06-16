@@ -44,7 +44,7 @@ public class CheckErrors
 
   public void run()
   {
-    log.verbose("  CheckErrors");
+    log.debug("  CheckErrors");
     walkAst(WALK_TO_EXPRS);
     quitIfErrors();
   }

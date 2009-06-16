@@ -42,7 +42,7 @@ public class InlineConsts
 
   public void run()
   {
-    log.verbose("  InlineConsts");
+    log.debug("  InlineConsts");
 
     predefines();
 

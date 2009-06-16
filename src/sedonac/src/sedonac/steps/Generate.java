@@ -26,7 +26,7 @@ public class Generate
 
   public void run()
   {
-    log.verbose("  Generate");
+    log.debug("  Generate");
 
     new ImageGen(compiler).generate();
 

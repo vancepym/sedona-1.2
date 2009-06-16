@@ -42,7 +42,7 @@ public class ResolveIncludes
       return;
     }
 
-    log.verbose("  ResolveIncludes");
+    log.debug("  ResolveIncludes");
     
     // Resolve IrKit for each included kit
     for (int i=0; i<includes.length; ++i)
@@ -103,7 +103,7 @@ public class ResolveIncludes
       .append("Auto-Including '").append(base.toString()).append("' from kit ")
       .append(include.sourceKit.file).append(". '").append(typeName)
       .append("' depends on it.");
-      log.warning(sb.toString());
+      log.warn(sb.toString());
       
       include.typeToSource.put(baseTypeName, null);
       recursivelyAutoInclude(include, baseTypeName);
@@ -139,7 +139,7 @@ public class ResolveIncludes
             // store this TypeDef so we can add it to the AST type list later.
             include.typeToSource.put(astTypes[i].name(), entry);
             types.add(astTypes[i]);
-            log.verbose("      Include '" + astTypes[i].name() + "' from: " + sourceKit.getName() + "|" + entry.getName());
+            log.debug("      Include '" + astTypes[i].name() + "' from: " + sourceKit.getName() + "|" + entry.getName());
           }
         }
       }

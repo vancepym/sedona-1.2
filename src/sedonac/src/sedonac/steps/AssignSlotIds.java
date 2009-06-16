@@ -39,7 +39,7 @@ public class AssignSlotIds
 
   public void run()
   {
-    log.verbose("  AssignSlotIds");
+    log.debug("  AssignSlotIds");
 
     for (int i=0; i<flat.compTypes.length; ++i)
       assignSlotIds(flat.compTypes[i]);

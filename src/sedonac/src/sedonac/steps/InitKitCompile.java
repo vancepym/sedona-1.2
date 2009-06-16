@@ -38,7 +38,7 @@ public class InitKitCompile
   {
     try
     {
-      log.verbose("  InitKitCompile");
+      log.debug("  InitKitCompile");
       parseKitDef();
       findSourceFiles();    
       checkVendor();
@@ -186,10 +186,10 @@ public class InitKitCompile
     compiler.sourceFiles = (SourceFile[])acc.toArray(new SourceFile[acc.size()]);
 
     // if verbose dump source files
-    if (compiler.log.verbose)
+    if (compiler.log.isDebug())
     {
       for (int i=0; i<compiler.sourceFiles.length; ++i)
-        log.verbose("    " + compiler.sourceFiles[i]);
+        log.debug("    " + compiler.sourceFiles[i]);
     }
   }
 
@@ -246,7 +246,7 @@ public class InitKitCompile
       try
       {
         testonly = xsource.getb("test");
-        log.warning("The 'test' attribute is deprecated. Use 'testonly' instead. " + loc);
+        log.warn("The 'test' attribute is deprecated. Use 'testonly' instead. " + loc);
       }
       catch (XException ee)
       {

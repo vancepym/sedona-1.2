@@ -41,7 +41,7 @@ public class NormalizeExpr
 
   public void run()
   {
-    log.verbose("  NormalizeExpr");
+    log.debug("  NormalizeExpr");
     walkAst(WALK_TO_EXPRS);
     quitIfErrors();
   }

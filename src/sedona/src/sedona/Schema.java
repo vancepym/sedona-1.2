@@ -25,7 +25,7 @@ public class Schema
 // Load
 //////////////////////////////////////////////////////////////////////////
 
-  public static final Log log = new Log();
+  public static final Log log = new Log("schema");
   private static HashMap cache = new HashMap();
 
   /**
@@ -50,7 +50,7 @@ public class Schema
     if (schema != null) return schema;
 
     // try to load it
-    log.verbose("  -- Schema: Loading... [" + key + "]");
+    log.debug("Loading... [" + key + "]");
     schema = new Schema(key, new Kit[parts.length]);
     for (int i=0; i<parts.length; ++i)
     {

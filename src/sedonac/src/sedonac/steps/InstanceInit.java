@@ -28,7 +28,7 @@ public class InstanceInit
 
   public void run()
   {
-    log.verbose("  InstanceInit");
+    log.debug("  InstanceInit");
     walkAst(WALK_TO_TYPES);
     quitIfErrors();
   }

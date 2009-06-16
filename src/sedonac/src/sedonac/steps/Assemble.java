@@ -26,7 +26,7 @@ public class Assemble
 
   public void run()
   {
-    log.verbose("  Assemble");
+    log.debug("  Assemble");
     compiler.ir = new KitAsm(compiler).assemble();
     quitIfErrors();
   }

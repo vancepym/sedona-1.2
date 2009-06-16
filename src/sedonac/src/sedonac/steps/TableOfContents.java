@@ -55,7 +55,7 @@ public class TableOfContents
       
       new File(outDir, "api.html").delete();
 
-      log.message("  TableOfContents [" + dir + " -> " + outDir + "]");
+      log.info("  TableOfContents [" + dir + " -> " + outDir + "]");
 
       parseXml();
       flattenChapters();
@@ -170,7 +170,7 @@ public class TableOfContents
   private void processHtml(File f)
     throws Exception
   {
-    log.verbose ("    " + f);
+    log.debug("    " + f);
 
     // map file to chapter
     Chapter chapter = (Chapter)chaptersByHref.get(f.getName());

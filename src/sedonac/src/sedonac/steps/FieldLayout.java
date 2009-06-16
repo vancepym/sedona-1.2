@@ -42,7 +42,7 @@ public class FieldLayout
 
   public void run()
   {
-    log.verbose("  FieldLayout");
+    log.debug("  FieldLayout");
     findIrTypes();
     layoutInstanceFields();
     layoutStaticFields();

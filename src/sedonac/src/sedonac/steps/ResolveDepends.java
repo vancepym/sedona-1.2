@@ -37,7 +37,7 @@ public class ResolveDepends
       return;
     }
 
-    log.verbose("  ResolveDepends");
+    log.debug("  ResolveDepends");
 
     IrKit[] kits = new IrKit[depends.length];
     for (int i=0; i<depends.length; ++i)
@@ -61,7 +61,7 @@ public class ResolveDepends
       return null;
     }                     
     
-    log.verbose("    Resolve '" + d.depend + "' -> " + kitFile);
+    log.debug("    Resolve '" + d.depend + "' -> " + kitFile);
 
     try
     {

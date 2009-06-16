@@ -38,7 +38,7 @@ public class InitImageCompile
   {
     try
     {
-      log.verbose("  InitImageCompile");
+      log.debug("  InitImageCompile");
       initImage();
       initKits();
     }
@@ -91,7 +91,7 @@ public class InitImageCompile
         err("Missing kit dependency '" + depend + "'", loc);
         continue;
       }
-      log.verbose("    "+kitFile.toString());   
+      log.debug("    "+kitFile.toString());   
       
       IrKit kit = kits[i] = new IrKit(loc, kitFile);
       String t = elem.get("test", null);

@@ -26,7 +26,7 @@ public class AssembleJava
 
   public void run()
   {
-    log.verbose("  AssembleJava");
+    log.debug("  AssembleJava");
     compiler.java = new JavaKitAsm(compiler).assemble();
     quitIfErrors();
   }

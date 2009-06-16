@@ -45,7 +45,7 @@ public abstract class AbstractTranslator
     throws IOException
   {
     File file = toFile();
-    log.verbose("    Translate [" + file + "]");
+    log.debug("    Translate [" + file + "]");
     out = new PrintWriter(new FileWriter(file));
     try
     {

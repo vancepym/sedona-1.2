@@ -54,7 +54,7 @@ public class WriteDoc
     
     if (!kit.doc) return;    
 
-    log.message("  WriteDoc [" + dir + "]");
+    log.info("  WriteDoc [" + dir + "]");
 
     mkdir();
     filterTypes();

@@ -41,7 +41,7 @@ public class InitStageNatives
   {
     try
     {
-      log.verbose("  InitStageNatives");
+      log.info("  InitStageNatives");
       
       // check args
       if (compiler.outDir == null)

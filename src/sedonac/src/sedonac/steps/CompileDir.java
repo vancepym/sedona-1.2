@@ -48,7 +48,7 @@ public class CompileDir
   
   public void compileTarget(String name)
   {
-    log.message("Compile [" + name + "]");  
+    log.info("Compile [" + name + "]");  
     Compiler c = compiler.spawn();
     c.compile(new File(xmlDir, name));
   }

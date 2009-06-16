@@ -47,35 +47,10 @@ public class Main
     System.out.println(msg);
   }
 
-  public static boolean checkJavaVersion()
-  {
-    try
-    {
-      String ver = System.getProperty("java.version");
-      int ub = ver.indexOf('_');
-      if (ub > 0) ver = ver.substring(0, ub);
-
-      Version have = new Version(ver);
-      Version need = new Version("1.4");
-      if (have.compareTo(need) >= 0) return true;
-
-      println("Sedonac requires Java " + need + " or greater");
-      println("java.home    = " +System.getProperty("java.home"));
-      println("java.version = " + have);
-      return false;
-    }
-    catch(Exception e)
-    {
-      System.out.println("WARNING: Cannot check java version");
-      System.out.println("  " + e);
-      return true;
-    }
-  }
-
   public static int doMain(String args[])
   {
     // check vm version
-    if (!checkJavaVersion())
+    if (!Env.checkJavaVersion())
       return 1;
 
     // no args
@@ -140,7 +115,7 @@ public class Main
       }
       else if (arg.equals("-v"))
       {
-        compiler.log.verbose = true;
+        compiler.log.severity = Log.DEBUG;
       }
       else if (arg.equals("-noOptimize"))
       {
@@ -206,7 +181,7 @@ public class Main
     }
     catch(Throwable e)
     {
-      compiler.log.fatal("Internal compiler error", e);
+      compiler.log.error("Internal compiler error", e);
       e.printStackTrace();
       return 1;
     }

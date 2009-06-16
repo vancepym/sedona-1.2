@@ -29,7 +29,7 @@ public class ManifestDb
 //////////////////////////////////////////////////////////////////////////
 
   public static final File dir = new File(Env.home, "manifests");
-  public static final Log log = new Log();
+  public static final Log log = new Log("manifestdb");
   private static HashMap cache = new HashMap();
 
 //////////////////////////////////////////////////////////////////////////
@@ -93,7 +93,7 @@ public class ManifestDb
     // check if db file exists
     if (!info.file.exists()) return null;
 
-    log.verbose("  -- ManifestDb: Load [" + info.file + "]");
+    log.debug("ManifestDb: Load [" + info.file + "]");
 
     // parse into memory
     KitManifest km = new KitManifest(info.name);
@@ -141,12 +141,12 @@ public class ManifestDb
     // if not a matching checksum, then bail
     if (km.checksum != info.checksum)
     {
-      log.verbose("  -- ManifestDb: Local kit not match [" + kitFile + "]");
+      log.debug("Local kit not match [" + kitFile + "]");
       return null;
     }
 
     // we have a matching checksum
-    log.verbose("  -- ManifestDb: Local kit is match [" + kitFile + "]");
+    log.debug("Local kit is match [" + kitFile + "]");
 
     // store in cache under explicit checksum, store as local key,
     // save back to manifest db, and return
@@ -175,7 +175,7 @@ public class ManifestDb
     {
       info.file.getParentFile().mkdirs();
       XWriter out = new XWriter(info.file);
-      log.verbose("  -- ManifestDb: Save [" + info.file + "]");
+      log.debug("Save [" + info.file + "]");
       try
       {
         km.encodeXml(out);

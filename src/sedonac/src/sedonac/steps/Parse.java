@@ -29,7 +29,7 @@ public class Parse
 
   public void run()
   {
-    log.message("  Parse [" + compiler.sourceFiles.length + " files]");
+    log.info("  Parse [" + compiler.sourceFiles.length + " files]");
 
     SourceFile[] files = compiler.sourceFiles;
     ArrayList types = new ArrayList(Arrays.asList(compiler.ast.types));
@@ -59,7 +59,7 @@ public class Parse
     catch(CompilerException e)
     {
       // just accumulate
-      if (log.verbose) log.verbose("  no log: " + e);
+      if (log.isDebug()) log.debug("  no log: " + e);
     }
     catch(Exception e)
     {

@@ -39,7 +39,7 @@ public class Inherit
 
   public void run()
   {
-    log.verbose("  Inherit");
+    log.debug("  Inherit");
 
     // first process the IR types
     for (int i=0; i<compiler.kits.length; ++i)

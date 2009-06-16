@@ -35,7 +35,7 @@ public class ResolveNatives
     NativeDef[] natives = kit.natives;
     if (natives == null) natives = new NativeDef[0];
 
-    log.verbose("  ResolveNatives [" + natives.length + "]");
+    log.debug("  ResolveNatives [" + natives.length + "]");
 
     HashMap ids = new HashMap();
     boolean[] found = new boolean[natives.length];

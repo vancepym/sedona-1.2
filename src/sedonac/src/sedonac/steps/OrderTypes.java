@@ -43,7 +43,7 @@ public abstract class OrderTypes
 
   public void order(Type[] types)
   {
-    log.verbose("  OrderTypes");
+    log.debug("  OrderTypes");
     ordered = new ArrayList();
     processing = new HashMap();
     
@@ -84,10 +84,10 @@ public abstract class OrderTypes
       throw new IllegalStateException();
     ordered.toArray(types);
 
-    if (log.verbose)
+    if (log.isDebug())
     {
       for (int i=0; i<types.length; ++i)
-        log.verbose("    " + types[i]);
+        log.debug("    " + types[i]);
     }
   }
 

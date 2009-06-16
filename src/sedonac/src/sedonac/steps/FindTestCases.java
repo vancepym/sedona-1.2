@@ -30,7 +30,7 @@ public class FindTestCases
   {
     // skip if tests turned off
     if (!compiler.image.test) return;
-    log.verbose("  FindTestCases");
+    log.debug("  FindTestCases");
     
     // find all the tests
     compiler.testMethods = findTestMethods(flat.types, false);

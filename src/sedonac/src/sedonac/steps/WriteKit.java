@@ -40,7 +40,7 @@ public class WriteKit
     File file = KitDb.toFile(kit.name, manifest.checksum, manifest.version);
     File dir = file.getParentFile();
 
-    log.message("  WriteKit [" + file + "]");
+    log.info("  WriteKit [" + file + "]");
 
     try
     {

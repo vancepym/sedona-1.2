@@ -40,7 +40,7 @@ public class ResolveIR
 
   public void run()
   {
-    log.verbose("  ResolveIR");
+    log.debug("  ResolveIR");
 
     // pre-resolve flattening
     IrFlat flat = compiler.flat;

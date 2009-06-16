@@ -36,7 +36,7 @@ public class ReadKits
   {
     try
     {
-      log.message("  ReadKits [" +  compiler.kits.length + " kits]");
+      log.info("  ReadKits [" +  compiler.kits.length + " kits]");
       for (int i=0; i<compiler.kits.length; ++i)
         readKit(compiler.kits[i]);
     }

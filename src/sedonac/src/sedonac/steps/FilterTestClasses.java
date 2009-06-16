@@ -28,7 +28,7 @@ public class FilterTestClasses
 
   public void run()
   {
-    log.verbose("  FilterTestClasses");
+    log.debug("  FilterTestClasses");
     for (int i=0; i<compiler.kits.length; ++i)
       filter(compiler.kits[i]);
   }

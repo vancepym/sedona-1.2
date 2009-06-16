@@ -40,7 +40,7 @@ public class VTableLayout
 
   public void run()
   {
-    log.verbose("  VTableLayout");
+    log.debug("  VTableLayout");
     for (int i=0; i<flat.virtTypes.length; ++i)
       layout(flat.virtTypes[i]);
     quitIfErrors();

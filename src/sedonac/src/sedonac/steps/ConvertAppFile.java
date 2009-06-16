@@ -38,7 +38,7 @@ public class ConvertAppFile
     String toExt = xml == null ? "sax" : "sab";
     File to      = new File(dir, base + "." + toExt);
 
-    log.message("  ConvertAppFile [" + from + " -> " + to + "]");
+    log.info("  ConvertAppFile [" + from + " -> " + to + "]");
 
     // load
     OfflineApp app = null;
@@ -76,10 +76,10 @@ public class ConvertAppFile
     }             
     
     // report                        
-    log.message("  +----------------------------------"); 
-    log.message("  |  RAM:   " + TextUtil.kb(app.ramSize()));
-    log.message("  |  FLASH: " + TextUtil.kb(app.flashSize()));
-    log.message("  +----------------------------------"); 
+    log.info("  +----------------------------------"); 
+    log.info("  |  RAM:   " + TextUtil.kb(app.ramSize()));
+    log.info("  |  FLASH: " + TextUtil.kb(app.flashSize()));
+    log.info("  +----------------------------------"); 
   }                         
   
 }

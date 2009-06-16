@@ -31,7 +31,7 @@ public class MountAstIntoNamespace
 
   public void run()
   {
-    log.verbose("  MountAstIntoNamespace");
+    log.debug("  MountAstIntoNamespace");
     mapTypes(compiler.ast);
     ns.mount(compiler.ast);
     quitIfErrors();

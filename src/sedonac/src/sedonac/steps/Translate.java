@@ -29,7 +29,7 @@ public class Translate
   public void run()
   {
     Translation t = compiler.translation;
-    log.message("  Translate [" + t.outDir + "]");
+    log.info("  Translate [" + t.outDir + "]");
 
     try
     {

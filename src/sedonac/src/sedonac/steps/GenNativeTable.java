@@ -36,7 +36,7 @@ public class GenNativeTable
   public void run()
   {
     File file = new File(compiler.outDir, "nativetable.c");
-    log.message("  GenNativeTable [" + file + "]");
+    log.info("  GenNativeTable [" + file + "]");
 
     try
     {

@@ -38,7 +38,7 @@ public class WriteImage
     File file = new File(dir, filename);
     byte[] code = compiler.image.code;
 
-    log.message("  WriteImage [" + file + "] (" + code.length + " bytes)");
+    log.info("  WriteImage [" + file + "] (" + code.length + " bytes)");
 
     try
     {
@@ -57,11 +57,11 @@ public class WriteImage
     int dataSize = compiler.dataSize;
     int codeSize = compiler.image.code.length;
 
-    log.message("  +----------------------------------"); 
-    log.message("  |  Data:   " + TextUtil.kb(dataSize));
-    log.message("  |  Code:   " + TextUtil.kb(codeSize));
-    log.message("  |  Total:  " + TextUtil.kb(dataSize+codeSize));
-    log.message("  +----------------------------------"); 
+    log.info("  +----------------------------------"); 
+    log.info("  |  Data:   " + TextUtil.kb(dataSize));
+    log.info("  |  Code:   " + TextUtil.kb(codeSize));
+    log.info("  |  Total:  " + TextUtil.kb(dataSize+codeSize));
+    log.info("  +----------------------------------"); 
     
   }
 

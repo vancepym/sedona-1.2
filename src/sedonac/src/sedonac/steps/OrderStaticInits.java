@@ -36,14 +36,14 @@ public class OrderStaticInits extends CompilerStep
   public void run()
   {
     // TODO: intra-kit sInit ordering.
-    log.verbose("  OrderStaticInits");
+    log.debug("  OrderStaticInits");
     Arrays.sort(compiler.flat.staticInits, new StaticInitComparator(graphDependencies()));
     quitIfErrors();
     
-    if (log.verbose)
+    if (log.isDebug())
     {
       for (int i=0; i< compiler.flat.staticInits.length; ++i)
-        log.verbose("    " + compiler.flat.staticInits[i]);
+        log.debug("    " + compiler.flat.staticInits[i]);
     }
   }
   

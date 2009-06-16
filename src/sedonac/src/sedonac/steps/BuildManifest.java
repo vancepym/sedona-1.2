@@ -43,7 +43,7 @@ public class BuildManifest
 
   public void run()
   {
-    log.verbose("  BuildManifest");
+    log.debug("  BuildManifest");
     isSys = compiler.ast.name.equals("sys");
     findReflectiveTypes();
     compiler.manifest = toKitManifest(compiler.ast);

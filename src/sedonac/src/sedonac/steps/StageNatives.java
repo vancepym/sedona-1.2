@@ -42,7 +42,7 @@ public class StageNatives
   {
     try
     {
-      log.message("  StageVM [" + stageDir + "]");
+      log.info("  StageVM [" + stageDir + "]");
       makeStageDir();
       copySourceDirs();
     }
@@ -111,7 +111,7 @@ public class StageNatives
       throw err("Source path not found '" + dir + "'", loc);
 
     File[] files = dir.listFiles();
-    log.verbose("    Copy '" + dir + "' [" + files.length + " files]");
+    log.debug("    Copy '" + dir + "' [" + files.length + " files]");
     for (int i=0; i<files.length; ++i)
     {
       File f = files[i];

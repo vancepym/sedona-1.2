@@ -1,4 +1,7 @@
-<!--  Niagara  Build File -->
+<!--  
+     Niagara Build File 
+     Note: open source developers use adm python scripts
+-->
   
 <module 
  name = "sedonac"

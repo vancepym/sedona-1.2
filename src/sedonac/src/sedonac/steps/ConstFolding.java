@@ -35,7 +35,7 @@ public class ConstFolding
 
   public void run()
   {                        
-    log.verbose("  ConstFolding");
+    log.debug("  ConstFolding");
     walkAst(WALK_TO_EXPRS);
     quitIfErrors();
   }

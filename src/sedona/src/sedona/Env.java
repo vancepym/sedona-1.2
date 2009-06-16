@@ -12,6 +12,7 @@ import java.io.*;
 import java.net.*;
 import java.text.*;
 import java.util.*;
+import sedona.util.*;
 
 /**
  * Env models the Sedona environment (its the "Sys" for the sedona
@@ -158,6 +159,39 @@ public class Env
   }
   static java.lang.reflect.Method ticksMethod;
   static boolean ticksMethodInNanos;
+
+////////////////////////////////////////////////////////////////
+// Initialization
+////////////////////////////////////////////////////////////////
+  
+  /**
+   * Check that we are running version 1.4 or later.
+   * If not 1.4 then print error message and return false.
+   */
+  public static boolean checkJavaVersion()
+  {
+    try
+    {
+      String ver = System.getProperty("java.version");
+      int ub = ver.indexOf('_');
+      if (ub > 0) ver = ver.substring(0, ub);
+
+      Version have = new Version(ver);
+      Version need = new Version("1.4");
+      if (have.compareTo(need) >= 0) return true;
+
+      System.out.println("Sedona requires Java " + need + " or greater");
+      System.out.println("java.home    = " +System.getProperty("java.home"));
+      System.out.println("java.version = " + have);
+      return false;
+    }
+    catch(Exception e)
+    {
+      System.out.println("WARNING: Cannot check java version");
+      System.out.println("  " + e);
+      return true;
+    }
+  }
 
 ////////////////////////////////////////////////////////////////
 // Initialization

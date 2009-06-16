@@ -44,7 +44,7 @@ public class CheckHtmlLinks
     try
     {
       
-      log.message("  CheckHtmlLinks [" + dir + "]");
+      log.info("  CheckHtmlLinks [" + dir + "]");
       
       parseFiles();
       mapIds();       
@@ -81,7 +81,7 @@ public class CheckHtmlLinks
       if (!name.endsWith(".html")) continue;
       if (name.equals("api.html")) continue;
       
-      log.verbose("    Parse [" + f + "]");
+      log.debug("    Parse [" + f + "]");
       
       XElem xml = parseFile(f);
       if (xml == null) continue;

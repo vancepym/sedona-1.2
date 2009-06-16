@@ -42,7 +42,7 @@ public class ResolveExpr
 
   public void run()
   {
-    log.verbose("  ResolveExpr");
+    log.debug("  ResolveExpr");
     walkAst(WALK_TO_EXPRS);
     quitIfErrors();
   }

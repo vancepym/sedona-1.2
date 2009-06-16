@@ -168,7 +168,7 @@ public class FileUtil
     if (dir.exists() && dir.isDirectory())
       return;
 
-    log.verbose("    MakeDir [" + dir + "]");
+    log.debug("    MakeDir [" + dir + "]");
     if (!dir.mkdirs())
       throw new IOException("Cannot make directory: " + dir);
   }
@@ -180,7 +180,7 @@ public class FileUtil
   public static void copy(File oldFile, File newFile, Log log)
     throws IOException
   {
-    log.verbose("    Copy [" + oldFile + " -> " + newFile + "]");
+    log.debug("    Copy [" + oldFile + " -> " + newFile + "]");
     if (newFile.exists())
       throw new IOException("Cannot copy to existing file: " + newFile);
     if (oldFile.isDirectory())
@@ -243,7 +243,7 @@ public class FileUtil
   {
     if (!file.exists()) return;
 
-    if (log != null)  log.verbose("    Delete [" + file + "]");
+    if (log != null)  log.debug("    Delete [" + file + "]");
 
     if (file.isDirectory())
     {
