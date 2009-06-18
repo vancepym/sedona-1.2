@@ -81,7 +81,7 @@ class LSeq
   {
     super.changed(slot)
 
-    if ((slot == LSeq.inMin)  || (slot == LSeq.inMax))
+    if ((slot == LSeq.inMin)  || (slot == LSeq.inMax) || (slot == LSeq.numOuts))
     {
       updateDelta()
     }
@@ -90,6 +90,7 @@ class LSeq
 
   private void updateDelta()
   {
+    if (numOuts==0) return
     spDelta = (inMax - inMin) / (float)numOuts
   }
 
