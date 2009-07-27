@@ -21,8 +21,7 @@ class SpyWeblet
 
   static void _sInit()
   {
-    spy.nextWeblet = WebService.weblets
-    WebService.weblets = spy
+    spy.register()
   }
   static internal inline SpyWeblet spy
 

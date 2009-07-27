@@ -11,20 +11,10 @@
 ** Weblet is the base class for Objects which handle
 ** HTTP requests for a specified URI prefix.
 **
-** Weblets should use the following idiom for registering themselves
-** with the WebService
-**
-**   class MyWeblet extends Weblet
-**   {
-**     static void _sInit() 
-**     {
-**       instance.nextWeblet = WebService.weblets
-**       WebService.weblets  = instance
-**     }
-** 
-**     static private inline MyWeblet instance
-**     ...
-**   }
+** Weblets will not be registered with the WebService until the
+** register() method is invoked.  This could be done in
+** _sInit(), or at some other time. Weblets can be removed from
+** the WebService using unregister().
 **
 abstract class Weblet
   extends Virtual
@@ -33,6 +23,30 @@ abstract class Weblet
 ////////////////////////////////////////////////////////////////
 // Weblet
 ////////////////////////////////////////////////////////////////
+  
+  **
+  ** Register the weblet with the WebService.
+  **
+  protected void register()
+  {
+    nextWeblet = WebService.weblets
+    WebService.weblets = this
+  }
+  
+  **
+  ** Remove this weblet from the WebService.
+  **
+  protected void unregister()
+  {
+    Weblet w = WebService.weblets
+    if (w == this) WebService.weblets = w.nextWeblet
+    else
+    {
+      while (w != null && w.nextWeblet != this)
+        w = w.nextWeblet
+      if (w != null) w.nextWeblet = nextWeblet
+    }
+  }
 
   **
   ** Get the weblet's prefix which should be a simple
