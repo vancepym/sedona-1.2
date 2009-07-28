@@ -108,7 +108,9 @@ Cell sys_Sys_doubleStr(SedonaVM* vm, Cell* params)
   double val = *(double*)params;
   double abs;
   int n = 0;
-  int32_t i, d, j;
+  //int32_t i, d, j;
+  int64_t i;
+  int32_t d, j;
   Cell result;
   result.aval = strbuf;      // strbuf location doesn't change, just its contents
 
@@ -141,7 +143,7 @@ Cell sys_Sys_doubleStr(SedonaVM* vm, Cell* params)
 
     abs += (SMALLEST_PRINTABLE_DOUBLE*0.5);        // round to Nth decimal place
     i = (int64_t) abs;                             // integer part
-    d = (int64_t) ((abs-i)*SMALLEST_DOUBLE_RECIP); // fractional part
+    d = (int32_t) ((abs-i)*SMALLEST_DOUBLE_RECIP); // fractional part
 
     // Write the integer part and decimal point
     n = formatIntPart(i, 10, n);
