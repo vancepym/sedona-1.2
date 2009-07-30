@@ -67,7 +67,7 @@ public class WebMsg
   public void readHeadersText(InputStream in)
     throws IOException
   {
-    headers.clear()
+    headers.clear();
     while (true)
     {
       String line = readLine(in).trim();
@@ -104,7 +104,7 @@ public class WebMsg
   public void readHeadersBinary(InputStream in)
     throws IOException
   {
-    headers.clear()
+    headers.clear();
     int hcode = in.read();
     while (hcode > 0)
     {
