@@ -7,7 +7,6 @@
 //
 package sedonac.jasm;
 
-import java.util.HashMap;
 import sedona.util.*;
 import sedonac.ast.*;
 import sedonac.ir.*;
@@ -54,8 +53,12 @@ public class JavaMethodAsm
     if (ir.code == null) return null;
 
     IrOp[] ops = ir.code;
+    prevOp = null;
     for (cur=0; cur<ops.length; ++cur)
-      assemble(ops[cur]);     
+    {
+      assemble(ops[cur]);
+      prevOp = ops[cur];
+    }
     
     backpatch();
     
@@ -594,13 +597,33 @@ public class JavaMethodAsm
     { 
       javaCall = INVOKESTATIC;
     }
+    else if (ir.isStaticInit() && m.isInstanceInit())
+    {
+      // Always invokevirtual when calling a static field's _iInit() method.
+      javaCall = INVOKEVIRTUAL;
+    }
+    else if (ir.isInstanceInit() && m.isInstanceInit())
+    {
+      // Condition: We are in the class's _iInit() method and we are
+      // calling _iInit() on either: 
+      // 1) ourselves (effectively super._iInit()). We know this is the
+      //    case because the previous opcode will be LoadParam0.
+      //    In this case we need to use java opcode INVOKESPECIAL.
+      // 2) a non-static, inline field. In this case we must use INVOKEVIRTUAL.
+      //
+      // NOTE: It is is a Sedona compiler error to have non-static, inline
+      // fields of the same type as the declaring class.
+      javaCall = (prevOp.opcode == SCode.LoadParam0) ? INVOKESPECIAL : INVOKEVIRTUAL;
+    }
     else
     {     
       javaCall = INVOKEVIRTUAL;
       // see if we can use invokespecial (must use for super calls)      
       if (op.opcode == SCode.Call && parent.ir.is(m.parent()) && 
           (m.isVirtual() || m.isInstanceInit()))
+      {
         javaCall = INVOKESPECIAL;
+      }
     }                      
     
     // if native method we need to push Context onto the stack
@@ -908,7 +931,8 @@ public class JavaMethodAsm
  
   JavaKitAsm kitAsm;
   JavaClassAsm parent;
-  IrMethod ir;               
+  IrMethod ir;           
+  IrOp prevOp;
   int cur;          // current index into ir.code  
   Code code;                 
   int localOffset;  // java register index of sedona local 0
