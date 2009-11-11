@@ -345,6 +345,8 @@ public class CodeAsm
     // right now we don't have labeled loops,
     // so we must be matched to the current loop
     Loop loop = (Loop)loopStack.peek();
+    if (Stmt.SWITCH == loop.stmt.id)
+      throw err("continue outside of loop", stmt.loc);
 
     // jump and register with Loop for backpatch
     IrOp jump = jump(SCode.Jump);
