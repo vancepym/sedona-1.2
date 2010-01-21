@@ -54,7 +54,7 @@ amenable to graphical programming.
 So when talking about a Sedona application, we are really talking
 about a tree of components assembled together.  An application is
 purely declarative, all the code is encapsulated in the kits.  The
-application itself is typically stored as a file using one of 
+application itself is stored as a file using one of 
 two file formats:
 </p>                         
 
@@ -82,7 +82,7 @@ Applications are boot strapped using the following phases:
 
 <ol>
 <li><b>Loaded</b>: all components are loaded from SAB file into
-memory can have their <code>Component.loaded</code> callback invoked.</li>
+memory and have their <code>Component.loaded</code> callback invoked.</li>
 <li><b>Start</b>: all components have their <code>Component.start</code> 
 callback invoked.</li>
 <li><b>Running</b>: the application enters in main loop for 
@@ -109,6 +109,53 @@ with a fixed scan rate:
 <code>Service.work</code></li>
 <li>If no services have remaining work, then sleep until next cycle</li>
 </ol>
+
+<!--/////////////////////////////////////////////////////////-->
+<h1 id="steadystate">Steady State</h1>
+<!--/////////// move this after Execution? //////////////////-->
+
+<p>
+Most apps will be fully operational by the end of the first cycle. 
+When hardware I/O is involved, however, an app may need to allow additional time for the
+hardware to warm up, or for complex logic results to propagate fully to all components.
+For this purpose, Sedona provides a "steady state" timing feature that should be used 
+to protect the hardware from reading or writing transient values while the app is 
+starting up.
+</p>
+
+<p>
+The steady state feature consists of two pieces: 
+</p>
+
+<ul> 
+  <li><b>timeToSteadyState</b>: 
+  This integer specifies the time delay between the start of app execution and the time at 
+  which the app is considered to be in "steady state".
+  It is a config property of the App class, so it can be set in the app definition (.sax file) or 
+  at runtime from a remote access tool (e.g. the App property sheet in Sedona Workbench).
+  <br/> <br/>
+  The default value is 0, meaning that the delay ends when the app enters the "Running" 
+  phase described above.  The correct value for a given Sedona app will vary depending on
+  the application logic and the specific hardware involved. 
+  </li>
+  <br/>
+  <li><b>isSteadyState()</b>: 
+  This is a method that returns <code>true</code> if the app has entered
+  "steady state" mode, i.e. if the time delay defined by <code>timeToSteadyState</code> 
+  has elapsed, and <code>false</code> otherwise.  Once steady state mode is reached, 
+  this method will continue to return <code>true</code> until the app is restarted.
+  Sedona code that affects hardware on the native level should use this method to
+  avoid reading or writing hardware values until steady state is reached.
+  </li>
+</ul>
+
+<p>
+<b>Note</b>: This feature is not used internally within the Sedona app.
+It only affects behavior of Sedona components that use the <code>isSteadyState()</code> method.
+It is the responsibility of each kit developer to call this method as needed to protect the 
+hardware.
+</p>
+
 
 <!--/////////////////////////////////////////////////////////-->
 <h1 id="links">Links</h1>
