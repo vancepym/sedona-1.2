@@ -221,7 +221,7 @@ bitAndExpr =
   equalityExpr, {"&", equalityExpr} ;
   
 equalityExpr =
-  relationalExpr, {("=" | "!="), relationalExpr} ;
+  relationalExpr, {("==" | "!="), relationalExpr} ;
   
 relationalExpr =
   elvisExpr, {("<" | "<=" | ">" | ">="), elvisExpr} ;
@@ -291,7 +291,7 @@ termSuffixExpr =
   | "[", expr, "]" ;
 
 literal = 
-  number | "true" | false" | "null" | string | buffer ;
+  unsignedNumber | "true" | false" | "null" | string | buffer ;
   
 idExpr = 
     id, callExpr
@@ -317,10 +317,10 @@ arrayType =
   (primitiveType | objectType), "[", [arraySize], "]" ;
   
 arraySize = 
-  unsignedNumber | hexNumber | definedId ;
+  unsignedNumber | hexLiteral | definedId ;
   
 defineId =
-  objectType, ".", id ;
+  [objectType, "."], id ;
   
 keyword = 
     "abstract" | "action" | "assert" | "bool" | "break" | "byte" | "case" 
@@ -335,30 +335,21 @@ keyword =
  * Numbers
  *)
 
-number = 
-  integerNumber | decimalNumber ;
- 
-integerNumber = 
-    signedNumber, [(timeSuffix, [longSuffix]) | longSuffix]
-  | hexNumber, [longSuffix]
-  | charLiteral ;
+number =
+    charLiteral
+  | hexLiteral
+  | unsignedNumber, [timeLong | floatOrDouble] ;
+  | unsignedNumber, ".", [unsignedNumber], [scientificNoatation], [timeLong | floatOrDouble]
+  | unsignedNumber, scientificNotation, [timeLong | floatOrDouble] ;
   
-hexNumber = 
-  ("0x" | "0X"), hexDigit, {hexDigit | "_"} ;
-  
-signedNumber = 
-  ["+" | "-"], unsignedNumber ;
+hexLiteral = 
+  "0x", hexDigit, {hexDigit | "_"}, [longSuffix] ;
   
 unsignedNumber =
   digit, {digit | "_"} ;
   
-decimalNumber
-    signedNumber, [timeSuffix], floatSuffix | doubleSuffix
-  | signedNumber, scientificNotation, [timeSuffix], [floatSuffix | doubleSuffix]
-  | signedNumber, ".", [unsignedNumber], [scientificNotation], [timeSuffix], [floatSuffix | doubleSuffix] ;
-  
 scientificNotation = 
-  ('E' | 'e'), signedNumber ;
+  ('E' | 'e'), ["+" | "-"], unsignedNumber ;
     
 timeSuffix = 
   "ns" | "ms" | "sec" | "min" | "hr" | "days" ;
@@ -366,11 +357,17 @@ timeSuffix =
 longSuffix =
   "l" | "L" ;
   
+timeLong =
+  (timeSuffix, [longSuffix]) | longSuffix ;
+  
 floatSuffix = 
   "f" | "F" ;
  
 doubleSuffix =
   "d" | "D" ;
+  
+floatOrDouble = 
+  floatSuffix | doublSuffix ;
 
 (* 
  * Strings
