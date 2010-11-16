@@ -34,10 +34,10 @@ abstract class Service
   ** not have any more work to do.
   **
   ** If you only want to do work once per execution cycle, you should consider:
-  ** 
+  **
   ** 1) Moving your work into the execute() callback. execute() will only be
   ** called once per execution cycle.
-  ** 
+  **
   ** 2) Set a "newCycle" flag in your execute() method and unset it after
   ** doing one work cycle.  Only do your work if the newCycle flag is set.
   **
@@ -47,16 +47,26 @@ abstract class Service
   }
 
   **
+  ** Return true if this Service will allow hibernation.
+  ** Default is to return true, subclass must override
+  ** if it has a need to prevent hibernation.
+  **
+  virtual bool canHibernate()
+  {
+    return true
+  }
+
+  **
   ** Callback when device is entering low-power sleep mode.
   **
-  virtual void onHibernate() 
+  virtual void onHibernate()
   {
   }
 
   **
   ** Callback when device is exiting low-power sleep mode.
   **
-  virtual void onUnhibernate() 
+  virtual void onUnhibernate()
   {
   }
 
