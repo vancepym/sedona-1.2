@@ -9,6 +9,7 @@
 
 **
 ** Or4 4 input OR logic object
+** null inputs ignored.  If all inputs null, output is null
 ** out = in1 || in2 || in3 || in4
 **
 class Or4
@@ -19,7 +20,14 @@ class Or4
 
   virtual override void execute()
   {
-    out = in1 || in2 || in3 || in4
+     bool allNull = true;
+    out = false
+    if (in1 != null) { out |= in1; allNull = false; }
+    if (in2 != null) { out |= in2; allNull = false; }      
+    if (in3 != null) { out |= in3; allNull = false; }
+    if (in4 != null) { out |= in4; allNull = false; }      
+
+    if (allNull) out = null 
   }
 
 }

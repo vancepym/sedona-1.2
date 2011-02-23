@@ -10,6 +10,7 @@
 **
 ** Xor Exclusive Or logic object
 **
+** if either input null output is null
 ** out = in1 xor in2
 **
 @niagaraIcon="module://icons/x16/control/logic/xor.png"
@@ -22,7 +23,10 @@ class Xor
 
   virtual override void execute()
   {
-    out = in1 ^ in2
+    if ((in1 == null) || (in2 == null)) 
+      out = null
+    else
+      out = in1 ^ in2
   }
 
 }

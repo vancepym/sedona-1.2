@@ -143,5 +143,23 @@ class LogicTest
     xor1.in1 = false
     xor1.execute()
     assert(xor1.out == true)
+    
+    xor1.in1 = null
+    xor1.in2 = true
+    xor1.execute()
+    assert(xor1.out == null)
+    xor1.in1 = null
+    xor1.in2 = false
+    xor1.execute()
+    assert(xor1.out == null)    
+    xor1.in1 = true
+    xor1.in2 = null
+    xor1.execute()
+    assert(xor1.out == null)
+    xor1.in1 = false
+    xor1.in2 = null
+    xor1.execute()
+    assert(xor1.out == null)
+
   }
 }

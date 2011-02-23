@@ -10,6 +10,7 @@
 **
 ** Not logic object
 **
+** if in == null, out = null else
 ** out = !in
 **
 @niagaraIcon="module://icons/x16/control/logic/not.png"
@@ -21,7 +22,10 @@ class Not
 
   virtual override void execute()
   {
-    out = !in
+    if (in == null)
+      out = null
+    else
+      out = !in
   }
 
 }

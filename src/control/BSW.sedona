@@ -10,7 +10,8 @@
 **
 ** BSW: Boolean Switch object
 **
-** out = if (s1) out = in1 else out = in2
+** if s1 is null output is null
+** out = if (s1) out = in2 else out = in1
 **
 @niagaraIcon="module://icons/x16/control/util/switch.png"
 class BSW
@@ -23,7 +24,10 @@ class BSW
 
   virtual override void execute()
   {
-    out = s1 ? in2 : in1
+    if (s1 == null)
+      out = null
+    else
+      out = s1 ? in2 : in1
   }
 
 }
