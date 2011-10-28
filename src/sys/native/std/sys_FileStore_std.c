@@ -36,12 +36,13 @@ const char* schemePaths[MAX_NUM_SCHEMES] = { "/manifests/", "/kits/", "/", };
 // --------------------------------------------------------------------------- //
 char* expandFilePath( const char* ord )
 {
-  char *delim, *pathptr, *sedHome;
+  char *delim, *rem, *pathptr, *sedHome, *dash;
   int s;
 
   if (ord==NULL) return NULL;
 
   delim = strchr(ord, SCHEME_DELIM);
+  rem = delim+1;
 
   // If no scheme, assume whole ord is file path
   if (delim==NULL) return (char*)ord;
@@ -52,32 +53,50 @@ char* expandFilePath( const char* ord )
   strncpy(schemestr, ord, delim-ord);
   schemestr[delim-ord] = '\0';    // make sure it gets null term.
 
-  pathptr = fullpath;
-
-  // Begin path with sedona_home env var
-  sedHome = getenv("sedona_home");
-  if (sedHome!=NULL)
-  {
-    strcpy(pathptr, sedHome);    // strcpy copies null term. too
-    pathptr += strlen(sedHome);   // ptr moves to char after path ends
-  }
-
-  // If scheme is in map then copy corresponding path into buf (o/w do nothing)
+  //
+  // If scheme is in map then expand full path and copy into buf;
+  //   otherwise just return remainder of ord after scheme delimiter 
+  //
   for (s=0; s<MAX_NUM_SCHEMES; s++)
   {
     if (strcmp(schemes[s], schemestr)==0)
-    {
-      strcpy(pathptr, schemePaths[s]);    // strcpy copies null term. too
-      pathptr += strlen(schemePaths[s]);   // ptr moves to char after path ends
       break;
+  }
+
+  // Point to beginning of path buf
+  pathptr = fullpath;
+
+  // If we found our scheme...
+  if (s<MAX_NUM_SCHEMES)
+  {
+    // Begin with sedona_home env var
+    sedHome = getenv("sedona_home");
+    if (sedHome!=NULL)
+    {
+      strcpy(pathptr, sedHome);          // strcpy copies null term. too
+      pathptr += strlen(sedHome);        // ptr moves to char after path ends
+    }
+
+    // Copy the path for this scheme
+    strcpy(pathptr, schemePaths[s]);     // strcpy copies null term. too
+    pathptr += strlen(schemePaths[s]);   // ptr moves to char after path ends
+
+    // Next add the kit name (i.e. filename up to dash)
+    dash = strchr(rem, '-');
+    if (dash!=NULL)
+    {
+      strncpy(pathptr, rem, dash-rem);
+      pathptr += dash-rem;
+      *pathptr++ = '/';
     }
   }
 
-  // Copy remainder of ord into path
-  strcpy(pathptr, delim+1);   
+
+  // Finally, copy filename itself
+  strcpy(pathptr, rem);   
 
   // DIAG
-  //printf("\n\t** expandFilePath: fullpath = %s\n", fullpath);
+  //printf("\t** Serving file: %s\n", fullpath);
   // DIAG
 
   return fullpath;
