@@ -40,10 +40,10 @@
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-Despite its tiny runtime footprint, Sedona has powerful reflection 
-support for accessing kit, type, and slot meta-data at runtime.  
-However unlike the general purpose reflection found in Java, 
-Sedona only provides reflection for <i>Component</i> types, and 
+Despite its tiny runtime footprint, the Sedona Framework has powerful reflection
+support for accessing kit, type, and slot meta-data at runtime.
+However unlike the general purpose reflection found in Java,
+Reflection is only supported for <i>Component</i> types, and
 <i>Property/Action</i> slots.
 </p>
 
@@ -52,7 +52,7 @@ Sedona only provides reflection for <i>Component</i> types, and
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-You can access the installed kits with the 
+You can access the installed kits with the
 <a href='sys/Kit.html'>sys::Kit</a> class:
 </p>
 
@@ -73,11 +73,11 @@ Kit kit = Sys.findKit("sys")
 The <a href='sys/Type.html'>sys::Type</a> API is used to reflectively work
 with types at runtime.  Only types that extend from <code>Component</code>
 are available for reflection:
-</p>          
+</p>
 
-<pre>                  
+<pre>
 // walk the types installed in a given kit
-Kit kit = Sys.findKit("control")          
+Kit kit = Sys.findKit("control")
 foreach (Type t : kit.types, kit.typesLen)
   Sys.out.print("  ${kit.name}::${t.name}").nl()
 
@@ -95,17 +95,17 @@ type literals since they are most efficient:
 
 <pre>
 UserService s = (UserService)Sys.app.lookupService(UserService.type)
-</pre>  
+</pre>
 
 <!--/////////////////////////////////////////////////////////-->
 <h1 id="slots">Slots</h1>
 <!--/////////////////////////////////////////////////////////-->
 
-<p>      
+<p>
 The <a href='sys/Slot.html'>sys::Slot</a> API is used to reflectively work
 with slots at runtime.  Only the property and action slots of component
 types are available for reflection:
-</p>                
+</p>
 
 <pre>
 // walk a type's slots
@@ -140,13 +140,13 @@ associated arrays:
 <tr><td>Kit.id</td><td>Sys.kits</td></tr>
 <tr><td>Type.id</td><td>Kit.types</td></tr>
 <tr><td>Slot.id</td><td>Type.slots</td></tr>
-</table>           
+</table>
 
 <p>
 This is an extremely efficient way to lookup kits, types, and slots.
 However, be aware that the id lookup only works within a specific
 schema.  As soon you change the installed kits or the version of those
-kits, then all of the reflection ids will likely change.  This trade-off 
+kits, then all of the reflection ids will likely change.  This trade-off
 between the efficiency of id based lookup versus the ability to version kits
 is the basis of <a href='schema.html'>Schemas</a>.
 </p>

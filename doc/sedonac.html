@@ -48,7 +48,7 @@ following tasks:
 <li><a href='#compileKit'>Compile Kit</a>: compile Sedona source
 code into a kit file.</li>
 <li><a href='#compileDir'>Compile Dir</a>: compile a group of
-Sedona kits</li>
+kits</li>
 <li><a href='#compileCode'>Compile Code</a>: compile a set of
 kits into an scode file</li>
 <li><a href='#compilePlatform'>Compile Platform</a>: stage
@@ -335,7 +335,7 @@ D:\sedona\sedonac
 </pre>
 
 <p>
-If the input file is a directory of Sedona kit source folders, then it will build
+If the input file is a directory of kit source folders, then it will build
 the kits and automatically generate HTML documentation for each class, as well as
 a summary page for each kit.
 All fields and methods for each class will be included in the documentation,
@@ -374,7 +374,7 @@ to the following rules:
   will cause sedonac to look in the environment for a variable called <code>USER</code>.</li>
 
   <li>If the variable starts with <code>sedona.env.</code> then sedonac
-  will attempt to resolve a variable in the Sedona environment (see
+  will attempt to resolve a variable in the Sedona Framework environment (see
   sedona.Env.java). For example, <code>${sedona.env.buildVersion}</code> will
   cause sedonac to try and resolve property <code>buildVersion</code> in the
   sedona environment. Note: as a convenience <code>${sedona.env.version}</code>

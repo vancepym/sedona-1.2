@@ -40,7 +40,7 @@
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-Sedona expressions are almost identical to those found in C or Java.
+Expressions are almost identical to those found in C or Java.
 The same operator precedence rules apply:
 </p>
 
@@ -70,7 +70,7 @@ The same operator precedence rules apply:
 The following operators may be used with numeric primitives:
 </p>
 
-<table> 
+<table>
   <tr> <th>Name</th>                <th>Operator</th> </tr>
   <tr> <td>Multiplication</td>      <td><code>x * y</code></td> </tr>
   <tr> <td>Division</td>            <td><code>x / y</code></td> </tr>
@@ -88,11 +88,11 @@ The following operators may be used with numeric primitives:
 it may not be used with floats or doubles.</p>
 
 <p>The prefix/postfix operators work just like C and Java.  If
-using the prefix operator the result of the expression is the 
+using the prefix operator the result of the expression is the
 new value.  If using the postfix operator the result is the
 old value:</p>
 
-<pre>    
+<pre>
   int x = 4    // x == 4
   int y = ++x  // x == 5, y == 5
   int z = x++  // x == 6, z == 5
@@ -103,11 +103,11 @@ old value:</p>
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-The following operators may be used with integer primitives (byte, 
+The following operators may be used with integer primitives (byte,
 short, int, long):
 </p>
 
-<table> 
+<table>
   <tr> <th>Name</th>        <th>Operator</th> </tr>
   <tr> <td>Or</td>          <td><code>x | y</code></td> </tr>
   <tr> <td>Xor</td>         <td><code>x ^ y</code></td> </tr>
@@ -125,19 +125,19 @@ short, int, long):
 The following operators may be used with booleans:
 </p>
 
-<table> 
+<table>
   <tr> <th>Name</th>   <th>Operator</th> </tr>
   <tr> <td>Or</td>     <td><code>x || y</code></td> </tr>
   <tr> <td>And</td>    <td><code>x &amp;&amp; y</code></td> </tr>
   <tr> <td>Not</td>    <td><code>!x</code></td> </tr>
-</table>               
+</table>
 
 <p>
 Both the Or and And operators are short circuiting.  If
 the first term of Or evaluates to true, then the second
 term is not evaluated.  If the first term of And
 evaluates to false, then the second term is not evaluated.
-</p>                        
+</p>
 
 <!--/////////////////////////////////////////////////////////-->
 <h1 id="comparison">Comparison</h1>
@@ -147,7 +147,7 @@ evaluates to false, then the second term is not evaluated.
 The following operators are used for comparison:
 </p>
 
-<table> 
+<table>
   <tr> <th>Name</th>                  <th>Operator</th> </tr>
   <tr> <td>Equal</td>                 <td><code>x == y</code></td> </tr>
   <tr> <td>Not Equal</td>             <td><code>x != y</code></td> </tr>
@@ -155,13 +155,13 @@ The following operators are used for comparison:
   <tr> <td>Greater Than or Equal</td> <td><code>x &gt;= y</code></td> </tr>
   <tr> <td>Less Than</td>             <td><code>x &lt; y</code></td> </tr>
   <tr> <td>Less Than or Equal</td>    <td><code>x &lt;= y</code></td> </tr>
-</table>                  
+</table>
 
 <p>
-Non-numeric types may only use the equality (<code>==</code> and 
+Non-numeric types may only use the equality (<code>==</code> and
 <code>!=</code>) operators.  Reference types compare identity (pointer
 address).
-</p>          
+</p>
 
 <!--/////////////////////////////////////////////////////////-->
 <h1 id="assignment">Assignment</h1>
@@ -172,15 +172,15 @@ The <code>=</code> operator is used to assign the right hand side
 expression to the left hand side.  The left hand side must be
 <i>assignable</i>.  Assignable expressions are local variables,
 fields, and array indices.
-</p>                       
+</p>
 
-<p> 
+<p>
 The compound assignment operators <code>= += -= *= /= |= ^= &amp;= &gt;&gt;= &lt;&lt;=</code>
 can be used to combine an arithmetic or bitwise operator with
 assignment:
-</p>       
+</p>
 
-<pre> 
+<pre>
   int x = 5   // x == 5
   x += 3      // x == 8
 </pre>
@@ -189,13 +189,13 @@ assignment:
 <h1 id="casting">Casting</h1>
 <!--/////////////////////////////////////////////////////////-->
 
-<p> 
+<p>
 Sedona uses a syntax just like C or Java to perform a cast.  Casts
 are required when the compiler cannot confirm a static type check.
 For example, if you need to assign an Obj to a Component, then you
 must use a cast: <code>c = (Component)obj</code>.  A cast is for
 compile time checking only, at runtime it is basically a no-op like C.
-</p>                   
+</p>
 
 <p>
 Casts are also used with numeric types to perform a type conversion.
@@ -216,9 +216,9 @@ short circuits to evaluate to null.  If the field or method returns a
 primitive then it short circuits to false/zero. Using the safe nav
 operator is a convenient and more efficient way than manually checking
 for null:
-</p>     
+</p>
 
-<pre> 
+<pre>
   // hard way
   DeviceNetwork net = null
   if (point != null)
@@ -242,14 +242,14 @@ rhs.  If lhs is non-null, then the rhs is short circuited and the
 whole expression evaluates to lhs.  The elvis operator is a convenient
 and more efficient way to write code where you might use the
 ternary operator:
-</p>             
+</p>
 
 <pre>
   // hard way
   name != null ? name : "unknown"
-  
+
   // easy way
-  name ?: "unknown"               
+  name ?: "unknown"
 </pre>
 
 <!--/////////////////////////////////////////////////////////-->
@@ -261,9 +261,9 @@ Sedona supports the C/Java ternary operator: <code>c ? t : f</code>.
 The boolean expression <code>c</code> is evaluated.  If true
 then the ternary expression evaluates to <code>t</code>, otherwise
 it evaluates to <code>f</code>:
-</p>                            
+</p>
 
-<pre> 
+<pre>
   bool x = true
   Str msg = x ? "On" : "Off"   // msg == "On"
   x = false
@@ -276,25 +276,25 @@ it evaluates to <code>f</code>:
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-Sedona supports string interpolation, which allows for concise 
-string formatting.  String interpolation can be used with any method 
-that has one <code>Str</code> parameter and returns an <code>OutStream</code>.  
-You may use the <code>"+"</code> operator to concatenate multiple 
+Sedona supports string interpolation, which allows for concise
+string formatting.  String interpolation can be used with any method
+that has one <code>Str</code> parameter and returns an <code>OutStream</code>.
+You may use the <code>"+"</code> operator to concatenate multiple
 expressions to a string literal:
 </p>
 
-<pre>                            
+<pre>
   // using the + operator
   int x = 77
   Sys.out.print("x=" + x)
-  
+
   // is equivalent to this statement
-  Sys.out.print("x=").printInt(x) 
+  Sys.out.print("x=").printInt(x)
 </pre>
 
 <p>
 The example above illustrates why interpolation is only used
-with methods that take a <code>Str</code> and return an 
+with methods that take a <code>Str</code> and return an
 <code>OutStream</code>.  The compiler doesn't actually create
 a new string, rather it chains multiple print calls.
 </p>
@@ -302,30 +302,30 @@ a new string, rather it chains multiple print calls.
 <p>
 Use of the "+" operator is allowed, but the preferred mechanism
 for string formatting is to embed the expressions directly into
-the string literal itself using the <code>'$'</code> character.  You 
+the string literal itself using the <code>'$'</code> character.  You
 can embed any arbitrary expression into a string literal using
-the syntax <code>"${expr}"</code>.  If the expression is a simple 
-variable name or a variable name followed by dot field accesses, 
-then you can omit the curly braces.  Use the <code>'\$'</code> 
+the syntax <code>"${expr}"</code>.  If the expression is a simple
+variable name or a variable name followed by dot field accesses,
+then you can omit the curly braces.  Use the <code>'\$'</code>
 escape sequence to print the dollar sign itself.  Some examples:
-</p>                   
+</p>
 
-<pre>                    
+<pre>
   // example from above
   Sys.out.print("x=${x}")
-  
+
   // same but omitting the braces
   Sys.out.print("x=$x")
-  
+
   // embedded expressions
-  Sys.out.print("x=0x${Sys.hexStr(x)}")  
-</pre>                          
+  Sys.out.print("x=0x${Sys.hexStr(x)}")
+</pre>
 
 <p>
 The following types are supported with string interpolation:
-</p>       
+</p>
 
-<table border='1'> 
+<table border='1'>
 <tr><th>Type</th><th>Print Method</th></tr>
 <tr><td><code>Str</code></td>    <td><code>OutStream.print</code></td></tr>
 <tr><td><code>bool</code></td>   <td><code>OutStream.printBool</code></td></tr>
@@ -333,7 +333,7 @@ The following types are supported with string interpolation:
 <tr><td><code>long</code></td>   <td><code>OutStream.printLong</code></td></tr>
 <tr><td><code>float</code></td>  <td><code>OutStream.printFloat</code></td></tr>
 <tr><td><code>double</code></td> <td><code>OutStream.printDouble</code></td></tr>
-</table>                             
+</table>
 
 <p></p>
 

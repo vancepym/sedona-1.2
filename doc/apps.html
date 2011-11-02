@@ -40,7 +40,7 @@
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-The standard design for deploying applications in Sedona is to utilize
+The standard design for deploying applications in the Sedona Framework is to utilize
 the component model to separate the code from the application.  In
 this architecture you have a clean boundary between the code packaged
 up as kits and the application packaged up as a tree of components.
@@ -48,27 +48,27 @@ This model allows you to build applications simply by assembling
 components together, configuring their properties, and linking slots
 together to define control flow.  This style of programming is especially
 amenable to graphical programming.
-</p>                              
+</p>
 
 <p>
-So when talking about a Sedona application, we are really talking
+So when talking about a Sedona Framework application, we are really talking
 about a tree of components assembled together.  An application is
 purely declarative, all the code is encapsulated in the kits.  The
-application itself is stored as a file using one of 
+application itself is stored as a file using one of
 two file formats:
-</p>                         
+</p>
 
 <ul>
-<li><b>SAX</b> (Sedona App XML): is a simple XML representation
-of the application that is easily generated and consumed by software 
+<li><b>SAX</b>: is a simple XML representation
+of the application that is easily generated and consumed by software
 tools</li>
-<li><b>SAB</b> (Sedona App Binary): is a compact binary representation
-of the application suitable for storage and execution on a Sedona 
+<li><b>SAB</b>: is a compact binary representation
+of the application suitable for storage and execution on a Sedona Framework-enabled
 device</li>
-</ul>             
+</ul>
 
 <p>
-You can convert between the two file formats using 
+You can convert between the two file formats using
 <a href='sedonac.html#compileApp'>sedonac</a>.
 </p>
 
@@ -83,9 +83,9 @@ Applications are boot strapped using the following phases:
 <ol>
 <li><b>Loaded</b>: all components are loaded from SAB file into
 memory and have their <code>Component.loaded</code> callback invoked.</li>
-<li><b>Start</b>: all components have their <code>Component.start</code> 
+<li><b>Start</b>: all components have their <code>Component.start</code>
 callback invoked.</li>
-<li><b>Running</b>: the application enters in main loop for 
+<li><b>Running</b>: the application enters in main loop for
 execution (described next).</li>
 </ol>
 
@@ -93,19 +93,19 @@ execution (described next).</li>
 <h1 id="execution">Execution</h1>
 <!--/////////////////////////////////////////////////////////-->
 
-<p>                              
-Sedona's execution model is based a single threaded main loop
+<p>
+The Sedona Framework's execution model is based a single threaded main loop
 with a fixed scan rate:
-</p>                                                          
+</p>
 
-<ol> 
+<ol>
 <li>Recursively execute components (children first).  For each component:
   <ol type='a'>
-  <li>Propagate incoming links</li> 
-  <li>Call the <code>Component.execute</code> virtual method</li> 
+  <li>Propagate incoming links</li>
+  <li>Call the <code>Component.execute</code> virtual method</li>
   </ol>
 </li>
-<li>Give any remaining time in the scan cycle to services via 
+<li>Give any remaining time in the scan cycle to services via
 <code>Service.work</code></li>
 <li>If no services have remaining work, then relinquish CPU (via yield or sleep) until next cycle</li>
 </ol>
@@ -115,56 +115,56 @@ with a fixed scan rate:
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-Depending on the underlying execution environment, the App can either 
+Depending on the underlying execution environment, the App can either
 return control to the OS (exit the VM) or sleep until it's time to run again.
 </p>
 <h2>Preemptive multithreaded OS</h2>
 <p>
-  These include Windows, Linux or QNX.  When a thread calls the OS sleep 
-  primitive, other threads are given a chance to run.  The VM may be 
+  These include Windows, Linux or QNX.  When a thread calls the OS sleep
+  primitive, other threads are given a chance to run.  The VM may be
   swapped in and out several times during an execute cycle.
-</p>                                             
+</p>
 <h2>Main Loop</h2>
 <p>
-  In this environment, the Sedona VM executes as the main loop and 
-  all other work is done @ ISR level.  Once the App completes an 
-  execute cycle, it can delay by entering a busy-wait loop.  
-</p>                                               
+  In this environment, the Sedona VM executes as the main loop and
+  all other work is done @ ISR level.  Once the App completes an
+  execute cycle, it can delay by entering a busy-wait loop.
+</p>
 <h2>Cooperative tasking OS </h2>
 <p>
 In this environment, a task must return control to the scheduler to allow other tasks a chance to run.  The sleep and busy-wait approaches won't work here since the VM will never exit, so the VM must support a clean exit and re-entry. This is accomplished by the yield mechanism described below.
-</p>  
-  
-  
+</p>
+
+
 <!--/////////////////////////////////////////////////////////-->
 <h1 id="yield">Yield</h1>
 <!--/////////////////////////////////////////////////////////-->
 <p>
-  Sedona supports <i>yielding</i> to provide a graceful exit (and 
-  subsequent reentry) of the VM, allowing the CPU to perform other 
-  operations.  
+  The Sedona Framework supports <i>yielding</i> to provide a graceful exit (and
+  subsequent reentry) of the VM, allowing the CPU to perform other
+  operations.
 </p>
-<p>  
-  Systems that require yield functionality must override the following 
+<p>
+  Systems that require yield functionality must override the following
   functions on Platform
 </p>
-<p>  
-  <code>yieldRequired()</code> - return true if the VM should exit after each App execute cycle  
-</p>  
-<p>   
+<p>
+  <code>yieldRequired()</code> - return true if the VM should exit after each App execute cycle
+</p>
+<p>
   <code>yield(long yieldTime)</code> - indicates the VM will be exiting and requests to be resumed in yieldTime nanoseconds.
-</p>  
-<p>    
+</p>
+<p>
   If a Platform returns true to yieldRequired(), then the VM will exit with
   the error code <code>ERR_YIELD</code> after each pass execution loop.  Before
-  exiting, <code>yield(yieldTime</code>) will be called indicating how long 
+  exiting, <code>yield(yieldTime</code>) will be called indicating how long
   the VM wishes to delay before re-entry.
-</p>    
-<p>    
+</p>
+<p>
   Native code can resume the VM via <code>vmResume(SedonaVM*)</code>
 </p>
-<p>      
-  If vmResume is not called before yieldTime expires, App overruns will occur.    
+<p>
+  If vmResume is not called before yieldTime expires, App overruns will occur.
  </p>
 
 
@@ -173,21 +173,21 @@ In this environment, a task must return control to the scheduler to allow other 
 <h1 id="hibernation">Hibernation</h1>
 <!--/////////////////////////////////////////////////////////-->
 <p>
-When entering hibernation, the Sedona App exits and returns control to the bootstrap code.  
-It is similar to yield but it is expected that the hibernation time will be much longer 
-than a typical yield time.  Hibernation is driven by application logic and most likely 
+When entering hibernation, the App exits and returns control to the bootstrap code.
+It is similar to yield but it is expected that the hibernation time will be much longer
+than a typical yield time.  Hibernation is driven by application logic and most likely
 will not occur each App execute cycle, whereas yield must occur each cycle.
 </p>
 
 <p>
 To enter the hibernation state, an application calls <code>App.hibernate()</code>.
 This will set a flag on App and when the current execution cycle is complete,
-it will cause the App to exit with error code <code>ERR_HIBERNATE</code>. 
-This will gracefully unwind the Sedona call stack, returning control to the boot code.
-The device's boot code should then put the device to sleep.  It is a device dependent 
-issue to decide how it will wake up from hibernation.  When the device does wake, it 
+it will cause the App to exit with error code <code>ERR_HIBERNATE</code>.
+This will gracefully unwind the call stack, returning control to the boot code.
+The device's boot code should then put the device to sleep.  It is a device dependent
+issue to decide how it will wake up from hibernation.  When the device does wake, it
 should restart the VM with a call to <code>vmResume(SedonaVM*)</code>.  If your device
-doesn't support hibernation, then you will need to simulate it using code such 
+doesn't support hibernation, then you will need to simulate it using code such
 as the following:
 </p>
 
@@ -198,15 +198,15 @@ while (result == ERR_HIBERNATE)
   printf("-- Simulated hibernate --\n");
   result = vmResume(&amp;vm);
 }
-</pre>  
+</pre>
 
 <p>
-If you are developing Sedona components, applications, or drivers you should
-keep hibernation in mind. Any software that might run on a battery powered 
-device needs to support hibernation cleanly. This means that function blocks 
-should assume the scan rate might have hibernation pauses. If you have 
-services that need to do something special when hibernating or waking, then 
-you will need to override the functions 
+If you are developing Sedona Framework components, applications, or drivers you should
+keep hibernation in mind. Any software that might run on a battery powered
+device needs to support hibernation cleanly. This means that function blocks
+should assume the scan rate might have hibernation pauses. If you have
+services that need to do something special when hibernating or waking, then
+you will need to override the functions
 <code>Service.onHibernate()</code> and <code>Service.onUnhibernate()</code>.
 <code>Service.onHibernate()</code> will be called prior to VM exit.  <code>Service.onUnhibernate()</code> will be called after the VM is resumed and prior to the App execution loop starting back up.
 
@@ -218,44 +218,44 @@ you will need to override the functions
 <!--/////////// move this after Execution? //////////////////-->
 
 <p>
-Most apps will be fully operational by the end of the first cycle. 
+Most apps will be fully operational by the end of the first cycle.
 When hardware I/O is involved, however, an app may need to allow additional time for the
 hardware to warm up, or for complex logic results to propagate fully to all components.
-For this purpose, Sedona provides a "steady state" timing feature that should be used 
-to protect the hardware from reading or writing transient values while the app is 
+For this purpose, the Sedona Framework provides a "steady state" timing feature that should be used
+to protect the hardware from reading or writing transient values while the app is
 starting up.
 </p>
 
 <p>
-The steady state feature consists of two pieces: 
+The steady state feature consists of two pieces:
 </p>
 
-<ul> 
-  <li><b>timeToSteadyState</b>: 
-  This integer specifies the time delay between the start of app execution and the time at 
+<ul>
+  <li><b>timeToSteadyState</b>:
+  This integer specifies the time delay between the start of app execution and the time at
   which the app is considered to be in "steady state".
-  It is a config property of the App class, so it can be set in the app definition (.sax file) or 
-  at runtime from a remote access tool (e.g. the App property sheet in Sedona Workbench).
+  It is a config property of the App class, so it can be set in the app definition (.sax file) or
+  at runtime from a remote access tool (e.g. the App property sheet in Sedona Framework Workbench).
   <br/> <br/>
-  The default value is 0, meaning that the delay ends when the app enters the "Running" 
-  phase described above.  The correct value for a given Sedona app will vary depending on
-  the application logic and the specific hardware involved. 
+  The default value is 0, meaning that the delay ends when the app enters the "Running"
+  phase described above.  The correct value for a given App will vary depending on
+  the application logic and the specific hardware involved.
   </li>
   <br/>
-  <li><b>isSteadyState()</b>: 
+  <li><b>isSteadyState()</b>:
   This is a method that returns <code>true</code> if the app has entered
-  "steady state" mode, i.e. if the time delay defined by <code>timeToSteadyState</code> 
-  has elapsed, and <code>false</code> otherwise.  Once steady state mode is reached, 
+  "steady state" mode, i.e. if the time delay defined by <code>timeToSteadyState</code>
+  has elapsed, and <code>false</code> otherwise.  Once steady state mode is reached,
   this method will continue to return <code>true</code> until the app is restarted.
-  Sedona code that affects hardware on the native level should use this method to
+  Code that affects hardware on the native level should use this method to
   avoid reading or writing hardware values until steady state is reached.
   </li>
 </ul>
 
 <p>
-<b>Note</b>: This feature is not used internally within the Sedona app.
-It only affects behavior of Sedona components that use the <code>isSteadyState()</code> method.
-It is the responsibility of each kit developer to call this method as needed to protect the 
+<b>Note</b>: This feature is not used internally within the App.
+It only affects behavior of components that use the <code>isSteadyState()</code> method.
+It is the responsibility of each kit developer to call this method as needed to protect the
 hardware.
 </p>
 By default, <code>App.timeToSteadyState</code> applies only to the first time the VM is started.  Once steady time has elapsed, hibernate/yield will not affect it.  If <code>App.hibernationResetsSteadyState</code> is set to true, then the steady state flag will be reset each time device exits hibernation.
@@ -266,14 +266,14 @@ By default, <code>App.timeToSteadyState</code> applies only to the first time th
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-Links are the mechanism used to define control flow in an app.  
-Links are said to be <i>from</i> a given component's slot <i>to</i> 
-another component's slot.  
+Links are the mechanism used to define control flow in an app.
+Links are said to be <i>from</i> a given component's slot <i>to</i>
+another component's slot.
 </p>
 
 <p>
 Currently only prop-to-prop links are supported.  During link
-propagation, the <i>from-property</i> value is copied into 
+propagation, the <i>from-property</i> value is copied into
 the <i>to-property</i>.  This mechanism is often used to link
 sensor inputs through control logic to actuator outputs.
 </p>
@@ -283,7 +283,7 @@ sensor inputs through control logic to actuator outputs.
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-Services are special components that subclass from 
+Services are special components that subclass from
 <a href='sys/Service.html'>sys::Service</a>.  Services have
 three primary characteristics that set them apart from other
 types of components:
@@ -295,19 +295,19 @@ type via the <code>App.lookupService</code> method.
 </li>
 <li><b>Background work</b>: most components get a single
 callback to do work during a scan cycle.  Services on the other
-hand get to handle background work during the time available at 
+hand get to handle background work during the time available at
 the end of a given scan cycle.
-</li>   
+</li>
 <li><b>Hibernation control</b>: Each time App finishes an execute
   cycle, it calls <code>Service.canHibernate</code> on all services.
   If a service is not in a state where it can hibernate, it should
-  return false.  
-  
+  return false.
+
   For example, if the service is waiting for a network
-  reply, it would return false.  
-  
-  Platform services for devices that never need to hibernate should always return false. 
-</li>   
+  reply, it would return false.
+
+  Platform services for devices that never need to hibernate should always return false.
+</li>
 </ul>
 
 <p>
@@ -323,7 +323,7 @@ also perform background work to service network messages.
 
 <p>
 The SAX format is structured as follows:
-</p>                                    
+</p>
 
 <pre>
 &lt;sedonaApp>
@@ -335,7 +335,7 @@ The SAX format is structured as follows:
   &lt;comp name="play" id="1" type="sys::Folder">
     &lt;comp name="rampA" id="7" type="control::Ramp">
       &lt;prop name="min" val="20.00000"/>
-      &lt;prop name="max" val="80.00000"/>          
+      &lt;prop name="max" val="80.00000"/>
     &lt;/comp>
     ...
   &lt;/comp>
@@ -355,14 +355,14 @@ The SAX format is structured as follows:
 <li><b>&lt;schema></b>: contains <b>&lt;kit></b> elements</li>
 <li><b>&lt;app></b>: contains <b>&lt;comp></b> elements</li>
 <li><b>&lt;links></b>: contains <b>&lt;link></b> elements</li>
-</ul>           
+</ul>
 
 <p>
-<b>&lt;kit></b> defines the kits used by the application: 
+<b>&lt;kit></b> defines the kits used by the application:
 </p>
 <ul>
 <li><b>name</b>: required kit name</li>
-<li><b>checksum</b>: optional kit checksum; if omitted the latest 
+<li><b>checksum</b>: optional kit checksum; if omitted the latest
 version of the kit is assumed</li>
 </ul>
 
@@ -383,7 +383,7 @@ within a <b>&lt;comp></b> element.  Supported attributes:
 </p>
 <ul>
 <li><b>name</b>: required name of property</li>
-<li><b>val</b>: required value.  Buf properties should be a base64 
+<li><b>val</b>: required value.  Buf properties should be a base64
 encoded value (unless asStr in which case just use string value).</li>
 </ul>
 
@@ -402,18 +402,18 @@ the format of "/path/comp.slot":
 
 <p>
 While XML is a nice representation for tools to work with
-app files, XML is too big and difficult to work with in an 
-embedded device.  So we use the SAB format when we need a compact 
-binary representation.  Sedona devices typically store their
+app files, XML is too big and difficult to work with in an
+embedded device.  So we use the SAB format when we need a compact
+binary representation.  Sedona Framework devices typically store their
 application as an SAB "file" in FLASH (although often it might
 just be location or sector of FLASH versus a real file system).
-</p>                         
+</p>
 
 <p>
 Although SAB is a very compact format for applications it must
 be used with a matching <a href='schema.html'>schema</a>.  For
-example, in order for a Sedona device to load a given SAB file, its scode
-must have the exact same kits and checksums installed. 
+example, in order for a Sedona Framework device to load a given SAB file, its scode
+must have the exact same kits and checksums installed.
 </p>
 
 <!--/////////////////////////////////////////////////////////-->

@@ -63,7 +63,7 @@ making it ideal for low level and real-time embedded platforms.
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-Sedona code is organized into a three unit hierarchy:
+Sedona Framework code is organized into a three unit hierarchy:
 </p>
 
 <ol>
@@ -71,21 +71,21 @@ Sedona code is organized into a three unit hierarchy:
 Kits form the top of the namespace and must be globally unique.
 Kit names are required to be prefixed with the vendor's name.
 </li>
-<li><b>Classes</b>: Object oriented units of organization.  
+<li><b>Classes</b>: Object oriented units of organization.
 Classes are always scoped within a kit.</li>
 <li><b>Slots</b>: Fields and methods defined within a class.</li>
-</ol>                                    
+</ol>
 
 <p>
 Kits are globally unique and used to scope classes which in turn
 scope slots.  We use this structure to define globally unique
-<i>qualified names</i> or <i>qnames</i> for classes and slots.  
+<i>qualified names</i> or <i>qnames</i> for classes and slots.
 A Class qname consists of the kit name and class name joined by
 the "::" separator.  A slot qname is the class's qname and the
 slot's simple name joined by the "." separator:
 </p>
 
-<pre> 
+<pre>
 control::Ramp      // class qname
 control::Ramp.out  // slot qname
 </pre>
@@ -95,9 +95,9 @@ control::Ramp.out  // slot qname
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-Sedona software is packaged up into modules called <i>kits</i>.
+Sedona Framework software is packaged up into modules called <i>kits</i>.
 The source code for a kit is managed as a set of text files
-with the ".sedona" extension.  A "kit.xml" file instructs the Sedona
+with the ".sedona" extension.  A "kit.xml" file instructs the
 compiler how to compile the kit and what directories to look in for
 source code.  A typical source directory is structured as follows:
 </p>
@@ -139,7 +139,7 @@ name.  For example <code>CoolComp</code> is stored in a text file called
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-A Sedona kit contains one or more <i>classes</i>.  A Sedona class is
+A kit contains one or more <i>classes</i>.  A class is
 very similar to a Java or C# class.  However, Sedona doesn't have the
 concept of interfaces - so everything is strictly based on single
 inheritance.
@@ -177,11 +177,11 @@ scope if no keyword is specified [applies to classes and slots]</li>
 <li><code>internal</code>: visible to classes in the same kit only
 [applies to classes and slots]</li>
 
-<li><code>protected</code>: visible to subclasses only 
+<li><code>protected</code>: visible to subclasses only
 [applies to slots only]</li>
 
 <li><code>private</code>: visible to declaring class only
-[applies to slots only]</li>   
+[applies to slots only]</li>
 
 </ul>
 

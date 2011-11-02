@@ -40,7 +40,7 @@
 <!-- /////////////////////////////////////////////////////// -->
 
 <p>
-The root directory of your Sedona installation is referred to
+The root directory of your Sedona Framework installation is referred to
 as <dfn>Sedona home</dfn>.  Relative directories specified by this
 documentation are assumed relative to the Sedona home directory.
 Sedona home is organized into the following sub directories:
@@ -54,7 +54,7 @@ Sedona home is organized into the following sub directories:
 <li><b>kits</b>: standard directory used to store kit files</li>
 <li><b>lib</b>: Java jar files and properties files</li>
 <li><b>manifests</b>: directory for manifest database</li>
-<li><b>platforms</b>: Contains source files used to stage Sedona platforms, and 
+<li><b>platforms</b>: Contains source files used to stage Sedona Framework platforms, and
     also contains the platform database.</li>
 <li><b>scode</b>: files related to linking scode images</li>
 <li><b>src</b>: directory tree for Java, C, and Sedona source code</li>
@@ -67,17 +67,17 @@ Sedona home is organized into the following sub directories:
 <h2 id="windows">Windows</h2>
 
 <p>
-Sedona development primarily centers around the "bin/sedonac.exe" executable.  
+Sedona Framework development primarily centers around the "bin/sedonac.exe" executable.
 If using the command line, you probably want to ensure that bin is in your path.
 </p>
 
 <p>
-The Sedona compiler requires a Java Runtime of 1.4 or greater.  The
+The compiler requires a Java Runtime of 1.4 or greater.  The
 "sedonac.exe" launch executable will look in the registry to find
 where your current VM is installed.  If you need to debug the launcher you
 can run "sedonac --v" (that's two dashes before the 'v'), which
 will trace the registry access and jvm.dll load.
-</p>                                            
+</p>
 
 <p>
 To verify sedonac is correctly installed, run with the "-ver" option:
@@ -95,9 +95,9 @@ java.version   = 1.6.0_05
 
 <h2 id="unix">Unix</h2>
 
-<p> 
+<p>
 There is a bash shell script in "adm/unix" that you can use and modify to
-initialize your Sedona development environment. It is called <i>init.sh</i>. 
+initialize your Sedona Framework development environment. It is called <i>init.sh</i>.
 In order to use this script, you must first
 </p>
 <ol>
@@ -112,7 +112,7 @@ the sedona_home environment variable.</li>
 After doing the above configuration, change your login script to run "init.sh".
 This script will make sure some key programs are in your PATH, make
 sure that all the python scripts have executable permissions, and create
-some useful aliases.  
+some useful aliases.
 </p>
 <p>
 There are two UNIX specific commands that you should use for building in a
@@ -127,7 +127,7 @@ UNIX environment
   Builds sedona.jar, sedonac.jar, all opensource kits, and makes the unix svm.</li>
 </ul>
 
-<h2 id="java">Java Command Line</h2>     
+<h2 id="java">Java Command Line</h2>
 
 <p>
 If you need to invoke Sedonac directly you can launch it directly
@@ -152,23 +152,23 @@ java -cp {lib}sedona.jar;{lib}sedonac.jar -Dsedona.home={home} sedonac.Main
 
 <p>
 You can rebuild from source using the python scripts in the adm
-directory.  These scripts are used to rebuild the compiler itself 
+directory.  These scripts are used to rebuild the compiler itself
 and the SVM.  In order to use the python scripts, you will need
-to install Python (version 2.5 or better).  
+to install Python (version 2.5 or better).
 Also the following environment variables must be defined:
 </p>
 
 <ul>
-<li><b>sedona_home</b>: directory of your Sedona installation (the
+<li><b>sedona_home</b>: directory of your Sedona Framework installation (the
 parent directory of adm, bin, lib, etc).</li>
 
 <li><b>java_home</b>: directory of the Java JDK (1.4 or later).  Java
-code is compiled with "adm/jikes.exe", but the JDK is used for "bin/jar.exe" 
+code is compiled with "adm/jikes.exe", but the JDK is used for "bin/jar.exe"
 and "jre/lib/rt.jar".</li>
 
-<li><b>win_sdk</b>: if you wish to compile the VM using the Visual 
+<li><b>win_sdk</b>: if you wish to compile the VM using the Visual
 Studio C compiler then "win_sdk" should reference your Windows development
-kit.  Also make sure you have run the "vcvars32.bat" script included in your 
+kit.  Also make sure you have run the "vcvars32.bat" script included in your
 Visual Studio installation.  If you aren't going to recompile the SVM
 for Win32, then this setup is unnecessary.</li>
 </ul>
@@ -184,13 +184,13 @@ setup.
 <!-- /////////////////////////////////////////////////////// -->
 
 <p>
-The following commands are commonly used when building and running Sedona:
+The following commands are commonly used when building and running the Sedona Framework:
 </p>
 
 <ul>
 <li><b>makesedona.py</b>:
   compile sedona runtime Java source into sedona.jar</li>
-  
+
 <li><b>makesedonac.py</b>:
   compile sedonac Java source into sedonac.jar (depends on sedona.jar)</li>
 
@@ -202,15 +202,15 @@ The following commands are commonly used when building and running Sedona:
 
 <li><b>sedonac scode\foo.xml</b>:
   link Sedona kits specified by foo.xml into foo.scode image file</li>
-  
+
 <li><b>sedonac apps\bar.sax</b>:
   compile a SAX file into a SAB file</li>
 
 <li><b>svm scode\foo.scode apps\bar.sab</b>:
-  run win32 Sedona VM with the specified scode and app file</li>
+  run win32 SVM with the specified scode and app file</li>
 
 <li><b>svm scode\foo.scode -test</b>:
-  run test suite with the win32 Sedona VM and the specified scode file</li>
+  run test suite with the win32 SVM and the specified scode file</li>
 
 <li><b>svm --plat</b>:<br/>
   For the open source win32 and unix svm implementations, this allows you
@@ -220,11 +220,11 @@ The following commands are commonly used when building and running Sedona:
   <a href="platCertified.html">certification test suite</a>.
   See the <b>svm</b> usage for more details.</li>
 <li><b>jsvm apps\bar.sab</b>:
-  run Sedona application on the Java VM with the specified app file</li>
+  run Sedona Framework application on the Java VM with the specified app file</li>
 
 <li><b>makedev.py</b>:
   recompile all the commonly used targets and run tests with the win32 svm</li>
-</ul>                     
+</ul>
 
 <p>
 Note that any command that builds the SVM will need to have the appropriate target

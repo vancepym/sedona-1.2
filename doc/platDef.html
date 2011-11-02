@@ -39,12 +39,12 @@
 <h1 id="overview">Overview</h1>
 <!--/////////////////////////////////////////////////////////-->
 
-<p>One of Sedona's strengths is the portability of Sedona kits and
+<p>One of Sedona Framework's strengths is the portability of Sedona and
 apps across different hardware platforms. This is accomplished by
-building a custom version of the Sedona VM for each supported platform,
+building a custom version of the SVM for each supported platform,
 tailored to the specific underlying architecture. The process for
 customizing the SVM is streamlined by encapsulating the
-platform-specific information into a platform definition file. 
+platform-specific information into a platform definition file.
 </p>
 
 <p>
@@ -70,18 +70,18 @@ source code and the platform manifest.
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-In Sedona, the platform definition file is an XML file that serves three major
+The platform definition file is an XML file that serves three major
 purposes:
 </p>
 
 <ol>
-  <li>Specify the unique platform id for platforms using this Sedona VM.</li>
-  <li>Declare properties needed for building the Sedona VM. Such
+  <li>Specify the unique platform id for platforms using this SVM.</li>
+  <li>Declare properties needed for building the SVM. Such
   properties include endianness, block size, and pointer size. If you
   want your SVM to support a kit that contains native methods, you must
   declare those dependencies as well, and specify the locations of the
   source code for the <a href='nativeMethods.html'>native methods</a>.</li>
-  <li>Declare arbitrary metadata about the platform.  Sedona tools can
+  <li>Declare arbitrary metadata about the platform.  Sedona Framework tools can
   use this metadata to enhance the experience of working with a specific
   platform.</li>
 </ol>
@@ -92,15 +92,15 @@ The following is an example platform definition file for a win32 platform.
 
 <pre>
 &lt;sedonaPlatform vendor="Acme" id="acme-basicPlatform-win32-${sedona.env.version}">
-  
+
   &lt;compile endian="little" blockSize="4" refSize="4" debug="true" test="true">
-  
+
     &lt;!-- Native Kits -->
     &lt;nativeKit depend="sys 1.0" />
     &lt;nativeKit depend="inet 1.0" />
     &lt;nativeKit depend="datetimeStd 1.0" />
     &lt;nativeKit depend="acmePlatform 1.0" />
-    
+
     &lt;!-- Native Sources -->
     &lt;nativeSource path="/src/vm" />
     &lt;nativeSource path="/src/sys/native" />
@@ -117,7 +117,7 @@ The following is an example platform definition file for a win32 platform.
   &lt;manifestInclude>
     &lt;contact email="jdoe@acme.com" url="http://www.acme.com/sedona/help.html" />
   &lt;/manifestInclude>
-  
+
 &lt;/sedonaPlatform>
 </pre>
 
@@ -129,7 +129,7 @@ The following is an example platform definition file for a win32 platform.
   <p><b>id</b>: (optional)The id that <i>uniquely</i> identifies this platform. This
   id must be prefixed with the string "<code><i>vendor</i>-</code>". In the
   example above the vendor is "Acme" and the id is prefixed with "acme-".</p>
-  
+
   <p><code>sedonac</code> will generate a C header file <code>sedonaPlatform.h</code>
   in the stage directory containing a macro <code>PLATFORM_ID</code> with the
   value of the resolved id. The resolved platform id <i>must</i> be returned by
@@ -164,9 +164,9 @@ The following is an example platform definition file for a win32 platform.
 <p><b>&lt;compile></b> provides platform-specific parameters:</p>
 <ul>
 <li><b>endian</b>: (required) either "little" or "big" based on target processor.</li>
-<li><b>blockSize</b>: (required) size of a scode block in bytes 
+<li><b>blockSize</b>: (required) size of a scode block in bytes
 (see "<a href="../src/vm/sedona.h">sedona.h</a>")</li>
-<li><b>refSize</b>: (required) size of a memory pointer in bytes for target processor 
+<li><b>refSize</b>: (required) size of a memory pointer in bytes for target processor
 (4 for 32-bit processor).</li>
 <li><b>debug</b>: (optional) boolean to include debug meta-data in image.  Defaults to false</li>
 <li><b>test</b>: (optional) boolean to include test code in image.  Defaults to false</li>
@@ -177,14 +177,14 @@ doubles are stored using byte level little endian, word level big endian.</li>
 <p><b>&lt;nativeKit></b> indicates that this platform SVM implements the native methods from
 the specified kit.</p>
 <ul>
-<li><b>depend</b>: (required) <a href='kits.html#depends'>dependency</a> as a kit 
+<li><b>depend</b>: (required) <a href='kits.html#depends'>dependency</a> as a kit
 name and version constraint.</li>
 </ul>
 
 <p><b>&lt;nativeSource></b> designates a source path to native code:</p>
 <ul>
-  <li><b>path</b>: (required) path to a folder with native code that must be 
-  built into the Sedona VM image. The path must start with "/" and be relative
+  <li><b>path</b>: (required) path to a folder with native code that must be
+  built into the SVM image. The path must start with "/" and be relative
   to <i>sedona_home</i>.
   <p>This attribute supports <a href="sedonac.html#variables">variable substitution</a>. </p>
   </li>
@@ -194,9 +194,9 @@ name and version constraint.</li>
 metadata in the generated platform manifest file. All XML elements that are
 children of the manifest include will be copied into the platform manifest.</p>
 
-<p><font color="red">Note:</font> All XML namespace URIs that begin with 
-<code>http://sedonadev.org/ns</code> are reserved by Sedona. Vendor specific
-XML elements should not use any such namespace URI.</p> 
+<p><font color="red">Note:</font> All XML namespace URIs that begin with
+<code>http://sedonadev.org/ns</code> are reserved by the Sedona Framework. Vendor specific
+XML elements should not use any such namespace URI.</p>
 
 <ul>
   <li><b>path</b>: (optional) specifies the path to an external XML file.

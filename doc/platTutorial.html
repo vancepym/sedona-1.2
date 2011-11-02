@@ -35,13 +35,13 @@
 <div class='content'>
 <!-- TOC-HEADER-END -->
 
-<p>A Sedona platform is simply any device running an SVM. The platform is
+<p>A Sedona Framework platform is simply any device running an SVM. The platform is
 uniquely identified by the <b><i>platformId</i></b> property of the platform
 service running in the app on that device.</p>
 
-<p>This section presents a high-level, step-by-step guide to creating a Sedona platform
+<p>This section presents a high-level, step-by-step guide to creating a Sedona Framework platform
 for your own device. We will use the Win32 platform provided in the open source
-distribution as a case study in creating a new Sedona platform.</p>
+distribution as a case study in creating a new Sedona Framework platform.</p>
 
 <ol>
   <li><a href="#step1">Step 1: </a>Create a kit for your platform service</li>
@@ -56,7 +56,7 @@ distribution as a case study in creating a new Sedona platform.</p>
 <h1 id="step1">Step 1: Create a kit for your platform service</h1>
 <!--/////////////////////////////////////////////////////////-->
 
-<p>Every Sedona app must have a <code>sys::PlatformService</code> component
+<p>Every app must have a <code>sys::PlatformService</code> component
 running in it. The platform service is intended to represent your unique
 OS/Hardware platform. One of the most important properties on the platform
 service is the <code>platformId</code> property. This property uniquely
@@ -66,7 +66,7 @@ platform database.</p>
 <p>The platform service provided in the sys kit is simply hard-coded to return
 a platform id of <code>"unknown"</code>.  You will need to provide a sub-class
 of the <code>sys::PlatformService</code> so that, at the very least, you can set the
-platformId properly.  Therefore, you will usually create a new kit for your 
+platformId properly.  Therefore, you will usually create a new kit for your
 platform service.  The win32 platform service is in a kit called "platWin32" and
 the kit definition file is in <code><i>sedona_home</i>/platforms/src/generic/win32/kit.xml</code></p>
 
@@ -79,7 +79,7 @@ to get the platform id for that device.</p>
 class Win32PlatformService extends PlatformService {
 
   internal native Str doPlatformId()
-  
+
   override virtual void start() {
     super.start()
     updatePlatformId(doPlatformId())
@@ -98,11 +98,11 @@ for our win32 platform is</p>
 
 // Str Win32PlatformService.doPlatformId()
 Cell platWin32_Win32PlatformService_doPlatformId(SedonaVM* vm, Cell* params)
-{         
+{
   Cell result;
   result.aval = PLATFORM_ID;
   return result;
-} 
+}
 </pre>
 
 <p>Notice that our native implementation makes use of the <code>sedonaPlatform.h</code>
@@ -120,13 +120,13 @@ platform definition for our win32 platform.</p>
 for an in depth discussion of this file.</p>
 
 <p> The platform definition for the win32 platform is located in
-<code><i>sedona_home</i>/platforms/src/generic/win32/generic-win32.xml</code>.</p> 
+<code><i>sedona_home</i>/platforms/src/generic/win32/generic-win32.xml</code>.</p>
 
 <pre>
 &lt;sedonaPlatform vendor="Tridium" id="tridium-generic-win32-${sedona.env.version}" >
 
   &lt;compile endian="little" blockSize="4" refSize="4" debug="true" test="true">
-  
+
     &lt;!-- Native Kits -->
     &lt;nativeKit depend="sys 1.0" />
     &lt;nativeKit depend="inet 1.0" />
@@ -144,7 +144,7 @@ for an in depth discussion of this file.</p>
     &lt;nativeSource path="/src/datetimeStd/native/std" />
     &lt;nativeSource path="/platforms/src/generic/win32/native" />
   &lt;/compile>
-       
+
 &lt;/sedonaPlatform>
 </pre>
 
@@ -226,7 +226,7 @@ into the platform database.</p>
 <h1 id="step6">Step 6: SAX and Scode setup for your platform</h1>
 <!--/////////////////////////////////////////////////////////-->
 
-<p>To use your new platform service, you will need to create a Sedona application
+<p>To use your new platform service, you will need to create an application
 (SAX) that uses your platform service. There is an example SAX file that uses
 the Win32PlatformService at <code><i>sedona_home</i>/apps/platWin32.sax</code>.
 You can use this file as a template and make the following modifications to use your

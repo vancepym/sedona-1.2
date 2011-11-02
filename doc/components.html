@@ -48,7 +48,7 @@ components are assembled into applications.
 </p>
 
 <p>
-A Sedona component is any class that extends
+A component is any class that extends
 <code><a href='sys/Component.html'>sys::Component</a></code>.
 Components include several features:
 </p>
@@ -90,9 +90,9 @@ to the following types:
 <!--/////////////////////////////////////////////////////////-->
 
 Properties are either <i>config</i> or <i>runtime</i>.  Config
-properties are persistent and typically are changed by the user.  
-Runtime properties are transient and are changed by the component 
-itself during runtime.  Properties are runtime by default unless 
+properties are persistent and typically are changed by the user.
+Runtime properties are transient and are changed by the component
+itself during runtime.  Properties are runtime by default unless
 marked with the "config" facet.  A simple example:
 
 <pre>
@@ -140,7 +140,7 @@ void updateBlob()
   blob.copyFromStr("wow!")
   changed(Foo.blob)
 }
-</pre>         
+</pre>
 
 <p>
 Note that <code>changed</code> is called automatically when
@@ -154,7 +154,7 @@ call <code>changed</code> for <code>Buf</code> properties.
 
 <p>
 <code>Buf</code> is the only non-primitive property type
-available in Sedona.  However, it is a common case to store a <code>Str</code>
+available.  However, it is a common case to store a <code>Str</code>
 value in a <code>Buf</code> property.  If you know that a buffer
 property will always store a null-terminated string, then you
 should mark the property with the "asStr" facet:
@@ -211,19 +211,19 @@ must be one of the following types:</p>
 
 <p>
 Examples of "actions in action":
-</p>                     
+</p>
 
 <pre>
 class Foo extends Component
 {
-  action void actionNoArg() 
-  {  
-    Sys.out.print("actionNoArg").nl() 
-  }  
-  
-  @asStr action void actionStr(Buf x)                            
-  { 
-    Sys.out.print(x.toStr()).nl() 
+  action void actionNoArg()
+  {
+    Sys.out.print("actionNoArg").nl()
+  }
+
+  @asStr action void actionStr(Buf x)
+  {
+    Sys.out.print(x.toStr()).nl()
   }
 }
 

@@ -39,21 +39,21 @@
 <h1 id="overview">Overview</h1>
 <!--/////////////////////////////////////////////////////////-->
 
-<p>           
-Kits are the basic unit of modularity in Sedona:
-</p>                                            
+<p>
+Kits are the basic unit of modularity in the Sedona Framework:
+</p>
 
 <ul>
 <li>Kits define a global name for identifying modules</li>
 <li>Kits define a global namespace for types and schemas</li>
 <li>Kits define code versioning</li>
-<li>Kits define the dependency graphs</li> 
+<li>Kits define the dependency graphs</li>
 <li>Kits encapsulate code, types, and meta-data</li>
 </ul>
 
 <p>
 Because kits define the top of the global namespace, each must
-have a globally unique name.  Sedona requires kits to be prefixed
+have a globally unique name.  The Sedona Framework requires kits to be prefixed
 with the vendor's name.  See <a href='#vendors'>Vendors</a> for
 the rules regarding vendor and kit naming.
 </p>
@@ -63,10 +63,10 @@ the rules regarding vendor and kit naming.
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-Sedona version numbers are specified as a series of decimal
-digits separated by the dot character.  Convention is to use 
-a four part version of <code>major.minor.build[.patch]</code>. 
-</p>                
+Version numbers are specified as a series of decimal
+digits separated by the dot character.  Convention is to use
+a four part version of <code>major.minor.build[.patch]</code>.
+</p>
 
 <p>
 The <code>sedona.util.Version</code> class provides an API
@@ -78,12 +78,12 @@ The following rules are run to determine the version of kit
 at compile time from highest priority to lowest:
 </p>
 
-<ol> 
+<ol>
 <li>If <code>-kitVersion</code> was specified on command line,
 then that version is used</li>
 <li>If explicitly defined by the <code>version</code> attribute
 in "kit.xml" that version is used</li>
-<li>Fallback is to use "buildVersion" definition in "lib/sedona.properties"</li>                                                                                
+<li>Fallback is to use "buildVersion" definition in "lib/sedona.properties"</li>
 </ol>
 
 
@@ -92,19 +92,19 @@ in "kit.xml" that version is used</li>
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-Dependencies identify a kit by name with a set of version 
-constraints.  Dependencies are used whenever the sedona tools
+Dependencies identify a kit by name with a set of version
+constraints.  Dependencies are used whenever the Sedona Framework tools
 need to resolve a specific kit version:
 </p>
 
 <ul>
-<li>Kits declare dependencies to use another kit's APIs 
+<li>Kits declare dependencies to use another kit's APIs
     (<a href='sedonac.html#compileKit'>kits.xml</a>).</li>
 <li>SCode images declare dependencies for the kits to link together
     (<a href='sedonac.html#compileCode'>scode</a>).</li>
 <li>Platform manifests declare dependencies on kits with native methods
     (<a href='platDef.html#manifest'>platform</a>).</li>
-</ul>    
+</ul>
 
 <p>
 The <code>sedona.Depend</code> class provides an API for parsing
@@ -119,7 +119,7 @@ and comparing dependencies:
  versionPlus   := version space* "+"
  versionExact  := version space* "="
  versionRange  := version space* "-" space* version
- version       := digit ["." digit]*                                   
+ version       := digit ["." digit]*
  checksum      := "0x" 8 hex digits
  digit         := "0" - "9"
  </pre>
@@ -137,7 +137,7 @@ for "foo 1.2-4". You may specify a list of potential constraints
 separated by commas. Multiple version dependencies are evaluated using a
 logical OR - any one match is considered an overall match. A version
 constraint and a checksum constraint are evaluated using a logical AND.
-</p> 
+</p>
 
 <p>
 Examples:
@@ -164,7 +164,7 @@ Examples:
 To avoid naming collisions, kits must be prepended by a vendor
 name.  The vendor name is an alphanumeric text string and must be
 less than 32 characters.  Examples of valid vendor names:
-</p>                                
+</p>
 
 <pre>
 Acme
@@ -175,7 +175,7 @@ AcmeCompany
 <p>
 Your kit names must be prepended with your vendor name.  Kit names are
 alphanumeric and may contain the underscore ('_') character after the vendor
-prefix. The vendor name is treated as case-insensitive when it is verified. 
+prefix. The vendor name is treated as case-insensitive when it is verified.
 All these are valid kit names for a kit owned by the <code>Acme</code> vendor:
 </p>
 
@@ -187,9 +187,9 @@ Acmecontrol
 
 <p>
 Likewise, the prefix must match the vendor name specified in the
-kit manifest (ignoring case); this will be handled by sedonac during 
+kit manifest (ignoring case); this will be handled by sedonac during
 compilation when it generates your kit manifest.
-</p>  
+</p>
 
 <pre>
 &lt;kitManifest
@@ -204,7 +204,7 @@ compilation when it generates your kit manifest.
 </pre>
 
 <p>
-Visit <a href='http://sedonadev.org'>http://sedonadev.org</a> to register your 
+Visit <a href='http://sedonadev.org'>http://sedonadev.org</a> to register your
 vendor name.
 </p>
 

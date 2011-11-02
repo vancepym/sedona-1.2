@@ -50,21 +50,21 @@ are used to create a native method:
 <li><b>Native Id</b>: every native method is assigned a unique two
   byte identifier in <code>kit.xml</code></li>
 
-<li><b>Sedona Stub</b>: every native method is declared as a normal
-  method in Sedona using the <code>native</code> modifier</li>
+<li><b>Stub</b>: every native method is declared as a normal
+  method using the <code>native</code> modifier</li>
 
 <li><b>Native Implementation</b>: native methods are implemented as
   functions in the C programming language</li>
 
 <li><b>Native Tables</b>: function pointers to all native implementations
-   are mapped into tables for dispatch by the Sedona VM</li>
+   are mapped into tables for dispatch by the SVM</li>
 
-</ol>       
+</ol>
 
 <p>
 When running on the Java VM, native methods are implemented in the
 Java language - see the <a href='jvm.html#nativeMethods'>Java VM</a>
-chapter.            
+chapter.
 </p>
 
 <!-- /////////////////////////////////////////////////////// -->
@@ -73,7 +73,7 @@ chapter.
 
 <p>
 Every native method is assigned a two byte identifier used to dispatch a
-Sedona call to the proper C function.  The top byte is the <i>kitId</i>
+call to the proper C function.  The top byte is the <i>kitId</i>
 and the bottom byte is the <i>methodId</i>.  Native ids are formatted as
 "kitId::methodId".
 </p>
@@ -82,8 +82,8 @@ and the bottom byte is the <i>methodId</i>.  Native ids are formatted as
 Each kit that contains native methods should be assigned a unique kitId.
 Technically kitIds don't need to be globally unique, but should be unique
 across all the kits that might be used together for a given platform.  The
-range of kitIds from 0 to 99 is reserved for core Sedona kits.  Third
-parties should use kitIds from 100 to 255, or coordinate with the core Sedona
+range of kitIds from 0 to 99 is reserved for core Sedona Framework kits.  Third
+parties should use kitIds from 100 to 255, or coordinate with the core Sedona Framework
 development team.  The <code>sys</code> kit itself is assigned the kitId of zero.
 </p>
 
@@ -116,11 +116,11 @@ as "kitId::methodId".
 </p>
 
 <!-- /////////////////////////////////////////////////////// -->
-<h1 id="stubs">Sedona Stubs</h1>
+<h1 id="stubs">Stubs</h1>
 <!-- /////////////////////////////////////////////////////// -->
 
 <p>
-Native methods are declared as normal Sedona methods but without a
+Native methods are declared as normal methods but without a
 method body (just like abstract methods).  Native methods must be flagged
 with the <code>native</code> keyword.  Native methods cannot be
 <code>abstract</code> or <code>virtual</code>.  For example:
@@ -135,7 +135,7 @@ class Type2
 </pre>
 
 <p>
-The Sedona compiler will perform a series of checks upon the native ids
+The compiler will perform a series of checks upon the native ids
 and native stubs when compiling source code into a kit file (in the
 <code>ResolveNatives</code> step).  Unless errors are detected, the native
 ids are written into the appropriate IR files of the kit.  If any native
@@ -147,7 +147,7 @@ ids are modified, you must recompile from source.
 <!-- /////////////////////////////////////////////////////// -->
 
 <p>
-The Sedona VM is stack based.  Each item on the stack is called a <i>Cell</i>,
+The SVM is stack based.  Each item on the stack is called a <i>Cell</i>,
 which is a union of <code>int32_t</code>, <code>float</code>, and
 <code>void*</code>.  Unless you are running on a 64-bit processor, a
 Cell is 32-bits wide.  The definition of Cell in <code>sedona.h</code> is:
@@ -180,13 +180,13 @@ typedef Cell (*NativeMethod)(struct SedonaVM_s* vm, Cell* params);
 The parameters are passed as a Cell pointer to the second parameter.  You
 can manually extract the individual parameters using array indexing.  If
 the native method is not static, then the implicit <code>this</code> pointer
-is always parameter 0.  
+is always parameter 0.
 </p>
 
 <p>
 It is important to note that all native methods return a Cell value even
-when the Sedona signature has a <code>void</code> return. You can use the
-constant <code>nullCell</code> to return from a Sedona method that returns <code>void</code>.
+when the signature has a <code>void</code> return. You can use the
+constant <code>nullCell</code> to return from a method that returns <code>void</code>.
 Constants <code>trueCell</code> and <code>falseCell</code> can similarly be used
 for <code>bool</code> returns.
 </p>
@@ -201,9 +201,9 @@ Cell foo_Type2_add(SedonaVM* vm, Cell* params)
   int32_t a = params[0].ival;
   int32_t b = params[1].ival;
   Cell result;
-  
+
   result.ival = a+b;
-  
+
   return result
 }
 </pre>
@@ -217,7 +217,7 @@ Cell foo_Type2_test(SedonaVM* vm, Cell* params)
   int32_t z = params[0].ival;
   int32_t b = params[1].ival;
   float   f = params[2].fval;
-  
+
   printf("test %d %d %f\n", z, b, f);
 
   return nullCell;
@@ -246,7 +246,7 @@ instead of <code>Cell</code>. The following is an example - note how each <code>
 parameter actually consumes two cells of the parameter list:
 </p>
 
-<pre> 
+<pre>
 native static long addTwoLongs(long a, long b)
 
 int64_t foo_Type3_addTwoLongs(SedonaVM* vm, Cell* params)
@@ -255,7 +255,7 @@ int64_t foo_Type3_addTwoLongs(SedonaVM* vm, Cell* params)
   int64_t b = *(int64_t*)(params+2); // param 2+3
   return a+b;
 }
-</pre>  
+</pre>
 
 <p>
 A summary of common mappings from Sedona to their C equivalents:
@@ -315,7 +315,7 @@ A summary of common mappings from Sedona to their C equivalents:
 </table>
 
 <p>
-Note that Sedona strings can be used as a normal null terminated C string.
+Note that strings can be used as a normal null terminated C string.
 </p>
 
 <p>
@@ -328,7 +328,7 @@ to structure your native C code.
 <!-- /////////////////////////////////////////////////////// -->
 
 <p>
-When the Sedona VM is compiled, the VM is bound to a lookup table
+When the SVM is compiled, the SVM is bound to a lookup table
 for all the native methods available.  This lookup table is a two
 level array of function pointers.  The first level of the array
 maps to the kitIds and the second level maps to the methodIds.  For
@@ -347,12 +347,12 @@ when <code>sedonac</code> is used to <a href="porting.html#staging">stage a VM</
 
 <p>
 The existing native method facility provides low level hooks to bind
-Sedona APIs into the native platform.  However due to its low level nature
+Sedona Framework APIs into the native platform.  However due to its low level nature
 it maps fairly closely to the stack architecture of the VM.  This design
 has the major limitation that it only works well when accessing primitives
-off the stack.  There is currently no safe mechanism to access individual 
-fields of a Sedona object within a native method, as you would need to 
-know exactly how the compiler will layout the memory (even then it would 
+off the stack.  There is currently no safe mechanism to access individual
+fields of an Object within a native method, as you would need to
+know exactly how the compiler will layout the memory (even then it would
 be quite brittle).  In the meantime the best
 practice is to pass only primitives (or arrays of primitives) as parameters.
 </p>
@@ -362,21 +362,21 @@ practice is to pass only primitives (or arrays of primitives) as parameters.
 <!-- /////////////////////////////////////////////////////// -->
 
 <p>
-The following table shows some of the currently predefined native kit ids.  
+The following table shows some of the currently predefined native kit ids.
 All PlatformService kits use a native kit id of 1.
 </p>
 
 <table>
   <tr> <td>sys</td>                  <td>0</td></tr>
-  <tr> <td><i>platform svcs</i></td> <td>1</td></tr>        
+  <tr> <td><i>platform svcs</i></td> <td>1</td></tr>
   <tr> <td>inet</td>                 <td>2</td></tr>
   <tr> <td>serial</td>               <td>3</td></tr>
-  <tr> <td>basicio</td>              <td>4</td></tr>        
-  <tr> <td>bacnet</td>               <td>5</td></tr>        
+  <tr> <td>basicio</td>              <td>4</td></tr>
+  <tr> <td>bacnet</td>               <td>5</td></tr>
   <tr> <td>smbus</td>                <td>6</td></tr>
-  <tr> <td>spibus</td>               <td>7</td></tr>        
-  <tr> <td>nrio</td>                 <td>8</td></tr>         
-  <tr> <td>datetimeStd</td>          <td>9</td></tr>        
+  <tr> <td>spibus</td>               <td>7</td></tr>
+  <tr> <td>nrio</td>                 <td>8</td></tr>
+  <tr> <td>datetimeStd</td>          <td>9</td></tr>
 </table>
 
 <br/>

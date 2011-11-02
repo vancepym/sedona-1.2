@@ -40,8 +40,8 @@
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-This chapter documents the coding conventions we use for the 
-core Sedona code, as well as the supporting Java and C code.
+This chapter documents the coding conventions we use for the
+core Sedona Framework code, as well as the supporting Java and C code.
 </p>
 
 <!--/////////////////////////////////////////////////////////-->
@@ -58,15 +58,15 @@ core Sedona code, as well as the supporting Java and C code.
 <h1 id="indentation">Indentation</h1>
 <!--/////////////////////////////////////////////////////////-->
 
-<ul> 
+<ul>
 <li>Absolutely no tab characters, spaces only</li>
 <li>Two space indentation</li>
 <li>Allman styling curly braces:
-<pre> 
+<pre>
 if (flag)
 {
   something()
-}            
+}
 else
 {
   somethingElse()
@@ -76,7 +76,7 @@ else
 <li>Leave one space between keyword and opening paren for statements
 such as <code>if</code> and <code>while</code>.</li>
 </ul>
-       
+
 <!--/////////////////////////////////////////////////////////-->
 <h1 id="naming">Naming</h1>
 <!--/////////////////////////////////////////////////////////-->
@@ -97,14 +97,14 @@ facets</li>
 <li>Prefer <code>/* */</code> for commenting out sections of code</li>
 <li>Prefer leading and trailing <code>**</code> in doc sections, especially
 for methods:
-<pre> 
+<pre>
 **
 ** This is a method that does something.
 **
 Void something()
-</pre></li>               
-<li>Break logical sections up using line of 65 / chars: 
-<pre> 
+</pre></li>
+<li>Break logical sections up using line of 65 / chars:
+<pre>
 ////////////////////////////////////////////////////////////////
 // Methods
 ////////////////////////////////////////////////////////////////

@@ -42,8 +42,8 @@
 <p>A Platform Archive, or PAR file, provides a way of organizing various files
 and metadata about a platform into a single entity. A PAR file is a zip file
 with a <code>.par</code> extension. All paths and filenames within the PAR file
-are reserved by Sedona, except vendors may stash any content they want in
-/vendor. The following filenames and paths are currently defined by Sedona:</p>
+are reserved by the Sedona Framework, except vendors may stash any content they want in
+/vendor. The following filenames and paths are currently defined by the Sedona Framework:</p>
 
 <pre>
 &lt;myplatform>.par/
@@ -53,11 +53,11 @@ are reserved by Sedona, except vendors may stash any content they want in
 </pre>
 
 <ul>
-  <li>The PAR file may have any name, but it must have a <code>.par</code> 
+  <li>The PAR file may have any name, but it must have a <code>.par</code>
   extension.</li>
-  
+
   <li><b>platformManifest.xml</b>: (required) Must be in the root of the
-  PAR file. If the PAR file does not have a platformManifest.xml, then it 
+  PAR file. If the PAR file does not have a platformManifest.xml, then it
   is not a valid PAR file. Invalid PAR files will not be accepted by sedonadev.org
   if you attempt to upload them. Further, the manifest <i>must</i>
   have the <code>id</code> attribute set to the platform id.</li>
@@ -65,7 +65,7 @@ are reserved by Sedona, except vendors may stash any content they want in
   <li><b>svm/&lt;svm binary></b>: (optional) If you desire to package the
   svm binary for the platform, it should be the only file in the <code>/svm</code>
   directory.  It can have any name.</li>
-  
+
   <li><b>vendor/*</b>: (optional) The vendor may put any arbitrary contents
   in this location.</li>
 </ul>
@@ -74,10 +74,10 @@ are reserved by Sedona, except vendors may stash any content they want in
 will facilitate this by staging the platform manifest in <code><i>stageDir</i>/.par</code>,
 but ultimately each vendor must create the full contents of the PAR.  It is only
 necessary to create a PAR file if you want information about a platform to be
-publicly available to Sedona tools, or if you want to submit your platform for
-Sedona certification.  If a vendor is registered with sedonadev.org,
+publicly available to Sedona Framework tools, or if you want to submit your platform for
+Sedona Framework certification.  If a vendor is registered with sedonadev.org,
 the PAR file can be uploaded to sedonadev.org so that tools can retrieve them
-based on the platform id returned by the platform service running in the Sedona app.</p>
+based on the platform id returned by the platform service running in the app.</p>
 
 <!--/////////////////////////////////////////////////////////-->
 <h2 id="db">Platform Database</h2>
@@ -125,14 +125,14 @@ there. If one still cannot be found, it backs up again until it hits the root
 directory of the platform database, or finds a platform manifest.</p>
 
 <p>For example, suppose the platform database looks like the example above. If a
-Sedona tool requests the platform manifest for a platform
+Sedona Framework tool requests the platform manifest for a platform
 with id <code>acme-basicPlatform-win32-1.0.39</code>, the</p>
 
 <pre><code><i>sedona_home</i>/platforms/db/acme/basicPlatform/win32/.par/platformManifest.xml</code></pre>
 
 <p>manifest is the best match.</p>
 
-<p>Note to developers: The Sedona API contains a PlatformDb object in 
+<p>Note to developers: The Sedona Framework API contains a PlatformDb object in
 <code>sedona.jar</code> for working with the local platform database. See
 <code>sedona.PlatformDb</code>.</p>
 

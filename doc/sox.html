@@ -41,7 +41,7 @@
 
 <p>
 <i>Sox</i> is the standard protocol used to communicate
-with Sedona devices. Sox provides the following services:
+with Sedona Framework-enabled devices. Sox provides the following services:
 </p>
 
 <ul>
@@ -124,7 +124,7 @@ structure</a>.
 </p>
 
 <!--/////////////////////////////////////////////////////////-->
-<h1 id="sedonaApis">Sedona APIs</h1>
+<h1 id="sedonaApis">Sedona Framework APIs</h1>
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
@@ -150,7 +150,7 @@ commands, and ensuring that sessions are timed out and cleaned up properly.
 The open source distribution also includes a full Java implementation
 of the Dasp/Sox protocol stacks.  These stacks include both a client
 and service side implementation (although typically you will only use
-the client side).  The Java APIs are designed to "Sedona enable" your
+the client side).  The Java APIs are designed to "Sedona Framework enable" your
 tools and supervisor applications.
 </p>
 
@@ -162,11 +162,11 @@ used stand alone if desired.
 
 <p>
 The <code>sedona.sox</code> package implements the Sox protocol stack
-and provides a light weight Java model for Sedona components.  The
+and provides a light weight Java model for Sedona Framework components.  The
 <code>SoxClient</code> class provides a Sox aware wrapper around
 <code>DaspSession</code> for sending/receiving the set of sox
 commands.  Many of the commands use <code>SoxComponent</code> as
-the Java side representation of Sedona components.
+the Java side representation of Sedona Framework components.
 </p>
 
 <p>
@@ -705,7 +705,7 @@ the installed kits plus platform specific name/value pairs.
 </p>
 
 <p>
-All builds of Sedona prior to 1.0.45 will return <code>null</code> for the
+All builds of the Sedona Framework prior to 1.0.45 will return <code>null</code> for the
 sox protocol version.  Starting in build 1.0.45 the sox protocol was changed
 to allow <a href='#subscribe'>batch subscription</a>, to components.  If the
 sox protocol supports batch subscription, then it will return a

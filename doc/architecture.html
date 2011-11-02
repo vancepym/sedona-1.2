@@ -40,15 +40,15 @@
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-Sedona is designed to empower non-programmers to graphically
+The Sedona Framework is designed to empower non-programmers to graphically
 assemble applications by wiring together predefined components.
 It is useful to consider two primary <i>actors</i> involved
-in building Sedona applications:
+in building Sedona Framework applications:
 </p>
 
 <ul>
 <li><b>Developers</b> are software engineers who write <i>components</i>
-using the Sedona programming languages.  These components include
+using the Sedona programming language.  These components include
 function blocks, IO drivers, and packaged applications.  Components
 are then bundled into modules and deployed as <i>kits</i>.
 </li>
@@ -71,7 +71,7 @@ users according to these two actors is useful for discussion.
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-Sedona applications all start with software written in the
+Sedona Framework applications all start with software written in the
 <a href='lang.html'>Sedona programming language</a>.  The Sedona
 language is based on Java and C# - so if you are familiar with those
 languages then you should have no problem learning Sedona.  Key
@@ -93,7 +93,7 @@ characteristics of the Sedona language include:
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-Sedona's standard API includes a special class called <code>Component</code>.
+The Sedona Framework's standard API includes a special class called <code>Component</code>.
 Classes that extend <code>Component</code> are designed to be
 used by integrators to assemble applications.  All components have
 the following characteristics designed to enable component-oriented
@@ -121,10 +121,10 @@ command that can be invoked.
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-Developers write Sedona software organized into classes much
+Developers write software organized into classes much
 like C++, Java, or C#.  These classes are then packaged up
 into a <i>kit</i>.  A kit is the primary unit of deployment,
-versioning, and naming in the Sedona architecture.  A kit
+versioning, and naming in the Sedona Framework.  A kit
 is like a Java JAR file or a .NET DLL.
 </p>
 
@@ -144,19 +144,19 @@ the <code>sedonac</code> compiler.  During the compilation all
 the classes in the kit are checked for validity, and compiled
 into a special format called <i>IR</i> for <i>intermediate
 representation</i>.  The IR format is a text based "assembly
-language" for Sedona.  IR code is portable, which means one kit
-file can be deployed for all platforms.  During this step the compiler 
+language".  IR code is portable, which means one kit
+file can be deployed for all platforms.  During this step the compiler
 also generates a Java classfile for each of the Sedona classes,
-which can be run on the <a href='#java'>Java 
+which can be run on the <a href='#java'>Java
 VM</a>.
-</p>                                   
+</p>
 
 <!--/////////////////////////////////////////////////////////-->
 <h1 id="scode">SCode</h1>
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-Sedona software deployed as kits still isn't quite ready for execution.
+Sedona Framework software deployed as kits still isn't quite ready for execution.
 Even though we've compiled source language down to IR, we still
 don't have a format suitable for machine execution.  The next step
 is to compile a set of kits into a single file called an <i>scode
@@ -193,27 +193,27 @@ under the covers during device commissioning.
 <p>
 Once a set of kits has been compiled into an scode file, we can
 run the scode using the <i>Sedona Virtual Machine</i>,
-or <i>SVM</i> for short.  The Sedona VM interprets the scode
+or <i>SVM</i> for short.  The SVM interprets the scode
 and brings Sedona programs to life!
 </p>
 
 <p>
-The VM itself is written in ANSI C and compiled for a target
+The SVM itself is written in ANSI C and compiled for a target
 hardware platform.  See the <a href='porting.html'>Porting</a>
 chapter for instructions to get the SVM running on your target
 device.
 </p>
 
 <!--/////////////////////////////////////////////////////////-->
-<h1 id="java">Sedona on the Java VM</h1>
+<h1 id="java">Sedona Framework on the Java VM</h1>
 <!--/////////////////////////////////////////////////////////-->
 
-<p> 
-Sedona may also be run on a Java Virtual Machine.  When Sedona
+<p>
+The Sedona Framework may also be run on a Java Virtual Machine.  When Sedona
 source code is compiled into a kit file, the compiler generates
 Java bytecode.  This allows you to use kit files like Java JAR
 files.
-</p>  
+</p>
 
 <p>
 Running on the Java VM has a couple advantages over the SVM.
@@ -222,34 +222,35 @@ compile and optimize Java bytecode to machine code at runtime.
 This potentially allows Sedona to run much faster on Java.  Another
 advantage is that you can tap into Java ecosystem for tools such
 as debuggers.  You will probably find Java an easier environment
-to use for testing and debugging your code.  Java will enforce 
-array bounds checking and give you print stack traces with line 
-numbers when exceptions are raised.  
+to use for testing and debugging your code.  Java will enforce
+array bounds checking and give you print stack traces with line
+numbers when exceptions are raised.
 </p>
 
 <p>
-However the resources and cost  required to run Sedona on Java make it an
-unsuitable solution for most embedded devices. Java typically requires 
-dozens of megabytes of RAM and depending on the vendor might require a 
-runtime license fee.  The SVM is designed to run in as little as a 100KB 
+However the resources and cost required to run Sedona Framework applications
+on Java make it an
+unsuitable solution for most embedded devices. Java typically requires
+dozens of megabytes of RAM and depending on the vendor might require a
+runtime license fee.  The SVM is designed to run in as little as a 100KB
 making it ideal for embedded devices.
 </p>
 
 <!--/////////////////////////////////////////////////////////-->
-<h1 id="apps">Sedona Applications</h1>
+<h1 id="apps">Sedona Framework Applications</h1>
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
 Writing code in the Sedona programming language and building
 kits is the domain of developers.  Developers build libraries
-of ready-to-use components deployed as Sedona kits.  Integrators
+of ready-to-use components deployed as kits.  Integrators
 can then use graphical programming tools to design <i>applications</i>
 by assembling and linking component instances.
 </p>
 
 <p>
-Due to their dynamic nature, Sedona applications are modeled and
-persisted differently from kits and scode.  A Sedona application
+Due to their dynamic nature, Sedona Framework applications are modeled and
+persisted differently from kits and scode.  A Sedona Framework application
 is modeled as a tree of components.  Each component is assigned
 a unique two byte identifier and a custom name.  Components
 instances may also be customized by their configuration properties.
@@ -258,28 +259,28 @@ to specify data and event flow within the application.
 </p>
 
 <p>
-Sedona applications may be stored in two different file formats.
+Sedona Framework applications may be stored in two different file formats.
 The <i>Sedona Application - XML</i> format uses the ".sax" file
 extension.  The <i>Sedona Application - Binary</i> format uses
 the ".sab" file extension and is a compact binary representation
 of the application database.  The binary format is the one used
-by the runtime on Sedona devices.  The <code>sedonac</code>
+by the runtime on Sedona Framework-enabled devices.  The <code>sedonac</code>
 tool can be used to convert between the file formats.
 </p>
 
 <!--/////////////////////////////////////////////////////////-->
-<h1 id="devices">Sedona Devices</h1>
+<h1 id="devices">Sedona Framework Devices</h1>
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-Of course the end goal of Sedona is to create programmable
+Of course the end goal of the Sedona Framework is to create programmable
 smart devices.  This is where everything comes together.
-The typical process of Sedona enabling a device:
+The typical process of Sedona Framework-enabling a device:
 </p>
 
 <ul>
-<li>Port the Sedona VM to the device's hardware platform</li>
-<li>Enable the VM to run (typically loaded or run from FLASH on startup)</li>
+<li>Port the SVM to the device's hardware platform</li>
+<li>Enable the SVM to run (typically loaded or run from FLASH on startup)</li>
 <li>Enable commissioning of an scode image.  This allows integrators
 to pick their own kits to use for applications.  In some low-end
 devices the scode may be fixed or even in ROM.  Typically the scode is
@@ -296,10 +297,10 @@ be fixed or even stored in ROM.</li>
 <h1 id="workflow">Workflow</h1>
 <!--/////////////////////////////////////////////////////////-->
 
-<p>             
-The diagram below illustrates the workflow for building and 
-deploying Sedona applications to devices.
-</p>                                        
+<p>
+The diagram below illustrates the workflow for building and
+deploying Sedona Framework applications to devices.
+</p>
 
 <p style='text-align:center;'>
 <img src='architecture.png' alt='Sedona Architecture' />
@@ -309,26 +310,26 @@ deploying Sedona applications to devices.
 The developer workflow typically involves these steps:
 </p>
 
-<ol> 
-<li>Build library of Sedona components in the Sedona programming language</li>
-<li>Sedona components are compiled into kits using sedonac</li>
+<ol>
+<li>Build library of components in the Sedona programming language</li>
+<li>Components are compiled into kits using sedonac</li>
 <li>Developers or integrators will choose which kits to install onto a device,
 and then sedonac is used to link the kits into a binary scode image (this
 step is often done under the covers by a high level tool)</li>
-<li>The Sedona virtual machine and scode is loaded onto the device.  These
+<li>The SVM and scode are loaded onto the device.  These
 files may be predefined such as in ROM, or may be dynamically provisioned
 over the network using the Sox protocol.</li>
 </ol>
 
 <p>
 System integrators are often domain experts who build applications by wiring
-together the Sedona components built by developers. These users typically use
+together the components built by developers. These users typically use
 graphical tools to assemble applications. Applications may be built on-line
 with a live device using the Sox protocol. Or they may be built offline and
 stored in a "sax" file. If the app is built offline, then it compiled into
-a "sab" file with sedonac and installed onto the device at commissioning time 
+a "sab" file with sedonac and installed onto the device at commissioning time
 using the Sox protocol.
-</p> 
+</p>
 
 <!-- TOC-FOOTER-START -->
 <!-- Auto-generated by sedonac -->

@@ -40,26 +40,26 @@
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-Whenever <code>sedonac</code> is used to compile it a kit, it 
+Whenever <code>sedonac</code> is used to compile it a kit, it
 generates Java bytecode as part of the kit file.  Essentially
-what this means is that all Sedona kit files are also Java JAR
+what this means is that all kit files are also Java JAR
 files.  The "lib/sedona.jar" file contains the runtime code used
 to execute Sedona code on a Java VM.
-</p>                                
+</p>
 
 <!--/////////////////////////////////////////////////////////-->
 <h1 id="jsvm">The "jsvm" Launcher</h1>
 <!--/////////////////////////////////////////////////////////-->
 
-<p>                
-The <code>jsvm</code> launcher is used to run Sedona on the
-Java VM.  On Windows the launcher is "bin/jsvm.exe" and on Unix it 
+<p>
+The <code>jsvm</code> launcher is used to run the Sedona Framework on a
+Java VM.  On Windows the launcher is "bin/jsvm.exe" and on Unix it
 is "bin/jsvm.sh".  See <a href='setup.html'>Setup</a> chapter on
-setting up your environment.  To run a Sedona application on the
+setting up your environment.  To run a Sedona Framework application on the
 JVM pass the name of an SAB file:
-</p>                             
+</p>
 
-<pre>      
+<pre>
 D:\sedona\pub\apps>jsvm test.sab
 Java Sedona VM
 initKitConsts (234ms)
@@ -72,15 +72,15 @@ initKitConsts (234ms)
 <p>
 Note that jsvm differs from svm in that you <b>don't</b> pass
 the scode file.  Instead the list of kits to load is inferred from
-the sab file itself.  You can deploy Sedona on a Java runtime 
-with only "sedona.jar" - you do <b>not</b> need to deploy "sedonac.jar" 
+the sab file itself.  You can deploy the Sedona Framework on a Java runtime
+with only "sedona.jar" - you do <b>not</b> need to deploy "sedonac.jar"
 if you only require runtime capabilities.
 </p>
 
 <p>
 If you need to boot the jsvm without the launcher, you can use
 this command line:
-</p>   
+</p>
 
 <pre>
 java -cp {lib}sedona.jar -Dsedona.home={home} sedona.vm.Jsvm {app}
@@ -88,7 +88,7 @@ java -cp {lib}sedona.jar -Dsedona.home={home} sedona.vm.Jsvm {app}
 where
 <ul>
   <li> <code>{lib}</code> is the path to the sedona.jar file (if not in default classpath)</li>
-  <li> <code>{home}</code> is the path to your sedona installation (e.g. D:\sedona)</li>
+  <li> <code>{home}</code> is the path to your installation (e.g. D:\sedona)</li>
   <li> <code>{app}</code> is the app filename to be executed</li>
 </ul>
 
@@ -97,11 +97,11 @@ where
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-The following table illustrates how Sedona classes are mapped
+The following table illustrates how Sedona Framework classes are mapped
 into the Java type system:
 </p>
 
-<table> 
+<table>
 <tr><th>Sedona</th><th>Java</th></tr>
 <tr><td>void</td>       <td>void</td></tr>
 <tr><td>bool</td>       <td>byte</td></tr>
@@ -125,24 +125,24 @@ into the Java type system:
 <tr><td>float[]</td>    <td>float[]</td></tr>
 <tr><td>double[]</td>   <td>double[]</td></tr>
 <tr><td>sys::Obj[]</td> <td>java.lang.Object[]</td></tr>
-</table>           
+</table>
 
 <p>
 A few things to note:
-</p>                  
+</p>
 
 <ul>
 <li>Most of the primitives and arrays map as expected</li>
 <li>Sedona <code>bool</code> is mapped to Java as a <code>byte</code> with
-zero indicating <code>false</code>, one indicating <code>true</code>, and 
+zero indicating <code>false</code>, one indicating <code>true</code>, and
 two indicating <code>null</code></li>
-<li>In general most Sedona classes are passed around as <code>java.lang.Object</code>
-on the Java side.  This means you can write Java code that works with Sedona
-without complicated classpath issues - you only need to include "sedona.jar" 
+<li>In general most Sedona Framework classes are passed around as <code>java.lang.Object</code>
+on the Java side.  This means you can write Java code that works with the Sedona Framework
+without complicated classpath issues - you only need to include "sedona.jar"
 in your classpath.</li>
 <li>Some special classes like Kit, Type, Slot, and Component receive special
 support to implement a predefined Java interface.  This makes it easy to
-write Java code that uses Sedona reflection.</li>    
+write Java code that uses Sedona reflection.</li>
 <li>Sedona strings are stored in byte arrays with a null terminator.
 This is modelled in the Java VM using the <code>StrRef</code> class, which
 consists of a <code>byte[]</code> reference and an offset into that byte array.</li>
@@ -153,15 +153,15 @@ consists of a <code>byte[]</code> reference and an offset into that byte array.<
 <h1 id="nativeMethods">Native Methods</h1>
 <!--/////////////////////////////////////////////////////////-->
 
-<p> 
+<p>
 In order to run on the JVM, every <a href='nativeMethods.html'>native method</a>
-in Sedona is required to have a Java implementation.  Native methods are
+ is required to have a Java implementation.  Native methods are
 implemented in a Java source file using the following naming convention:
-</p>                            
+</p>
 
 <ul>
-<li>For sedona kit <code>myKit</code>, Java package name is <code>sedona.vm.myKit</code></li>
-<li>For sedona class <code>MyClass</code>, Java class name is <code>MyClass_n</code></li>
+<li>For kit <code>myKit</code>, Java package name is <code>sedona.vm.myKit</code></li>
+<li>For class <code>MyClass</code>, Java class name is <code>MyClass_n</code></li>
 <li>Java method name same as Sedona method name</li>
 <li>Java method always takes an extra <code>Context</code> parameter</li>
 </ul>
@@ -173,12 +173,12 @@ typed as <code>Object</code>:
 </p>
 
 <pre>
-// sedona methods for acme::Foo
+// methods for acme::Foo
 class Foo
 {
   native static int bar(float a)
   native void baz(long a)
-}                      
+}
 
 // Java implementation of native methods
 package sedona.vm.acme.Foo;
@@ -186,7 +186,7 @@ public class Foo_n
 {
   public static int bar(float a, Context cx) { ... }
   public static void  baz(Object self, long a, Context cx) { ... }
-}        
+}
 </pre>
 
 <p>

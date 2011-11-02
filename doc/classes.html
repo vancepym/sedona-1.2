@@ -37,18 +37,18 @@
 
 <!--/////////////////////////////////////////////////////////-->
 <h1 id="overview">Overview</h1>
-<!--/////////////////////////////////////////////////////////-->    
+<!--/////////////////////////////////////////////////////////-->
 
-<p>                     
-Classes are the primary way you organize your code within 
+<p>
+Classes are the primary way you organize your code within
 kits.  Classes are named containers for fields and methods.
 A field or method definition is called a slot and identified
 by a unique name within a given class.  Slots may not be overloaded
 by name, which means you cannot declare a field and method
 to have the same name (as allowed in Java).  Nor can you declare
-multiple methods with the same name overloaded by parameters (as 
+multiple methods with the same name overloaded by parameters (as
 allowed in both Java and C#).
-</p>             
+</p>
 
 <p>
 You can declare multiple classes in a single source file, although
@@ -68,9 +68,9 @@ keyword to declare a class that only has visibility within its kit.
 </p>
 
 <p>
-The <code>abstract</code> keyword is used with classes that can 
-never be instantiated directly.  Any class that declares 
-<a href='methods.html#abstract'>abstract methods</a> must be marked 
+The <code>abstract</code> keyword is used with classes that can
+never be instantiated directly.  Any class that declares
+<a href='methods.html#abstract'>abstract methods</a> must be marked
 abstract.
 </p>
 
@@ -84,28 +84,28 @@ being subclassed.
 <!--/////////////////////////////////////////////////////////-->
 
 <p>
-Sedona supports implementation inheritance very similar to
-Java or C#.  However, Sedona does not support interfaces or
-any type of multiple inheritance.  
+The Sedona Framework supports implementation inheritance very similar to
+Java or C#.  However, there is no support interfaces or
+any type of multiple inheritance.
 </p>
 
 <p>
-In order to support polymorphism (virtual methods), your class hierarchy 
-must extend from <code>sys::Virtual</code>, which allocates space for the virtual 
-table.  Note that <code>Virtual</code> imposes a two byte overhead per instance, 
+In order to support polymorphism (virtual methods), your class hierarchy
+must extend from <code>sys::Virtual</code>, which allocates space for the virtual
+table.  Note that <code>Virtual</code> imposes a two byte overhead per instance,
 plus a global table for each type in the code section.
 </p>
 
 <p>
 The syntax for inheritance looks just like Java with the <code>extends</code>
 keyword:
-</p>    
+</p>
 
 <pre>
 abstract class Shape extends Virtual
 {
   abstract int area()
-} 
+}
 
 class Square extends Shape
 {

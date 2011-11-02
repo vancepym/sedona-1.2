@@ -41,7 +41,7 @@
 
 <p>
 This tutorial takes you through the various development steps
-involved in building Sedona applications:
+involved in building Sedona Framework applications:
 </p>
 
 <ol>
@@ -55,7 +55,7 @@ involved in building Sedona applications:
 chapter before exploring this tutorial.  Refer to the
 <a href='architecture.html#workflow'>diagram</a>, which illustrates the
 work flow this tutorial will take.  Also make sure you have your
-Sedona environment  <a href='setup.html'>setup</a> correctly before.
+Sedona Framework environment  <a href='setup.html'>setup</a> correctly before.
 </p>
 
 <!--/////////////////////////////////////////////////////////-->
@@ -103,7 +103,7 @@ the vendor name. For more information see <a href='kits.html'>Kits</a> and
 </p>
 
 <p>
-The "Add.sedona" file defines the Sedona source code for our new component:
+The "Add.sedona" file defines the source code for our new component:
 </p>
 
 <pre>
@@ -156,8 +156,8 @@ trouble running sedonac, then see <a href='setup.html'>Setup</a>.
 
 <p>
 Kits are units of deployment, but are not run directly by the
-Sedona VM.  First we have to compile a set of kits into an scode
-image that can be run directly by the Sedona VM.  Create a new
+SVM.  First we have to compile a set of kits into an scode
+image that can be run directly by the SVM.  Create a new
 directory called "tutorialApp" with one file:
 </p>
 
@@ -300,8 +300,8 @@ the inputs to our <code>Add</code> block to create control flow.
 </p>
 
 <p>
-Sedona devices don't run the XML file directly, so now we need
-to compile the XML into a binary format that the Sedona VM can
+Sedona Framework-enabled devices don't run the XML file directly, so now we need
+to compile the XML into a binary format that the SVM can
 use directly.  Do this by running sedonac on "app.sax":
 </p>
 
@@ -335,7 +335,7 @@ If you have followed the steps above, we have:
 </ul>
 
 <p>
-At this point we can run our application using the Sedona VM.  Assuming
+At this point we can run our application using the SVM.  Assuming
 we are running on Windows we can run our application as follows:
 </p>
 
@@ -369,13 +369,13 @@ Hit refresh a couple times to see how the inputs and output change in real-time.
 </p>
 
 <p>
-If you have a programming tool such as the Sedona Workbench, you should now
+If you have a programming tool such as the Sedona Framework Workbench, you should now
 be able to connect to Sox port 1876 with the username "admin" and empty password.
-Refer to your Sedona tool documentation for more information.
+Refer to your Sedona Framework tool documentation for more information.
 </p>
 
 <p>
-Congratulations, you've just built and deployed your first Sedona
+Congratulations, you've just built and deployed your first Sedona Framework
 application!  Remember this tutorial illustrates the very basics
 using only the command line tools.  Visit
 <a href='http://www.sedonadev.org/'>sedonadev.org</a> to learn more
