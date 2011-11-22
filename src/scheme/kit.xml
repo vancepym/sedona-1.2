@@ -5,20 +5,22 @@
   -->
 
 <sedonaKit
- name = "web"
+ name = "scheme"
  vendor = "Tridium"
- description = "Web service and servlet engine"
+ description = "Scheme mapping for file paths"
  includeSource = "true"
  doc = "true"
 >
 
   <!-- Dependencies -->
-  <depend on="sys 1.0+"  />
-  <depend on="inet 1.0+" />
-  <depend on="sox 1.0+"  />
+  <depend on="sys 1.0+" />
 
   <!-- Source Directories -->
   <source dir="."/>
+
+  <!-- Natives -->
+  <native qname="scheme::SchemeFileStore.doSchemeSize"         id="11::0"  />
+  <native qname="scheme::SchemeFileStore.doSchemeOpen"         id="11::1"  />
 
 </sedonaKit>
 

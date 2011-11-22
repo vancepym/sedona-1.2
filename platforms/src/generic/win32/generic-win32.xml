@@ -9,10 +9,10 @@
   <compile endian="little" blockSize="4" refSize="4" debug="true" test="true">
   
     <!-- Native Kits -->
-    <nativeKit depend="sys 1.0" />
-    <nativeKit depend="inet 1.0" />
-    <nativeKit depend="datetimeStd 1.0" />
-    <nativeKit depend="platWin32 1.0" />
+    <nativeKit depend="sys 1.0+" />
+    <nativeKit depend="inet 1.0+" />
+    <nativeKit depend="datetimeStd 1.0+" />
+    <nativeKit depend="platWin32 1.0+" />
 
     <!-- Native Sources -->
     <nativeSource path="/src/vm" />
@@ -24,6 +24,7 @@
     <nativeSource path="/src/inet/native/sha1" />
     <nativeSource path="/src/datetimeStd/native/std" />
     <nativeSource path="/platforms/src/generic/win32/native" />
+
   </compile>
        
 </sedonaPlatform>

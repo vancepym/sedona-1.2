@@ -15,7 +15,6 @@
 class PlatformService
   extends Service
 {
-
   **
   ** Lookup the platform service for this VM.  Return null
   ** if the application hasn't booted yet or is missing
@@ -82,22 +81,13 @@ class PlatformService
 ////////////////////////////////////////////////////////////////
 
   **
-  ** Map a filename to its FileStore implementation.  This
-  ** method must return a non-null reference.  Default is
-  ** to return 'FileStore.sys'.
-  **
-  virtual FileStore fileStore(Str name)
-  {
-    return FileStore.sys
-  }
-
-  **
   ** Update the memAvailable property to reflect the current
   ** amount of available memory.
   **
   virtual void refreshMemory()
   {
   }
+
 
   **
   ** Return true if App must yield CPU by exiting VM each cycle.
