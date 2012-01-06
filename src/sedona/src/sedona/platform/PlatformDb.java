@@ -348,8 +348,21 @@ public final class PlatformDb
       return null;
     File[] files = vmDir.listFiles();
 
-    // There should only be one vm in the platform's svm directory
-    return (files.length > 0) ? new DbVm(platform.matchId, files[0]) : null;
+    // There should only be one vm in the platform's svm directory, AND 
+    // it should not have any of these extensions: { .xml, .scode, .sax, .sab }.
+    // So, assume the first file we find w/diff extension is the SVM executable.
+    File svmFile = null;
+    for (int d=0; d<files.length; d++)
+    {
+      String n = files[d].getName();
+      if ( n.endsWith(".xml") || n.endsWith(".scode") || 
+           n.endsWith(".sax") || n.endsWith(".sab") )
+        continue;
+      svmFile = files[d];
+      break;
+    }
+
+    return (svmFile == null) ? null : new DbVm(platform.matchId, svmFile);
   }
 
 ////////////////////////////////////////////////////////////////
