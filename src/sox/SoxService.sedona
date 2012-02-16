@@ -187,7 +187,6 @@ class SoxService
       // fall thru to ensure house keeping and transfers
     }
 
-    // perform house keeping every 100ms
     houseKeeping()
 
     // check any file transfers in progress
@@ -243,7 +242,7 @@ class SoxService
     int msgType   = in.read()
     int numFields = msgType & 0xf
     msgType       = (msgType >> 4) & 0xf
-    
+
     // if hello try to allocate new session, right
     // now we just ignore the hello when busy instead
     // of sending back proper busy error
@@ -412,9 +411,8 @@ class SoxService
   **
   private bool houseKeeping()
   {
-    // we only do house keeping every 100ms
     long now = Sys.ticks()
-    if (now - lastHouseKeeping < 100ms)
+    if (now - lastHouseKeeping < (long)HouseKeepingFreq)
       return false
 
     // give each open session a chance to do house keeping
@@ -463,6 +461,7 @@ class SoxService
 ////////////////////////////////////////////////////////////////
 
   define Log log
+	define int HouseKeepingFreq = 100 // (ms) do houskeeping no more frequently than this
 
   inline SoxSession[Watch.max] sessions = {...}
   inline UdpSocket socket           // socket used for send/receive
