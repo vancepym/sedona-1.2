@@ -718,17 +718,30 @@ public class CheckErrors
       case Expr.MOD:
       case Expr.ADD:
       case Expr.SUB:            checkMath((Expr.Binary)expr); break;
-      case Expr.ASSIGN:         checkAssign((Expr.Binary)expr); break;
+
+      case Expr.PROP_ASSIGN:    
+      case Expr.ASSIGN:         checkAssign((Expr.Binary)expr); 
+                                checkPropAssign((Expr.Binary)expr); 
+                                break;
       case Expr.ASSIGN_ADD:
       case Expr.ASSIGN_SUB:
       case Expr.ASSIGN_MUL:
       case Expr.ASSIGN_DIV:
-      case Expr.ASSIGN_MOD:     checkMath((Expr.Binary)expr); checkAssignable(((Expr.Binary)expr).lhs); break;
+      case Expr.ASSIGN_MOD:     checkMath((Expr.Binary)expr); 
+                                checkPropAssign((Expr.Binary)expr); 
+                                checkAssignable(((Expr.Binary)expr).lhs); 
+                                break;
       case Expr.ASSIGN_BIT_OR:
       case Expr.ASSIGN_BIT_XOR:
-      case Expr.ASSIGN_BIT_AND: checkBoolOrBitwise((Expr.Binary)expr); checkAssignable(((Expr.Binary)expr).lhs); break;
+      case Expr.ASSIGN_BIT_AND: checkBoolOrBitwise((Expr.Binary)expr); 
+                                checkPropAssign((Expr.Binary)expr); 
+                                checkAssignable(((Expr.Binary)expr).lhs); 
+                                break;
       case Expr.ASSIGN_LSHIFT: 
-      case Expr.ASSIGN_RSHIFT:  checkShift((Expr.Binary)expr); checkAssignable(((Expr.Binary)expr).lhs); break;
+      case Expr.ASSIGN_RSHIFT:  checkShift((Expr.Binary)expr); 
+                                checkPropAssign((Expr.Binary)expr); 
+                                checkAssignable(((Expr.Binary)expr).lhs); 
+                                break;
       case Expr.ELVIS:          checkElvis((Expr.Binary)expr); break;
       case Expr.TERNARY:        checkTernary((Expr.Ternary)expr); break;
       case Expr.THIS:           checkThis((Expr.This)expr); break;
@@ -851,6 +864,27 @@ public class CheckErrors
     if (!expr.lhs.type.isRef())                                  
       err("Cannot apply '?:' operator to '" + expr.lhs.type + "'", expr.loc);
     checkAssignable(expr.lhs.type, expr.rhs, expr.rhs.loc);
+  }
+
+  // Checks that prop assignment := is used appropriately
+  private void checkPropAssign(Expr.Binary expr)
+  {
+    checkAssign(expr);
+
+    if (expr.lhs.id==Expr.FIELD)
+    {
+      Expr.Field f = (Expr.Field)expr.lhs;
+
+      // If NOT using PROP_ASSIGN for a property (except for initializer), throw compile warning
+      if ( f.field.isProperty() && 
+          (expr.op.toBinaryExprId()!=Expr.PROP_ASSIGN) &&
+          !curMethod.isInstanceInit() )
+        warn("Should use ':=' assignment operator for properties   " + expr.toString(), expr.loc);
+
+      // If using PROP_ASSIGN for a non-property, throw compile error
+      if ( !f.field.isProperty() && (expr.op.toBinaryExprId()==Expr.PROP_ASSIGN) )
+        err("Cannot apply ':=' operator to non-property   " + expr.toString(), expr.loc);
+    }
   }
 
   private void checkTernary(Expr.Ternary expr)
