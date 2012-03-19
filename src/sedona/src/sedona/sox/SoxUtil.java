@@ -1,20 +1,9 @@
-//
-// Copyright (c) 2006 Tridium, Inc.
-// Licensed under the Academic Free License version 3.0
-//
-// History:
-//   18 Sep 06  Brian Frank  Creation
-//
-
 package sedona.sox;
 
 import java.util.ArrayList;
 
 import sedona.*;
 
-/**
- * SoxUtil handles marshaling between Sox messages and SoxComponent.
- */
 public class SoxUtil
 {
 ////////////////////////////////////////////////////////////////
@@ -41,11 +30,11 @@ public class SoxUtil
   public VersionInfo getVersion() { return version; }
   public void setVersion(VersionInfo v) { version = v; }
 
-  
+
 //////////////////////////////////////////////////////////////////////////
 // Apply
 //////////////////////////////////////////////////////////////////////////
-  
+
   /**
    * Given a component read or event message then apply the
    * changes to our SoxComponent cache.
@@ -180,5 +169,6 @@ public class SoxUtil
   private SoxClient client;
   Schema schema;
   VersionInfo version;
+
 
 }
