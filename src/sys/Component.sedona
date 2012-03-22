@@ -231,12 +231,6 @@ class Component
   **
   virtual int childEvent(int eType, Component child)
   {
-/*
-    Sys.out.print("  ${this.name}: Child ${child.name} ")
-    if (eType==ADDED) Sys.out.print("added\n")
-    else if (eType==REMOVED) Sys.out.print("removed\n")
-*/
-
     return 0
   }
 
@@ -247,13 +241,6 @@ class Component
   **
   virtual int parentEvent(int eType, Component parent)
   {
-/*
-    Sys.out.print("  ${this.name}: ")
-    if (eType==ADDED) Sys.out.print("Added to ")
-    else if (eType==REMOVED) Sys.out.print("Removed from ")
-    Sys.out.print("parent ${parent.name}\n")
-*/
-
     return 0
   }
 
@@ -264,12 +251,6 @@ class Component
   **
   virtual int linkEvent(int eType, Link link)
   {
-/*
-    Sys.out.print("  ${this.name}: Link ")
-    if (eType==ADDED) Sys.out.print("added\n")
-    else if (eType==REMOVED) Sys.out.print("removed\n")
-*/
-
     return 0
   }
 
