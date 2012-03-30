@@ -28,7 +28,14 @@ includes = []
 
 libs = [ "ws2_32.lib",  "uuid.lib", "kernel32.lib"]
 
-defs = []
+
+#
+# Default compiler args - may be overridden by cmd line
+#
+defs     = [ ("PLAT_BUILD_VERSION",'\\"' + env.buildVersion() + '\\"'), 
+             ("SOCKET_FAMILY_INET","0")]            # un-comment for IPv4 support
+#             ("SOCKET_FAMILY_INET6","0")]           # un-comment for IPv6 support
+
 
 
 # initParser
@@ -57,6 +64,7 @@ def compile(cdefs=defs):
     print "**"
     print "** FAILED [" + exeFile + "]"
     print "**"
+
 
 
 # Main
