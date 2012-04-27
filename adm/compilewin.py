@@ -47,11 +47,10 @@ def compile(exeFile, srcFiles, includes, libs, defs, opts=[]):
   for include in includes:
     cmd += " /I\"" + include + "\""
     
-  # defines (tuples)
-  for d in defs:
-    cmd += " /D" + d[0]
-    if len(d)>1: 
-      cmd += "=" + d[1]      
+  # defines (dict)
+  for d, v in defs.items():
+    cmd += " /D" + d
+    if v: cmd += "=" + v
 
   # libs     
   for lib in libs:
