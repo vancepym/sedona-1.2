@@ -30,7 +30,7 @@ def compile(srcDir, depends, packages, jarFile, func=None):
   # compile using jikes.exe
   print "  Javac [" + srcDir + "]"
   cmd = env.jikes
-  cmd += " +E +Pno-shadow"
+  # cmd += " +E +Pno-shadow"
   cmd += " -d " + temp
   cmd += " -classpath " + env.jreRt + env.cpSep + srcDir
   for depend in depends:
