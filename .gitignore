@@ -9,3 +9,5 @@
 sedona*.jar
 temp
 manifests
+sedona-*.zip
+*.log
