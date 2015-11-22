@@ -6,8 +6,11 @@
 *.sab
 *.scode
 *.pstore
+*.swp
+*.exe
 sedona*.jar
-temp
-manifests
+build
+version.txt
+svm
 sedona-*.zip
 *.log
