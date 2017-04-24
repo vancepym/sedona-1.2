@@ -13,4 +13,4 @@ alias l.='ls -d .* --color=auto'
 source ~/sedonadev/adm/unix/init.sh
 
 ## Set command prompt
-PS1='\h:\W \u\$ '
+PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
