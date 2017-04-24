@@ -5,6 +5,7 @@
 # History:
 #    2015 Oct 15   Divisuals   Initial Docker Image
 #    2016 Feb 23   Divisuals   Updated to latest JDK 8_73
+#    2017 Apr 24   Scott Fan   Updated to latest JDK 8_131
 #
 
 FROM toopher/centos-i386:centos6
@@ -13,13 +14,17 @@ MAINTAINER Divisuals <divisuals.net@gmail.com>
 LABEL Vendor="Sedona"
 LABEL version=develop
 
-# download JDK 8 u73
-ENV	JAVA_HOME /jdk1.8.0_73
+ENV JAVA_VERSION=8 \
+    JAVA_UPDATE=131 \
+    JAVA_BUILD=11 \
+    JAVA_PATH=d54c1d3a095b4ff2b6607d096fa80163
+
+ENV JAVA_HOME /jdk1.${JAVA_VERSION}.0_${JAVA_UPDATE}
 
 RUN	yum install -y wget which tar git gcc glibc-static python-argparse.noarch \
-	&& wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u73-b02/jdk-8u73-linux-i586.tar.gz" \
-	&& tar xf jdk-8u73-linux-i586.tar.gz \
-	&& rm -f /jdk-8u73-linux-i586.tar.gz \
+	&& wget --header "Cookie: oraclelicense=accept-securebackup-cookie;" "http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION}u${JAVA_UPDATE}-b${JAVA_BUILD}/${JAVA_PATH}/jdk-${JAVA_VERSION}u${JAVA_UPDATE}-linux-i586.tar.gz" \
+	&& tar xf jdk-${JAVA_VERSION}u${JAVA_UPDATE}-linux-i586.tar.gz \
+	&& rm -f /jdk-${JAVA_VERSION}u${JAVA_UPDATE}-linux-i586.tar.gz \
 	&& rm -rf $JAVA_HOME/*src.zip \
 						$JAVA_HOME/lib/missioncontrol \
 						$JAVA_HOME/lib/visualvm \
