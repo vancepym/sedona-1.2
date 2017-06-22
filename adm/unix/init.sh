@@ -25,14 +25,16 @@ java_home=$JAVA_HOME
 [ -z "$java_home" ] && java_home=/usr/lib/jvm/java-6-sun
 export java_home
 
+GCC=${CROSS_COMPILE}gcc
 # check to make sure that programs we need are in the path
-for p in gcc python
+for p in $GCC python
 do
   if ! which $p > /dev/null
   then
     echo "Sedona Linux Env ERROR: $p is not in the PATH"
   fi
 done
+export GCC
 
 # Ensure permissions are correct for adm python scripts
 find $sedona_home/adm -name "*.py" -exec chmod 755 '{}' \; 2> /dev/null

@@ -9,12 +9,8 @@
 #
 
 import os
-import sys
 import env
 import fileutil
-
-def is64bit():
-  return sys.maxsize > 2**32
 
 #
 # Compile C source to a unix executable
@@ -27,10 +23,7 @@ def is64bit():
 #def compile(exeFile, srcFiles, includes, libs, defs):
 def gcc(exeFile, srcFiles, includes, libs, defs):
   # standard includes
-  cmd = "gcc"
-  if is64bit():
-      cmd += " -m32" # always compile in 32bit mode
-
+  cmd = os.getenv("GCC", "gcc")
   for include in includes:
     cmd += " -I\"" + include + "\""
 
