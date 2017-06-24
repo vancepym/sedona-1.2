@@ -1,0 +1,6 @@
+archivesBaseName = 'sedonacert'
+
+dependencies {
+    compile project(":sedona")
+    compile project(":sedonac")
+}

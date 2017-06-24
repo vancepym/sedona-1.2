@@ -1,0 +1,30 @@
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    apply plugin: 'idea'
+
+    libsDirName = rootDir.absolutePath + '/../lib'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+
+    jar {
+        manifest {
+            attributes 'Created-By': System.getProperty('java.version') + ' (' + System.getProperty('java.vendor') + ')'
+        }
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    sourceSets {
+        main {
+            java {
+                srcDir 'src'
+            }
+        }
+    }
+}

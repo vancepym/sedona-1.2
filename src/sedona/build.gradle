@@ -1,0 +1,10 @@
+archivesBaseName = 'sedona'
+
+sourceSets {
+    main {
+        resources {
+            srcDir 'src'
+            exclude 'sedona/**'
+        }
+    }
+}

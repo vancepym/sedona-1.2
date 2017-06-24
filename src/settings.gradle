@@ -1,0 +1,5 @@
+rootProject.name = 'sedona-projects'
+
+include 'sedona'
+include 'sedonac'
+include 'sedonacert'

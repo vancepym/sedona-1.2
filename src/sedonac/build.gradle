@@ -1,0 +1,5 @@
+archivesBaseName = 'sedonac'
+
+dependencies {
+    compile project(":sedona")
+}
