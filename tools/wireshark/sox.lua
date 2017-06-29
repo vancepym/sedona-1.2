@@ -54,7 +54,8 @@ local f_soxError = ProtoField.stringz("sox.errorStr", "errorStr")
 sox_proto.fields = {f_soxCmd, f_soxReplyNum, f_soxCompId, f_soxSlotId, 
                     f_parentCompId, f_kitId, f_typeId, f_compName, 
                     f_compWhat, f_linkAction, f_linkFromCompId,
-                    f_linkFromSlotId, f_linkToCompId, f_linkToSlotId, f_chunkNum,
+                    f_linkFromSlotId, f_linkToCompId, f_linkToSlotId,
+                    f_fileOpenMethod, f_fileUri, f_fileSize, f_chunkNum,
                     f_chunkSize, f_soxBytes, f_soxStr, f_soxPlatformId, f_soxError}
 
 local msg_types = {
@@ -182,7 +183,7 @@ function add_whatMask(tree, buf, offset)
 end
 
 function add_file_headers(tree, buf, offset)
-  local byte = buf(offset, 1)
+  local byte = buf(offset, 1):string()
   while byte ~= '\0' do 
     local start = offset
     local name = buf(offset):stringz(ENC_UTF_8)
@@ -192,7 +193,7 @@ function add_file_headers(tree, buf, offset)
     offset = offset + string.len(value) + 1
     tree:add(buf(start, offset-start), name, value)
 
-    byte = buf(offset, 1)
+    byte = buf(offset, 1):string()
   end
   offset = offset + 1
 
@@ -341,7 +342,7 @@ local sox_handlers = {
   -- fileOpen 
   ["f"] = function (tree, buf, offset)
     tree:add(f_fileOpenMethod, buf(offset, 1)) 
-    offset = offset + 1
+    offset = offset + 2
     
     offset = add_string(tree, f_fileUri, buf, offset)
     
