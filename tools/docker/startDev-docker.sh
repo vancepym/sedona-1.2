@@ -11,9 +11,12 @@ set -e -x -u
 
 SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-source ${SCRIPT_DIR}/makeDev-docker.sh
+source ${SCRIPT_DIR}/makeDev-docker.sh $@
 
-IMAGE_NAME="sedona/base:${DOCKER_ENV_VERSION}"
+IMAGE_DISTRO=centos
+[ $# -gt 0 ] && [ x$1 != x ] && [ -d ${SCRIPT_DIR}/$1 ] && IMAGE_DISTRO=$1
+
+IMAGE_NAME="sedona/${IMAGE_DISTRO}-base:${DOCKER_ENV_VERSION}"
 
 if [ "$(uname -s)" == "Linux" ]; then
   USER_NAME=${SUDO_USER:=$USER}
