@@ -34,6 +34,10 @@ do
     echo "Sedona Linux Env ERROR: $p is not in the PATH"
   fi
 done
+# Force gcc to compile 32 bit programs on 64 bit platform
+if [ $GCC == gcc ] && [ $(uname -m | grep '64') ] ; then
+  GCC="$GCC -m32"
+fi
 export GCC
 
 # Ensure permissions are correct for adm python scripts
