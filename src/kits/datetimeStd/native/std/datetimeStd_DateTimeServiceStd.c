@@ -8,6 +8,8 @@
 
 #include "sedona.h"
 
+#include <errno.h>       // for errno, strerror
+
 #include <time.h>
 #include <stdio.h>
 
@@ -49,7 +51,8 @@ Cell datetimeStd_DateTimeServiceStd_doSetClock(SedonaVM* vm, Cell* params)
 #else
   time_t new_time = (time_t)(nanos / 1000 / 1000 / 1000);
   new_time += SEDONA_EPOCH_OFFSET_SECS;
-  stime(&new_time);
+  if (stime(&new_time) != 0)
+    printf("stime(...) failed, errno=%d (%s)\n", errno, strerror(errno));
 #endif
 
   return nullCell;
