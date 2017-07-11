@@ -11,109 +11,119 @@
 ** It also stores the current time which is automatically
 ** updated each second.
 **
-class DateTimeService 
+@palette=false
+class DateTimeService
   extends Service
 {
-  
+
 ////////////////////////////////////////////////////////////////
 // Properties
 ////////////////////////////////////////////////////////////////
 
   ** Nanos since epoch
-  @unit=Units.nanosecond property long nanos
+  @fieldWidth=20
+  @unit=Units.nanosecond
+  property long nanos
 
   ** Hour, adjusted for UTC offset
+  @min=0 @max=23
   property byte hour
 
-  ** Minute 
+  ** Minute
+  @min=0 @max=59
   property byte minute
 
-  ** Second 
+  ** Second
+  @min=0 @max=59
   property byte second
 
-  ** Year 
+  ** Year
   property int year
 
   ** Month of year (see also datetime::Month)
+  @min=1 @max=12
   property byte month
 
   ** Day of month
+  @min=1 @max=31
   property byte day
-  
+
   ** Day of week (see also datetime::DayOfWeek)
+  @min=0 @max=6
   property byte dayOfWeek
 
   ** Current UTC offset in seconds used to calculate the time
-  ** fields from nanos.  If osUtcOffset is true this is a read-only 
-  ** property read from the operating system.  If osUtcOffset is 
+  ** fields from nanos.  If osUtcOffset is true this is a read-only
+  ** property read from the operating system.  If osUtcOffset is
   ** false then this is a configuration property.
-  @unit=Units.second @config property int utcOffset       
+  @unit=Units.second
+  @config property int utcOffset
 
-  ** If true, then the utcOffset is controlled by the 
-  ** operating system.  If false then the utcOffset is 
+  ** If true, then the utcOffset is controlled by the
+  ** operating system.  If false then the utcOffset is
   ** configured strictly by Sedona.
-  @config property bool osUtcOffset       
-  
-  ** Olsen timezone identifier such as "America/New_York".
-  ** This property is purely extra informational meta-data to 
+  @config property bool osUtcOffset
+
+  ** Olson timezone identifier such as "America/New_York".
+  ** This property is purely extra informational meta-data to
   ** help tools interpret the utcOffset property.
-  @config @asStr property Buf(32) tz
+  @asStr
+  @config property Buf(32) tz
 
 ////////////////////////////////////////////////////////////////
 // Actions
 ////////////////////////////////////////////////////////////////
-  
+
   **
-  **  Refreshes all property fields with current value 
-  **    
+  **  Refreshes all property fields with current value
+  **
   action void refresh()
   {
-    long n = now()    
- 
+    long n = now()
+
     // if configured to use OS utc-offset, then read it
     if (osUtcOffset)
       utcOffset := getUtcOffset()
-    
+
     dt.reset()
     dt.utcOffset = utcOffset
     if (dt.fromNanos(n) != -1)
       updateProperties(n)
-  }   
+  }
 
   **
   **  Sets the system clock and refreshes properties.  May not
   **  be supported on all properties
   **
-  action void setSysClock(long nanos) 
+  action void setSysClock(long nanos)
   {
     setClock(nanos)
     refresh()
   }
-
 
 ////////////////////////////////////////////////////////////////
 //  Override points
 ////////////////////////////////////////////////////////////////
 
   **
-  **  Return the current UTC date/time on the system in nanoseconds, or 
+  **  Return the current UTC date/time on the system in nanoseconds, or
   **  DateTime.invalid if not supported, i.e. platform does not have clock
   **  capability
-  **    
+  **
   virtual long now() { return DateTime.invalid }
 
   **
   ** Return the current UTC offset in seconds, including adjustment for
   ** daylight savings time if necessary
-  **    
+  **
   virtual int getUtcOffset() { return 0 }
 
   **
   **  Set the system clock to the given UTC value.  May
   **  not be supported on all platform.
-  ** 
+  **
   protected virtual void setClock(long nanos) {}
-    
+
 ////////////////////////////////////////////////////////////////
 // Service
 ////////////////////////////////////////////////////////////////
@@ -135,19 +145,18 @@ class DateTimeService
   {
     long ticks = Sys.ticks()
     if ((ticks - lastRefreshTicks) > 1sec)  //  only update once per second
-    {       
-      lastRefreshTicks = ticks;   
+    {
+      lastRefreshTicks = ticks;
       refresh()
-    }    
+    }
     return false
   }
 
-
-  ** 
-  **  Update the property fields with values stored in dt  
-  ** 
+  **
+  **  Update the property fields with values stored in dt
+  **
   protected void updateProperties(long n)
-  {   
+  {
     nanos := n
     year := dt.year
     month := dt.month
@@ -155,17 +164,15 @@ class DateTimeService
     dayOfWeek := dt.dayOfWeek
     hour := dt.hour
     minute := dt.minute
-    second := dt.second            
+    second := dt.second
   }
 
 ////////////////////////////////////////////////////////////////
 // Fields
 ////////////////////////////////////////////////////////////////
-  define Log log  
+  define Log log
 
   long lastRefreshTicks
   inline protected DateTime dt
-
-
 
 }
